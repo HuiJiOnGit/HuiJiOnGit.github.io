@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>window10 LTSC 更新版本</title>
+      <link href="2021/07/12/window10-ltsc-geng-xin-ban-ben/"/>
+      <url>2021/07/12/window10-ltsc-geng-xin-ban-ben/</url>
+      
+        <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>公司采购的电脑使用了windows 10 LTSC版本,LTSC版本虽然稳定,但是对于我来说想要安装WSL2和window terminal的用户来说就不太合适了,因为这两个都有window版本的要求<br>以当前的时间2021-7-12来看,最新的LTSC的内部版本其实还是1809,要使用以上两个功能,必须要1903或以上,所以,为了能使用,我必须升级window版本才行</p><h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>这条升级之路可以说是非常不顺利,由于登录账号需要加入域,域账号的很多设置都是不允许你更新的,比如说管理员设置了组策略不给更新,windows update服务没有开启等等.下面我罗列下我还记得的问题,供各位参考</p><h2 id="第一次尝试-企图使用window-update直接更新大版本"><a href="#第一次尝试-企图使用window-update直接更新大版本" class="headerlink" title="第一次尝试, 企图使用window update直接更新大版本"></a>第一次尝试, 企图使用window update直接更新大版本</h2><p>很可惜,这样是不行,只能更新1809版本里面的各种小更新</p><h2 id="使用window易升"><a href="#使用window易升" class="headerlink" title="使用window易升"></a>使用window易升</h2><p>由于我这个是企业版+LTSC,这个直接堵死这条路,易升是无法升级此版本的,一开始我以为是加入域的问题,结果手贱退出了域,然后直接登录不进去系统(我无法使用管理员账号登录)</p><h2 id="使用MediaCreationTool工具"><a href="#使用MediaCreationTool工具" class="headerlink" title="使用MediaCreationTool工具"></a>使用MediaCreationTool工具</h2><p>这个工具是可以为你创建安装合适版本的window,但是我再第一次尝试的时候由于只是想测试下能不能保留我的文件和应用升级,结果不行,后面百度才知道,是需要你升级的目标的系统和你当前的系统都是同一个版本才行(比如说企业版升级到企业版;专业版升级到专业版),最坑地是我第二次打开,就直接报错了,醉了,我也不知道什么原因,折腾许久,哎,此路不通.</p><h2 id="直接安装iso镜像-成功"><a href="#直接安装iso镜像-成功" class="headerlink" title="直接安装iso镜像(成功)"></a>直接安装iso镜像(成功)</h2><p>为了能保留文件和应用,我需要将LTSC的版本号改成专业版,在这里网上的资料很多都是复制的,垃圾,比如说有个是Professional-x64.cab去改的,我试了没有用,或者读者你可以自己试试先,</p><p>然后我在知乎某篇文章找到了神器,叫window版本转换器的东西,一键傻瓜式转换,不过注意此转换不是永久,我重启之后又是企业版LTSC了,而且这个应用也提了,会把你已激活的变成未激活,这个是需要注意的,至于下载地址,我就不放了,都是百度出来的,我下载的文件是<code>Windows10BBYJZHGJ_V1.0_XiTongZhiJia</code>,你可以参考下</p><p>然后转换系统之后,我在msdn i tell you找到了那里最新的1909系统,下载下来,打开iso,双击exe,安装,这次就可以保留我的文件和应用了,当然,为了免责声明还是要提醒你先保存好你的文件和应用.</p><p>漫长的等待之后,安装完成,系统版本1909,专业版,完美,但是我还想更新到2004,所以,易升再次出场,这次就很顺利,没有其他问题,利索地就升级到2004,至于要不要升级到21h1,就看各位小伙伴怎么想了,反正2004已经够我开发用了,我就不折腾了.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> windows </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> windows win windows10 win10 update </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CLR via 第4章 类型基础</title>
       <link href="2021/06/25/clr-via-yue-du-wen-da-1/"/>
       <url>2021/06/25/clr-via-yue-du-wen-da-1/</url>

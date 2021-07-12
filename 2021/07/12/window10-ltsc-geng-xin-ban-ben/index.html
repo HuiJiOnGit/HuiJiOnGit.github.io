@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="CLR via 第4章 类型基础, Hexo">
+    <meta name="keywords" content="window10 LTSC 更新版本, Hexo">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>CLR via 第4章 类型基础 | Hexo</title>
+    <title>window10 LTSC 更新版本 | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">CLR via 第4章 类型基础</h1>
+                    <h1 class="description center-align post-title">window10 LTSC 更新版本</h1>
                 </div>
             </div>
         </div>
@@ -430,14 +430,23 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/C/">
-                                <span class="chip bg-color">C#</span>
+                            <a href="/tags/windows-win-windows10-win10-update/">
+                                <span class="chip bg-color">windows win windows10 win10 update</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/windows/" class="post-category">
+                                windows
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -446,7 +455,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-06-25
+                    2021-07-12
                 </div>
                 
 
@@ -462,68 +471,15 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>by the way 此文章主要用来记录我阅读过程中记下应该写下来,或者说应该要牢记的知识点</p>
-</blockquote>
-<hr>
-<h1 id="第4章-类型基础"><a href="#第4章-类型基础" class="headerlink" title="第4章: 类型基础"></a>第4章: 类型基础</h1><ol>
-<li>所有类型都是从 <code>System.Object</code> 派生</li>
-</ol>
-<p>新建一个类型,就算不写继承于谁,默认都是继承了 <code>Object</code><br><code>Object</code> 类中包含了 <code>Equals</code> <code>GetHashCode</code> <code>ToString</code> <code>GetType</code> 等几个方法,所以你才能在一般的类中使用这些方法.</p>
-<ol start="2">
-<li>类型转换</li>
-</ol>
-<blockquote>
-<p>CLR最重要的特性之一就是类型安全, 在运行时,clr总能知道这个对象的类型是什么,调用 GetType 方法就知道,而且GetType不是虚方法,所以一个类型不可能伪装成为另一个类型</p>
-</blockquote>
-<blockquote>
-<p>c#不要求任何特殊语法即可将对象转换为它的任意基类型,因为向基转换被认为是一种安全的隐式转换, 但是相反的,由基类型转向派生类型时c#要求开发人员要进行显示转换,因为这种转换有可能会失败</p>
-</blockquote>
-<ol start="3">
-<li>使用<code>is</code> 和 <code>as</code> 来转换类型</li>
-</ol>
-<p>可以使用 <code>is</code> 来进行类型转换,注意: <code>is</code> 操作符永远不会抛出异常 只会返回<code>true</code> 和 <code>false</code></p>
-<p>如果对象引用是 <code>null</code> ,这样总是会返回<code>false</code>,因为没有可以检查类型的对象</p>
-<pre class=" language-c#"><code class="language-c#">if(o is Employee)&#123;
-    Employee e = (Employee) o;
-&#125;</code></pre>
-<p>可以看出以上的代码检查了两次o的类型,对性能很不好,所以c#专门提供了as操作符,目的就是简化这种代码</p>
-<p><code>as</code>可以核实是否兼容<code>Employee</code>类型,同时会返回一个<code>Employee</code>的非<code>null</code>引用.当然如果o不能转型,结果就会是<code>null</code>;</p>
-<ol start="4">
-<li>clr调用一个方法的过程,详见书本108页,由于没有图床,所以没有解析了<br>所以就直接讲下我的理解</li>
-</ol>
-<pre class=" language-c#"><code class="language-c#">void M1()&#123;
-    string name = "Joe";
-    M2(name);
-    ...
-    return;
-&#125;
-void M2(string s)&#123;
-    int length = s.Length;
-    int tally;
-    ...
-    return;
-&#125;</code></pre>
-<ul>
-<li>首先执行m1方法,读到name变量 会把name压栈</li>
-<li>然后执行M2,这时候会创建一个m2的局部变量块,把s压栈</li>
-<li>然后把m2的return压栈,使得被调用的方法结束后可以返回值该位置</li>
-<li>然后m2方法也会为length和tally在栈中创建位置,最后调用完回到上面的返回位置</li>
-</ul>
-<p>如果使用了引用类型比如说自定义的一个class,这时候就不仅在栈开辟空间了,还会在托管堆里面开辟空间</p>
-<p>假设有两个复杂类型 <code>Manager</code> 和 <code>Employee</code>,<br>首先clr会为方法中的所有局部变量都初始化为<code>null</code>或者<code>0</code>,如果代码企图访问未显式初始化的局部变量,c#就会报告空引用异常,</p>
-<p>像 <code>Manager</code> 这种复杂类型,会在托管堆中创建一个实例,里面会有几个东西</p>
-<ol>
-<li>类型对象指针</li>
-<li>同步块索引</li>
-<li>静态字段</li>
-<li>自定义的字段</li>
-<li>方法表</li>
-</ol>
-<blockquote>
-<p>类型对象指针：指向类型对象存储的地址，假如有一个类型Person,它在堆中有一块区域存储它内部的字段和成员以及两个额外成员（类型对象指针、 同步块索引 ），类型对象的类型对象指针指向的是System.Type的地址。<br>因为Person类型在内存中相对于System.Type也是作为一个对象存在的，System.Type类型也是一个类型对象，它的类型对象指针指向本身；<br>实例化一个Person对象，Person p = new Person(); p对象在内存堆中也分配一块区域存储它内部的字段和成员以及两个额外成员（类型对象指针、 同步块索引 ），p的类型对象指针指向Person类型在堆中的地址。<br>同步块索引：先说一下同步块，.NET团队在设计基本框架时充分考虑了线程同步的问题，其结果就是.NET为每一个堆内对象都提供了支持线程同步的功能，这就是同步机制的雏形【参考：<a target="_blank" rel="noopener" href="http://genwoxuedotnet.blog.51cto.com/1852748/504107">http://genwoxuedotnet.blog.51cto.com/1852748/504107</a>】<br>但是对每个堆内对象都分配同步块有一个较大的弊端，就是这样增大了内存的消耗。在一般的系统中，需要同步机制支持的对象可能只占少数，这样对于大多数对象来说，一个同步块的内存消耗就完全被浪费了。鉴于这一点，.NET框架采用了一种折中的办法，就是实际只为每个堆内对象分配一个同步索引，该索引中只保存一个表明数组内索引的整数。.NET在加载时会新建一个同步块数组，当某个对象需要被同步时，.NET会为其分配一个同步块，并且把该同步块在同步块数组中的索引加入该对象的同步块索引中。<br>同步块机制包含如下的几点：<br>· 在.NET被加载时初始化同步块数组。<br>· 每一个被分配在堆上的对象都会包含两个额外的字段，其中一个存储类型指针，而另外一个就是同步块索引，初始时被赋值为-1。<br>· 当一个线程试图使用该对象进入同步时，会检查该对象的同步索引。如果索引为负数，则会在同步块数组中寻找或者新建一个同步块，并且把同步块的索引值写入该对象的同步索引中。如果该对象的同步索引不为负值，则找到该对象的同步块并且检查是否有其他线程在使用该同步块，如果有则进入等待状态，如果没有则申明使用该同步块。<br>以上引用来源于 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/dawenyang/p/7520263.html">https://www.cnblogs.com/dawenyang/p/7520263.html</a></p>
-</blockquote>
-<p>clr调用一个非虚的实例方法的是否, jit会找到与”发出调用的那个变量(e)的类型(Employee)”对应的类型对象.但是如果Employee没找到,那么jit就会回溯层次结构,一直回溯到Object,并在沿途的每个类型中查找该方法.之所以能这样回溯,是<strong>因为每个类型对象都有个字段引用了它的基类型</strong></p>
+                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>公司采购的电脑使用了windows 10 LTSC版本,LTSC版本虽然稳定,但是对于我来说想要安装WSL2和window terminal的用户来说就不太合适了,因为这两个都有window版本的要求<br>以当前的时间2021-7-12来看,最新的LTSC的内部版本其实还是1809,要使用以上两个功能,必须要1903或以上,所以,为了能使用,我必须升级window版本才行</p>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>这条升级之路可以说是非常不顺利,由于登录账号需要加入域,域账号的很多设置都是不允许你更新的,比如说管理员设置了组策略不给更新,windows update服务没有开启等等.下面我罗列下我还记得的问题,供各位参考</p>
+<h2 id="第一次尝试-企图使用window-update直接更新大版本"><a href="#第一次尝试-企图使用window-update直接更新大版本" class="headerlink" title="第一次尝试, 企图使用window update直接更新大版本"></a>第一次尝试, 企图使用window update直接更新大版本</h2><p>很可惜,这样是不行,只能更新1809版本里面的各种小更新</p>
+<h2 id="使用window易升"><a href="#使用window易升" class="headerlink" title="使用window易升"></a>使用window易升</h2><p>由于我这个是企业版+LTSC,这个直接堵死这条路,易升是无法升级此版本的,一开始我以为是加入域的问题,结果手贱退出了域,然后直接登录不进去系统(我无法使用管理员账号登录)</p>
+<h2 id="使用MediaCreationTool工具"><a href="#使用MediaCreationTool工具" class="headerlink" title="使用MediaCreationTool工具"></a>使用MediaCreationTool工具</h2><p>这个工具是可以为你创建安装合适版本的window,但是我再第一次尝试的时候由于只是想测试下能不能保留我的文件和应用升级,结果不行,后面百度才知道,是需要你升级的目标的系统和你当前的系统都是同一个版本才行(比如说企业版升级到企业版;专业版升级到专业版),最坑地是我第二次打开,就直接报错了,醉了,我也不知道什么原因,折腾许久,哎,此路不通.</p>
+<h2 id="直接安装iso镜像-成功"><a href="#直接安装iso镜像-成功" class="headerlink" title="直接安装iso镜像(成功)"></a>直接安装iso镜像(成功)</h2><p>为了能保留文件和应用,我需要将LTSC的版本号改成专业版,在这里网上的资料很多都是复制的,垃圾,比如说有个是Professional-x64.cab去改的,我试了没有用,或者读者你可以自己试试先,</p>
+<p>然后我在知乎某篇文章找到了神器,叫window版本转换器的东西,一键傻瓜式转换,不过注意此转换不是永久,我重启之后又是企业版LTSC了,而且这个应用也提了,会把你已激活的变成未激活,这个是需要注意的,至于下载地址,我就不放了,都是百度出来的,我下载的文件是<code>Windows10BBYJZHGJ_V1.0_XiTongZhiJia</code>,你可以参考下</p>
+<p>然后转换系统之后,我在msdn i tell you找到了那里最新的1909系统,下载下来,打开iso,双击exe,安装,这次就可以保留我的文件和应用了,当然,为了免责声明还是要提醒你先保存好你的文件和应用.</p>
+<p>漫长的等待之后,安装完成,系统版本1909,专业版,完美,但是我还想更新到2004,所以,易升再次出场,这次就很顺利,没有其他问题,利索地就升级到2004,至于要不要升级到21h1,就看各位小伙伴怎么想了,反正2004已经够我开发用了,我就不折腾了.</p>
 
             </div>
             <hr/>
@@ -549,7 +505,7 @@ void M2(string s)&#123;
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/06/25/clr-via-yue-du-wen-da-1/">http://example.com/2021/06/25/clr-via-yue-du-wen-da-1/</a>
+                    <a href="http://example.com/2021/07/12/window10-ltsc-geng-xin-ban-ben/">http://example.com/2021/07/12/window10-ltsc-geng-xin-ban-ben/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -587,8 +543,8 @@ void M2(string s)&#123;
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/C/">
-                                    <span class="chip bg-color">C#</span>
+                                <a href="/tags/windows-win-windows10-win10-update/">
+                                    <span class="chip bg-color">windows win windows10 win10 update</span>
                                 </a>
                             
                         </div>
@@ -756,9 +712,10 @@ void M2(string s)&#123;
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/07/12/window10-ltsc-geng-xin-ban-ben/">
                     <div class="card-image">
@@ -776,9 +733,9 @@ void M2(string s)&#123;
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -791,6 +748,7 @@ void M2(string s)&#123;
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -809,19 +767,26 @@ void M2(string s)&#123;
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/06/25/hello-world/">
+                <a href="/2021/06/25/clr-via-yue-du-wen-da-1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="CLR via 第4章 类型基础">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">CLR via 第4章 类型基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            
+by the way 此文章主要用来记录我阅读过程中记下应该写下来,或者说应该要牢记的知识点
+
+
+第4章: 类型基础
+所有类型都是从 System.Object 派生
+
+新建一个类型,就算不写继承于谁,默认都是继承了 ObjectObje
                         
                     </div>
                     <div class="publish-info">
@@ -835,6 +800,14 @@ void M2(string s)&#123;
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/C/">
+                        <span class="chip bg-color">C#</span>
+                    </a>
+                    
                 </div>
                 
             </div>
