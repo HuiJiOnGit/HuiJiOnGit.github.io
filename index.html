@@ -553,32 +553,34 @@
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2021/07/12/window10-ltsc-geng-xin-ban-ben/">
+                    <a href="/2022/09/16/study-notes-abp-2022-09-16-tan-jiu-xia-abp-de-qi-dong-he-mo-kuai-xi-tong/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="window10 LTSC 更新版本">
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="探究下abp的启动和模块系统">
                             
-                            <span class="card-title">window10 LTSC 更新版本</span>
+                            <span class="card-title">探究下abp的启动和模块系统</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                背景公司采购的电脑使用了windows 10 LTSC版本,LTSC版本虽然稳定,但是对于我来说想要安装WSL2和window terminal的用户来说就不太合适了,因为这两个都有window版本的要求以当前的时间2021-7-12来看,
+                                探究下abp的启动和模块系统当你创建一个新的abp应用,你会发现,它的Startup文件特别简洁,如下所示:
+public void ConfigureServices(IServiceCollection services)
+&#123;
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-16
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/windows/" class="post-category">
-                                    windows
+                                <a href="/categories/abp/" class="post-category">
+                                    abp
                                 </a>
                                 
                                 
@@ -589,8 +591,8 @@
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/windows-win-windows10-win10-update/">
-                            <span class="chip bg-color">windows win windows10 win10 update</span>
+                        <a href="/tags/abp/">
+                            <span class="chip bg-color">abp</span>
                         </a>
                         
                     </div>
@@ -600,32 +602,83 @@
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2021/06/25/clr-via-yue-du-wen-da-1/">
+                    <a href="/2022/08/27/study-notes-dotnetcore-2022-08-27-asp-net-core-ying-yong-bu-shu-zai-nginx-zi-mu-lu-de-tan-suo/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="CLR via 第4章 类型基础">
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="asp.net core 应用部署在Nginx 子目录的探索">
                             
-                            <span class="card-title">CLR via 第4章 类型基础</span>
+                            <span class="card-title">asp.net core 应用部署在Nginx 子目录的探索</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-by the way 此文章主要用来记录我阅读过程中记下应该写下来,或者说应该要牢记的知识点
+                                起因由于没有测试用的域名, 一个项目部署到了已有域名的子目录下, 用的Nginx反向代理, 访问链接是这样
 
+http://test.com/app
 
-第4章: 类型基础
-所有类型都是从 System.Object 派生
-
-新建一个类型,就算不写继承于谁,默认都是继承了 ObjectObje
+然后导致的问题就是页面能访问到了,但是像 js 和 css 的引入全部都 404 了,因
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/aspnetcore/" class="post-category">
+                                    aspnetcore
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/aspnetcore/">
+                            <span class="chip bg-color">aspnetcore</span>
+                        </a>
+                        
+                        <a href="/tags/nginx/">
+                            <span class="chip bg-color">nginx</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/07/07/study-notes-algorithm-2022-07-07-fei-di-gui-shi-xian-guang-du-you-xian-bian-li-he-shen-du-you-xian-bian-li/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="非递归实现广度优先遍历和深度优先遍历">
+                            
+                            <span class="card-title">非递归实现广度优先遍历和深度优先遍历</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                记录下学习这两个遍历的过程
+什么是广度优先遍历和深度优先遍历来源百度百科
+
+BFS，其英文全称是Breadth First Search。 BFS并不使用经验法则算法。从算法的观点，所有因为展开节点而得到的子节点都会被加进一个先进先出的队列
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-07
                             </span>
                             <span class="publish-author">
                                 
@@ -639,8 +692,12 @@ by the way 此文章主要用来记录我阅读过程中记下应该写下来,�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/C/">
-                            <span class="chip bg-color">C#</span>
+                        <a href="/tags/dfs/">
+                            <span class="chip bg-color">dfs</span>
+                        </a>
+                        
+                        <a href="/tags/bfs/">
+                            <span class="chip bg-color">bfs</span>
                         </a>
                         
                     </div>
@@ -650,25 +707,29 @@ by the way 此文章主要用来记录我阅读过程中记下应该写下来,�
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2021/06/25/hello-world/">
+                    <a href="/2022/07/07/study-notes-others-2022-07-07-shou-dong-feng-zhuang-yi-ge-select/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="2022-7-7 手动封装一个select">
                             
-                            <span class="card-title">Hello World</span>
+                            <span class="card-title">2022-7-7 手动封装一个select</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                                手动封装一个select
+Q: 为什么要手动封装?
+
+
+用户提出需求是可以根据select中值的不同显示不同的样式, 比如选 true 显示绿色, 选 false 显示红色,一开始我以为能用css自定义的,但是查阅mdn之后发现像selec
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-07
                             </span>
                             <span class="publish-author">
                                 
@@ -680,40 +741,101 @@ by the way 此文章主要用来记录我阅读过程中记下应该写下来,�
                     </div>
 
                     
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/web/">
+                            <span class="chip bg-color">web</span>
+                        </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/10/13/dotnetcore-kong-zhi-tai-shi-yong-yi-lai-zhu-ru-he-logger-he-configuration/">
+                    <a href="/2022/06/25/scripts-notes-2022-06-25-window-powershell-install-softword/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="dotnetcore控制台使用依赖注入和logger和configuration">
+                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="window powershell install softword">
                             
-                            <span class="card-title">dotnetcore控制台使用依赖注入和logger和configuration</span>
+                            <span class="card-title">window powershell install softword</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                dotnet core 3.1在控制台使用依赖注入，logger和configuration
-添加IServiceCollection
-//会用上的命名空间
-using Microsoft.Extensions.DependencyInje
+                                使用winget来安装应用我用的powershell是 7.2.4 ,正好可以在今天升级,搭配 window 终端来使用更佳
+先看看 winget都有什么功能 
+
+winget
+
+Windows 程序包管理器 v1.2.10941
+版权所有
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-25
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-user fa-fw"></i>
+                                HuiJi
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/winget/">
+                            <span class="chip bg-color">winget</span>
+                        </a>
+                        
+                        <a href="/tags/powershell/">
+                            <span class="chip bg-color">powershell</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/06/25/study-notes-dotnetcore-2022-06-25-fen-xiang-yi-ge-zi-dong-gei-aspnetcore-mvc-razorpage-ying-yong-zi-dong-tian-jia-version-de-fang-an/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="分享一个自动给aspnetcore mvc razorpage应用自动添加version的方案">
+                            
+                            <span class="card-title">分享一个自动给aspnetcore mvc razorpage应用自动添加version的方案</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                分享一个自动给aspnetcore mvc razorpage应用自动添加version的方案使用taghelper
+直接上代码
+using System.Text.Encodings.Web;
+using Microsoft.AspNet
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-25
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/dotnetcore/" class="post-category">
-                                    dotnetcore
+                                <a href="/categories/aspnetcore/" class="post-category">
+                                    aspnetcore
                                 </a>
                                 
                                 
@@ -724,8 +846,12 @@ using Microsoft.Extensions.DependencyInje
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/dotnetcore-netcore/">
-                            <span class="chip bg-color">dotnetcore .netcore</span>
+                        <a href="/tags/aspnetcore/">
+                            <span class="chip bg-color">aspnetcore</span>
+                        </a>
+                        
+                        <a href="/tags/taghelp/">
+                            <span class="chip bg-color">taghelp</span>
                         </a>
                         
                     </div>
@@ -735,39 +861,136 @@ using Microsoft.Extensions.DependencyInje
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/10/13/c-dui-wen-jian-jin-xing-ya-suo/">
+                    <a href="/2022/03/24/study-notes-vue3-2022-3-24-01/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="c#对文件进行压缩">
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="vue3 学习笔记 01">
                             
-                            <span class="card-title">c#对文件进行压缩</span>
+                            <span class="card-title">vue3 学习笔记 01</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                c# 压缩文件成zip
-本篇资料引用  微软文档
-
-真的建议大家过看看微软的官方文档，啥都有
-
-
-c# 内置了几个处理压缩的类，详细见上面的链接，都是在system.IO.Compression这个命名空间下
-zipfile使用心得，都是从
+                                这是有关 vue3 的学习笔记,记录下内容另外推荐使用这个网站 Vue SFC Playground 进行 SFC 的测试,不用在本地安装任何东西还有官方文档
+vue 的编译时运行时之前没有太过了解这个,这次看文档学习到, vue 是区分运
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-24
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/c/" class="post-category">
-                                    c#
+                                <a href="/categories/vue/" class="post-category">
+                                    vue
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/vue3/">
+                            <span class="chip bg-color">vue3</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/03/03/bug-notes-2022-03-03-c-encoderparameter-shi-yong-zhu-yi-shi-xiang/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="c# EncoderParameter使用注意事项">
+                            
+                            <span class="card-title">c# EncoderParameter使用注意事项</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                问题描述
+使用System.Drawing.Image.Save将一个png图片保存为tif格式的图片, 老是遇到 params is not valid 错误
+
+这个方法我使用的是这个重载
+第二个参数好理解,就是指定输出MimeType,
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-03
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/bug/" class="post-category">
+                                    bug
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/bug/">
+                            <span class="chip bg-color">bug</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/12/23/read-notes-clr-via-2021-12-23-clr-via-di-10-zhang-shu-xing/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="CLR-via-第10章-属性">
+                            
+                            <span class="card-title">CLR-via-第10章-属性</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                第10章 属性1.无参属性
+面向对象设计和编程的重要原则之一就是数据封装.意味着类型的字段永远不应该公开, 否则很容易因为不恰当使用字段而破坏对象的状态.
+
+还有你可能希望访问字段执行一些副作用, 缓存某些值或者时推迟创建一些内部对象
+
+你
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
                                 </a>
                                 
                                 
@@ -782,6 +1005,68 @@ zipfile使用心得，都是从
                             <span class="chip bg-color">c#</span>
                         </a>
                         
+                        <a href="/tags/clr/">
+                            <span class="chip bg-color">clr</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/12/22/read-notes-clr-via-2021-12-22-clr-via-di-9-zhang-can-shu/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="CLR-via-第9章 参数">
+                            
+                            <span class="card-title">CLR-via-第9章 参数</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                第9章 参数1.可选参数和命名参数
+可以为方法,构造器方法和有参属性的参数指定默认值, 还可以为属于委托定义的一部分的参数指定默认值
+
+有默认值的参数必须放在没有默认值的所有参数之后
+
+默认值必须是编译时能确定的常量值
+
+小心重命名,因为上
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-22
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-category">
+                                    读书笔记
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/c/">
+                            <span class="chip bg-color">c#</span>
+                        </a>
+                        
+                        <a href="/tags/clr/">
+                            <span class="chip bg-color">clr</span>
+                        </a>
+                        
                     </div>
                     
                 </div>
@@ -791,6 +1076,30 @@ zipfile使用心得，都是从
     </article>
 
 </main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a class="left btn-floating btn-large disabled">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">1 / 3</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a href="/page/2/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 
 
