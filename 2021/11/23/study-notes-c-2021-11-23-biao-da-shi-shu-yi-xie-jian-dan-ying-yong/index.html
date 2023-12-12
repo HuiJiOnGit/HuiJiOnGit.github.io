@@ -475,25 +475,10 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="表达式树的一些简单应用"><a href="#表达式树的一些简单应用" class="headerlink" title="表达式树的一些简单应用"></a>表达式树的一些简单应用</h1><h2 id="1-表达式树是什么"><a href="#1-表达式树是什么" class="headerlink" title="1. 表达式树是什么"></a>1. 表达式树是什么</h2><p>表达式树以树形数据结构表示代码，其中每一个节点都是一种表达式，比如方法调用和 <code>x &lt; y</code> 这样的二元运算等。<br>coder可以对表达式树中的代码进行编辑和运算,这样能动态的修改可执行的代码.<br>更多请看<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/expression-trees">微软文档</a></p>
+                <h2 id="表达式树的一些简单应用"><a href="#表达式树的一些简单应用" class="headerlink" title="表达式树的一些简单应用"></a>表达式树的一些简单应用</h2><h2 id="1-表达式树是什么"><a href="#1-表达式树是什么" class="headerlink" title="1. 表达式树是什么"></a>1. 表达式树是什么</h2><p>表达式树以树形数据结构表示代码，其中每一个节点都是一种表达式，比如方法调用和 <code>x &lt; y</code> 这样的二元运算等。<br>coder可以对表达式树中的代码进行编辑和运算,这样能动态的修改可执行的代码.<br>更多请看<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/expression-trees">微软文档</a></p>
 <h2 id="2-执行表达式树"><a href="#2-执行表达式树" class="headerlink" title="2. 执行表达式树"></a>2. 执行表达式树</h2><p>执行表达式树可能返回一个值，或者它可能只是执行操作，例如调用方法。<br>仅可以执行表示 lambda 表达式的表达式树。 表示 Lambda 表达式的表达式树的类型为 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a> 或 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.expression-1"><code>Expression&lt;TDelegate&gt;</code></a>。 若要执行这些表达式树，请调用 <code>Compile</code> 方法来创建一个可执行的委托，然后调用该委托。</p>
 <blockquote>
-<p>如果委托的类型未知，也就是说 Lambda 表达式的类型为 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>，而不是 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.expression-1"><code>Expression&lt;TDelegate&gt;</code></a>，则必须对委托调用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.delegate.dynamicinvoke">DynamicInvoke</a> 方法，而不是直接调用委托。</p>
-</blockquote>
-<blockquote>
-<p>表达式树 是表示一些代码的数据结构。 它不是已编译且可执行的代码。 如果想要执行由表达式树表示的 .NET 代码，则必须将其转换为可执行的 IL 指令。</p>
-</blockquote>
-<blockquote>
-<p>可以将任何 <code>LambdaExpression</code> 或派生自 <code>LambdaExpression</code> 的任何类型转换为可执行的 IL。 其他表达式类型不能直接转换为代码。 此限制在实践中影响不大。 Lambda 表达式是你可通过转换为可执行的中间语言 (IL) 来执行的唯一表达式类型。 （思考直接执行 <code>ConstantExpression</code> 意味着什么。 这是否意味着任何用处？）<code>LambdaExpression</code> 或派生自 <code>LambdaExpression</code> 的类型的任何表达式树均可转换为 IL。 表达式类型 <code>Expression&lt;TDelegate&gt;</code>是 .NET Core 库中的唯一具体示例。 它用于表示映射到任何委托类型的表达式。 由于此类型映射到一个委托类型，因此 .NET 可以检查表达式，并为匹配 lambda 表达式签名的适当委托生成 IL。</p>
-</blockquote>
-<blockquote>
-<p>在大多数情况下，这将在表达式和其对应的委托之间创建简单映射。 例如，由 <code>Expression&lt;Func&lt;int&gt;&gt;</code> 表示的表达式树将被转换为 <code>Func&lt;int&gt;</code> 类型的委托。 对于具有任何返回类型和参数列表的 Lambda 表达式，存在这样的委托类型：该类型是由该 Lambda 表达式表示的可执行代码的目标类型。</p>
-</blockquote>
-<blockquote>
-<p><code>LambdaExpression</code> 类型包含用于将表达式树转换为可执行代码的 <code>Compile</code> 和 <code>CompileToMethod</code> 成员。 <code>Compile</code> 方法创建委托。 <code>CompileToMethod</code> 方法通过表示表达式树的已编译输出的 IL 更新 <code>MethodBuilder</code> 对象。 请注意，<code>CompileToMethod</code> 仅在完整的桌面框架中可用，不能用于 .NET Core。</p>
-</blockquote>
-<blockquote>
-<p>还可以选择性地提供 <code>DebugInfoGenerator</code>，它将接收生成的委托对象的符号调试信息。 这让你可以将表达式树转换为委托对象，并拥有生成的委托的完整调试信息。</p>
+<p>如果委托的类型未知，也就是说 Lambda 表达式的类型为 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.lambdaexpression">LambdaExpression</a>，而不是 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.linq.expressions.expression-1"><code>Expression&lt;TDelegate&gt;</code></a>，则必须对委托调用 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.delegate.dynamicinvoke">DynamicInvoke</a> 方法，而不是直接调用委托。<br>表达式树 是表示一些代码的数据结构。 它不是已编译且可执行的代码。 如果想要执行由表达式树表示的 .NET 代码，则必须将其转换为可执行的 IL 指令。<br>可以将任何 <code>LambdaExpression</code> 或派生自 <code>LambdaExpression</code> 的任何类型转换为可执行的 IL。 其他表达式类型不能直接转换为代码。 此限制在实践中影响不大。 Lambda 表达式是你可通过转换为可执行的中间语言 (IL) 来执行的唯一表达式类型。 （思考直接执行 <code>ConstantExpression</code> 意味着什么。 这是否意味着任何用处？）<code>LambdaExpression</code> 或派生自 <code>LambdaExpression</code> 的类型的任何表达式树均可转换为 IL。 表达式类型 <code>Expression&lt;TDelegate&gt;</code>是 .NET Core 库中的唯一具体示例。 它用于表示映射到任何委托类型的表达式。 由于此类型映射到一个委托类型，因此 .NET 可以检查表达式，并为匹配 lambda 表达式签名的适当委托生成 IL。<br>在大多数情况下，这将在表达式和其对应的委托之间创建简单映射。 例如，由 <code>Expression&lt;Func&lt;int&gt;&gt;</code> 表示的表达式树将被转换为 <code>Func&lt;int&gt;</code> 类型的委托。 对于具有任何返回类型和参数列表的 Lambda 表达式，存在这样的委托类型：该类型是由该 Lambda 表达式表示的可执行代码的目标类型。<br><code>LambdaExpression</code> 类型包含用于将表达式树转换为可执行代码的 <code>Compile</code> 和 <code>CompileToMethod</code> 成员。 <code>Compile</code> 方法创建委托。 <code>CompileToMethod</code> 方法通过表示表达式树的已编译输出的 IL 更新 <code>MethodBuilder</code> 对象。 请注意，<code>CompileToMethod</code> 仅在完整的桌面框架中可用，不能用于 .NET Core。<br>还可以选择性地提供 <code>DebugInfoGenerator</code>，它将接收生成的委托对象的符号调试信息。 这让你可以将表达式树转换为委托对象，并拥有生成的委托的完整调试信息。</p>
 </blockquote>
 <p>需要注意:<br>通过调用在调用 LambdaExpression.Compile() 时创建的委托来执行代码。 可以在上面进行查看，其中 add.Compile() 返回了一个委托。 通过调用 func() 调用该委托将执行代码。</p>
 <p>该委托表示表达式树中的代码。 可以保留该委托的句柄并在稍后调用它。 不需要在每次想要执行表达式树所表示的代码时编译表达式树。 （请记住，表达式树是不可变的，且在之后编译同一表达式树将创建执行相同代码的委托。）</p>
@@ -584,6 +569,70 @@ var func = lamdbaExpression.Compile();
 <li>泛型方法需要先知道泛型</li>
 </ul>
 <p>大体如此,以后有更多实例再补充</p>
+<h3 id="2022-10-15-更新-增加一个例子-这个就复杂一点"><a href="#2022-10-15-更新-增加一个例子-这个就复杂一点" class="headerlink" title="2022-10-15 更新,增加一个例子,这个就复杂一点"></a>2022-10-15 更新,增加一个例子,这个就复杂一点</h3><pre class=" language-c#"><code class="language-c#">// 要翻译以下这段注释内容,可以在linqPad中直接运行
+//if (string.IsNullOrEmpty(item.RequestSiteCode))
+//&#123;
+//    item.MatchRate++;
+//&#125; 
+//else if (item.RequestSiteCode == paramsVM.RequestSiteCode)
+//&#123;
+//    item.MatchRate += 2;
+//&#125;
+//else
+//&#123;
+//    isDel = true;
+//&#125;
+bool isDel = false;
+string propertyName = "RequestSiteCode";
+string matchRateName = "MatchRate";
+var item = new MatchPeMessageNoticeSetting();
+var paramsVM = new MatchBestSettingParamsVM();
+var successDump = Expression.Call(null, typeof(Console).GetMethod("WriteLine", new Type[] &#123; typeof(string) &#125;), Expression.Constant("判断是 True"));
+var failDump = Expression.Call(null, typeof(Console).GetMethod("WriteLine", new Type[] &#123; typeof(string) &#125;), Expression.Constant("判断是 False"));
+var elseIfDump = Expression.Call(null, typeof(Console).GetMethod("WriteLine", new Type[] &#123; typeof(string) &#125;), Expression.Constant("判断是 False2"));
+// 属性 item.xxx
+var propertyExpression = Expression.Property(Expression.Constant(item), propertyName);
+var matchExpression = Expression.Property(Expression.Constant(item), matchRateName);
+var isDelExpression = Expression.Parameter(typeof(bool).MakeByRefType(), "del");
+// paramsVM.xxx
+var paramsExpression = Expression.Property(Expression.Constant(paramsVM), propertyName);
+//string.IsNullOrEmpty
+var isNullOrEmptyMethod = Expression.Call(null, typeof(string).GetMethod("IsNullOrEmpty", new Type[] &#123; typeof(string) &#125;), propertyExpression);
+// 第一个判断条件 string.IsNullOrEmpty(item.RequestSiteCode)
+var firstAssertion = Expression.IsTrue(isNullOrEmptyMethod);
+// 第二个判断条件 item.RequestSiteCode == paramsVM.RequestSiteCode
+var secondAssertion = Expression.IsTrue(Expression.Equal(propertyExpression, paramsExpression));
+// 第一个分支body item.MatchRate++;
+var firstBranchBody = Expression.PostIncrementAssign(matchExpression);
+// 第二个分支body item.MatchRate += 2;
+var secondBranchBody = Expression.AddAssign(matchExpression, Expression.Constant(2));
+// 第三个分支body isDel = true;
+var thridBranchBody = Expression.Assign(isDelExpression, Expression.Constant(true));
+// 组合条件与分支 if()&#123;&#125;else&#123; if()&#123;&#125;else&#123;&#125; &#125;
+var secondIf = Expression.IfThenElse(secondAssertion, secondBranchBody, thridBranchBody);
+var firstIf = Expression.IfThenElse(firstAssertion, firstBranchBody, secondIf);
+Expression.Lambda<Test>(firstIf, new ParameterExpression[] &#123; isDelExpression &#125;).Compile()(ref isDel);
+item.MatchRate.Dump();
+isDel.Dump();
+public class MatchPeMessageNoticeSetting
+&#123;
+ public string RequestSiteCode &#123;get;set;&#125; = "a";
+ public int MatchRate &#123; get; set; &#125; = 0;
+&#125;
+public class MatchBestSettingParamsVM
+&#123;
+ public string RequestSiteCode &#123;get;set;&#125; = "a";
+&#125;
+public delegate void Test(ref bool del);</code></pre>
+<p>这里面遇到几个难点</p>
+<ul>
+<li><p>就是<code>else</code>分支中的<code>isDel</code>是外界定义的你不能定义为常量,因为常量是不可能修改的,所以写成了参数,作为参数传入后在修改</p>
+</li>
+<li><p><code>isDel</code>是个值类型, 闯进了的值和外面那个都没关系的, 我又不能<code>return</code>出去,因为其他分支不需要返回, 所以这里使用<code>ref</code>来定义方法参数, 需要使用<code>MakeByRefType</code>方法来定义</p>
+</li>
+<li><p>然后转为委托的时候,最开始是写<code>Action&lt;bool&gt;</code>的,但是爆出了入参类型和实际类型不一致的问题, 后面又一波三折,最终搞明白了换成自定义的<code>delegate</code>就可以了</p>
+</li>
+</ul>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/expression-trees-execution">执行表达式树</a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/concepts/expression-trees/how-to-use-expression-trees-to-build-dynamic-queries">基于运行时状态进行查询</a></p>
 
@@ -880,33 +929,34 @@ var func = lamdbaExpression.Compile();
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/08/25/project-notes-2021-08-25-shi-chuan-xie-xiang-mu-zong-jie/">
+                <a href="/2021/07/29/study-notes-jquery-2021-07-29-jquery-shi-yong-promise-feng-zhuang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="试穿鞋项目总结">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="JQuery使用Promise封装">
                         
-                        <span class="card-title">试穿鞋项目总结</span>
+                        <span class="card-title">JQuery使用Promise封装</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            背景
-最近几个月一直给一个品牌做一个试穿鞋的项目,项目持续了几个月,终于在昨天开始上线了,所以也是时候总结下这个项目了项目主要是方便该品牌在新鞋子开发过程中达成有效的信息化,流程化,提高鞋子试穿测试的效率而进行开发
-
-问题点
-项目的需求调研
+                            2021-7-31号更新今天突然发现,原来jquery自己实现了一套promise的机制,本身就支持promise,当然不是浏览器那个,此东西位于Deferred中,可以输入console.dir($.Deferred())查看,
+然后可以
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-08-25
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-29
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            HuiJi
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/jquery/" class="post-category">
+                                    jquery
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -914,8 +964,16 @@ var func = lamdbaExpression.Compile();
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%80%BB%E7%BB%93/">
-                        <span class="chip bg-color">总结</span>
+                    <a href="/tags/Jquery/">
+                        <span class="chip bg-color">Jquery</span>
+                    </a>
+                    
+                    <a href="/tags/Promise/">
+                        <span class="chip bg-color">Promise</span>
+                    </a>
+                    
+                    <a href="/tags/ajax/">
+                        <span class="chip bg-color">ajax</span>
                     </a>
                     
                 </div>

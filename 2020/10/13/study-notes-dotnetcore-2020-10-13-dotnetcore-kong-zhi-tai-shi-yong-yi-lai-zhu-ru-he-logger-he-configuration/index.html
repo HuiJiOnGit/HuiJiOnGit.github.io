@@ -543,7 +543,8 @@ public Class1(IOptions<TemplateDto> options)
     _options = options;
 &#125;</code></pre>
 <p>以上，完成</p>
-<p>2020-10-9 10:48 第一版</p>
+<h2 id="2023-12-7-update"><a href="#2023-12-7-update" class="headerlink" title="2023/12/7 update"></a>2023/12/7 update</h2><p>其实以上的这些操作很多冗余的,我们只需要引入<code>Microsoft.Extensions.Hosting</code>即可,这个包集成了依赖注入,读取json配置,日志,选项,大部分情况都够用了</p>
+<p>如果你想更复杂一点,可以使用abp cli提供的控制台模板,那个也使用了上面的包,但是引入了<code>abp</code>的模块化, 对于熟悉<code>abp</code>的人也很好用</p>
 
             </div>
             <hr/>
