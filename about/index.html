@@ -369,14 +369,14 @@
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">20</a></span>
+    <span class="count"><a href="/categories">19</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">50</a></span>
+    <span class="count"><a href="/tags">49</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -399,14 +399,14 @@
 
 
 <div class="statis">
-    <span class="count"><a href="/categories">20</a></span>
+    <span class="count"><a href="/categories">19</a></span>
     <span class="name">分类</span>
 </div>
 
 
 
 <div class="statis">
-    <span class="count"><a href="/tags">50</a></span>
+    <span class="count"><a href="/tags">49</a></span>
     <span class="name">标签</span>
 </div>
 
@@ -550,7 +550,7 @@
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [1,2,0,3,0,0,0,0,0,0,21,0,2],
+                data: [1,2,0,3,0,0,0,0,0,0,20,0,3],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -592,7 +592,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"面试题","value":15},{"name":"bug","value":1},{"name":"windows","value":1},{"name":"读书笔记","value":5},{"name":"算法","value":2},{"name":"设计模式","value":1},{"name":"c#","value":3},{"name":"dotnetcore","value":1},{"name":"abp","value":1},{"name":"aspnetcore","value":2},{"name":"efcore","value":1},{"name":"jquery","value":1},{"name":"mongodb","value":1},{"name":"redis","value":3},{"name":"简历","value":1},{"name":"nginx","value":1},{"name":"vue","value":2},{"name":"mq","value":1},{"name":"vuepress","value":1},{"name":"wpf","value":1}],
+                data: [{"name":"bug","value":1},{"name":"面试题","value":15},{"name":"windows","value":1},{"name":"算法","value":2},{"name":"设计模式","value":1},{"name":"c#","value":3},{"name":"abp","value":1},{"name":"dotnetcore","value":1},{"name":"aspnetcore","value":2},{"name":"efcore","value":1},{"name":"jquery","value":1},{"name":"mongodb","value":1},{"name":"nginx","value":1},{"name":"vue","value":2},{"name":"redis","value":3},{"name":"vuepress","value":1},{"name":"mq","value":1},{"name":"读书笔记","value":5},{"name":"wpf","value":1}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -616,7 +616,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["c#","redis","aspnetcore","vue","clr","efcore","nginx","db","设计模式","ddd"]
+                data: ["c#","redis","aspnetcore","vue","clr","efcore","nginx","bug","ddd","设计模式"]
             }
         ],
         yAxis: [
@@ -799,26 +799,8 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/db/">
-                <span class="chip center-align waves-effect waves-light chip-default">db</span>
-            </a>
-            
-            
-            
-            <a href="/tags/c/">
-                <span class="chip center-align waves-effect waves-light chip-default">c#</span>
-            </a>
-            
-            
-            
-            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
-                <span class="chip center-align waves-effect waves-light chip-default">设计模式</span>
-            </a>
-            
-            
-            
-            <a href="/tags/ddd/">
-                <span class="chip center-align waves-effect waves-light chip-default">ddd</span>
+            <a href="/tags/bug/">
+                <span class="chip center-align waves-effect waves-light chip-default">bug</span>
             </a>
             
             
@@ -829,14 +811,32 @@
             
             
             
-            <a href="/tags/mongo/">
-                <span class="chip center-align waves-effect waves-light chip-default">mongo</span>
+            <a href="/tags/c/">
+                <span class="chip center-align waves-effect waves-light chip-default">c#</span>
             </a>
             
             
             
-            <a href="/tags/%E5%85%B6%E4%BB%96/">
-                <span class="chip center-align waves-effect waves-light chip-default">其他</span>
+            <a href="/tags/ddd/">
+                <span class="chip center-align waves-effect waves-light chip-default">ddd</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                <span class="chip center-align waves-effect waves-light chip-default">设计模式</span>
+            </a>
+            
+            
+            
+            <a href="/tags/db/">
+                <span class="chip center-align waves-effect waves-light chip-default">db</span>
+            </a>
+            
+            
+            
+            <a href="/tags/mongo/">
+                <span class="chip center-align waves-effect waves-light chip-default">mongo</span>
             </a>
             
             
@@ -847,8 +847,8 @@
             
             
             
-            <a href="/tags/redis/">
-                <span class="chip center-align waves-effect waves-light chip-default">redis</span>
+            <a href="/tags/%E5%85%B6%E4%BB%96/">
+                <span class="chip center-align waves-effect waves-light chip-default">其他</span>
             </a>
             
             
@@ -865,20 +865,20 @@
             
             
             
-            <a href="/tags/linux/">
-                <span class="chip center-align waves-effect waves-light chip-default">linux</span>
-            </a>
-            
-            
-            
             <a href="/tags/docker/">
                 <span class="chip center-align waves-effect waves-light chip-default">docker</span>
             </a>
             
             
             
-            <a href="/tags/bug/">
-                <span class="chip center-align waves-effect waves-light chip-default">bug</span>
+            <a href="/tags/redis/">
+                <span class="chip center-align waves-effect waves-light chip-default">redis</span>
+            </a>
+            
+            
+            
+            <a href="/tags/linux/">
+                <span class="chip center-align waves-effect waves-light chip-default">linux</span>
             </a>
             
             
@@ -913,12 +913,6 @@
             
             
             
-            <a href="/tags/C/">
-                <span class="chip center-align waves-effect waves-light chip-default">C#</span>
-            </a>
-            
-            
-            
             <a href="/tags/winget/">
                 <span class="chip center-align waves-effect waves-light chip-default">winget</span>
             </a>
@@ -927,18 +921,6 @@
             
             <a href="/tags/powershell/">
                 <span class="chip center-align waves-effect waves-light chip-default">powershell</span>
-            </a>
-            
-            
-            
-            <a href="/tags/CLR/">
-                <span class="chip center-align waves-effect waves-light chip-default">CLR</span>
-            </a>
-            
-            
-            
-            <a href="/tags/clr/">
-                <span class="chip center-align waves-effect waves-light chip-default">clr</span>
             </a>
             
             
@@ -967,8 +949,8 @@
             
             
             
-            <a href="/tags/%E8%A7%82%E5%AF%9F%E8%80%85/">
-                <span class="chip center-align waves-effect waves-light chip-default">观察者</span>
+            <a href="/tags/abp/">
+                <span class="chip center-align waves-effect waves-light chip-default">abp</span>
             </a>
             
             
@@ -991,14 +973,14 @@
             
             
             
-            <a href="/tags/abp/">
-                <span class="chip center-align waves-effect waves-light chip-default">abp</span>
+            <a href="/tags/taghelp/">
+                <span class="chip center-align waves-effect waves-light chip-default">taghelp</span>
             </a>
             
             
             
-            <a href="/tags/taghelp/">
-                <span class="chip center-align waves-effect waves-light chip-default">taghelp</span>
+            <a href="/tags/%E8%A7%82%E5%AF%9F%E8%80%85/">
+                <span class="chip center-align waves-effect waves-light chip-default">观察者</span>
             </a>
             
             
@@ -1039,20 +1021,14 @@
             
             
             
-            <a href="/tags/resume/">
-                <span class="chip center-align waves-effect waves-light chip-default">resume</span>
+            <a href="/tags/web/">
+                <span class="chip center-align waves-effect waves-light chip-default">web</span>
             </a>
             
             
             
             <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">
                 <span class="chip center-align waves-effect waves-light chip-default">反向代理</span>
-            </a>
-            
-            
-            
-            <a href="/tags/vue3/">
-                <span class="chip center-align waves-effect waves-light chip-default">vue3</span>
             </a>
             
             
@@ -1069,8 +1045,14 @@
             
             
             
-            <a href="/tags/web/">
-                <span class="chip center-align waves-effect waves-light chip-default">web</span>
+            <a href="/tags/vuepress/">
+                <span class="chip center-align waves-effect waves-light chip-default">vuepress</span>
+            </a>
+            
+            
+            
+            <a href="/tags/vue3/">
+                <span class="chip center-align waves-effect waves-light chip-default">vue3</span>
             </a>
             
             
@@ -1087,8 +1069,20 @@
             
             
             
-            <a href="/tags/vuepress/">
-                <span class="chip center-align waves-effect waves-light chip-default">vuepress</span>
+            <a href="/tags/C/">
+                <span class="chip center-align waves-effect waves-light chip-default">C#</span>
+            </a>
+            
+            
+            
+            <a href="/tags/clr/">
+                <span class="chip center-align waves-effect waves-light chip-default">clr</span>
+            </a>
+            
+            
+            
+            <a href="/tags/CLR/">
+                <span class="chip center-align waves-effect waves-light chip-default">CLR</span>
             </a>
             
             
