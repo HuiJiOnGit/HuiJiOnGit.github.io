@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -460,6 +461,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="什么是System-CommandLine"><a href="#什么是System-CommandLine" class="headerlink" title="什么是System.CommandLine"></a>什么是<code>System.CommandLine</code></h2><p>这是.net 官方库, 提供命令行应用通常所需的功能，例如分析命令行输入和显示帮助文本。极大方便构造命令行应用</p>
@@ -474,157 +483,160 @@
 <li>它确保根据 POSIX 或 Windows 约定一致地分析命令行输入。</li>
 <li>它自动支持 Tab 自动补全和响应文件。</li>
 </ul>
-<h2 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h2><pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">.</span>CommandLine<span class="token punctuation">;</span>
+<h2 id="第一个例子"><a href="#第一个例子" class="headerlink" title="第一个例子"></a>第一个例子</h2><pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>CommandLine</span><span class="token punctuation">;</span>
 
-<span class="token keyword">namespace</span> scl<span class="token punctuation">;</span>
+<span class="token keyword">namespace</span> <span class="token namespace">scl</span><span class="token punctuation">;</span>
 
 <span class="token keyword">class</span> <span class="token class-name">Program</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">static</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> fileOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span>FileInfo<span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">(</span>
-            name<span class="token punctuation">:</span> <span class="token string">"--file"</span><span class="token punctuation">,</span>
-            description<span class="token punctuation">:</span> <span class="token string">"The file to read and display on the console."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">static</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> fileOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Option<span class="token punctuation">&lt;</span>FileInfo<span class="token punctuation">?</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>
+            <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"--file"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">description</span><span class="token punctuation">:</span> <span class="token string">"The file to read and display on the console."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">var</span> rootCommand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootCommand</span><span class="token punctuation">(</span><span class="token string">"Sample app for System.CommandLine"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> rootCommand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RootCommand</span><span class="token punctuation">(</span><span class="token string">"Sample app for System.CommandLine"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         rootCommand<span class="token punctuation">.</span><span class="token function">AddOption</span><span class="token punctuation">(</span>fileOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        rootCommand<span class="token punctuation">.</span><span class="token function">SetHandler</span><span class="token punctuation">(</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> 
-            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> 
+        rootCommand<span class="token punctuation">.</span><span class="token function">SetHandler</span><span class="token punctuation">(</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span> <span class="token operator">=></span> 
+            <span class="token punctuation">&#123;</span> 
                 <span class="token function">ReadFile</span><span class="token punctuation">(</span>file<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
             fileOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token keyword">return</span> <span class="token keyword">await</span> rootCommand<span class="token punctuation">.</span><span class="token function">InvokeAsync</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">ReadFile</span><span class="token punctuation">(</span>FileInfo file<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ReadFile</span><span class="token punctuation">(</span><span class="token class-name">FileInfo</span> file<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         File<span class="token punctuation">.</span><span class="token function">ReadLines</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span>FullName<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>line <span class="token operator">=</span><span class="token operator">></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+            <span class="token punctuation">.</span><span class="token function">ForEach</span><span class="token punctuation">(</span>line <span class="token operator">=></span> Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>编译之后可以使用<code>scl --file scl.runtimeconfig.json</code> 运行测试</p>
 <p>或者使用<code>dotnet run -- --file scl.runtimeconfig.json</code>运行</p>
 <p>又或者在vs中使用调试属性,添加参数来测试</p>
 <p>以上这个列子,也可以很方便使用<code>version</code>和<code>help</code>命令来查询版本和帮助文档</p>
 <p><code>scl --version</code>和<code>scl --help</code></p>
-<h2 id="实际例子"><a href="#实际例子" class="headerlink" title="实际例子"></a>实际例子</h2><pre class=" language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">// See https://aka.ms/new-console-template for more information</span>
-<span class="token comment" spellcheck="true">// Scaffold-DbContext "Server=192.168.0.249;Database=tus_url_dev;User ID=pgsql;Password=pgsql;" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models -Context TUSContext -Force -ContextDir Data</span>
-<span class="token keyword">using</span> System<span class="token punctuation">.</span>CommandLine<span class="token punctuation">;</span>
-<span class="token keyword">using</span> System<span class="token punctuation">.</span>CommandLine<span class="token punctuation">.</span>Binding<span class="token punctuation">;</span>
-<span class="token keyword">using</span> CalcGenCodeUrl<span class="token punctuation">.</span>Application<span class="token punctuation">;</span>
-<span class="token keyword">using</span> CalcGenCodeUrl<span class="token punctuation">.</span>Data<span class="token punctuation">;</span>
-<span class="token keyword">using</span> MediatR<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>EntityFrameworkCore<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>DependencyInjection<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Logging<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Serilog<span class="token punctuation">;</span>
+<h2 id="实际例子"><a href="#实际例子" class="headerlink" title="实际例子"></a>实际例子</h2><pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">// See https://aka.ms/new-console-template for more information</span>
+<span class="token comment">// Scaffold-DbContext "Server=192.168.0.249;Database=tus_url_dev;User ID=pgsql;Password=pgsql;" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir Models -Context TUSContext -Force -ContextDir Data</span>
+<span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>CommandLine</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>CommandLine<span class="token punctuation">.</span>Binding</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">CalcGenCodeUrl<span class="token punctuation">.</span>Application</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">CalcGenCodeUrl<span class="token punctuation">.</span>Data</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">MediatR</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>EntityFrameworkCore</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Configuration</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>DependencyInjection</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Logging</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Serilog</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> urlArgs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Argument</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token string">"url"</span><span class="token punctuation">,</span> description<span class="token punctuation">:</span> <span class="token string">"Query的URL"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> startTimeOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span>DateOnly<span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">(</span>
-    name<span class="token punctuation">:</span> <span class="token string">"--start"</span><span class="token punctuation">,</span>
-    isDefault<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-    parseArgument<span class="token punctuation">:</span> result <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>DateOnly<span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>Tokens<span class="token punctuation">.</span><span class="token function">Single</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">var</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> urlArgs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Argument<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"url"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">description</span><span class="token punctuation">:</span> <span class="token string">"Query的URL"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> startTimeOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Option<span class="token punctuation">&lt;</span>DateOnly<span class="token punctuation">?</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>
+    <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"--start"</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">isDefault</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">parseArgument</span><span class="token punctuation">:</span> result <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>DateOnly<span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>Tokens<span class="token punctuation">.</span><span class="token function">Single</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">var</span></span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">return</span> s<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
         result<span class="token punctuation">.</span>ErrorMessage <span class="token operator">=</span> <span class="token string">"Error Start Date"</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    description<span class="token punctuation">:</span> <span class="token string">"生码起始日期"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> endTimeOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span>DateOnly<span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">(</span>
-    name<span class="token punctuation">:</span> <span class="token string">"--end"</span><span class="token punctuation">,</span>
-    isDefault<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-    parseArgument<span class="token punctuation">:</span> result <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>DateOnly<span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>Tokens<span class="token punctuation">.</span><span class="token function">Single</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">var</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">description</span><span class="token punctuation">:</span> <span class="token string">"生码起始日期"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> endTimeOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Option<span class="token punctuation">&lt;</span>DateOnly<span class="token punctuation">?</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>
+    <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"--end"</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">isDefault</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">parseArgument</span><span class="token punctuation">:</span> result <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>DateOnly<span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>Tokens<span class="token punctuation">.</span><span class="token function">Single</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">var</span></span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">return</span> s<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
         result<span class="token punctuation">.</span>ErrorMessage <span class="token operator">=</span> <span class="token string">"Error End Date"</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    description<span class="token punctuation">:</span> <span class="token string">"生码结束日期"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> isDemoOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token keyword">bool</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">"--isdemo"</span><span class="token punctuation">,</span> <span class="token string">"是否是Demo环境"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token named-parameter punctuation">description</span><span class="token punctuation">:</span> <span class="token string">"生码结束日期"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> isDemoOption <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Option<span class="token punctuation">&lt;</span><span class="token keyword">bool</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"--isdemo"</span><span class="token punctuation">,</span> <span class="token string">"是否是Demo环境"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> rootCommand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RootCommand</span><span class="token punctuation">(</span><span class="token string">"计算唯一码url程序"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> rootCommand <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RootCommand</span><span class="token punctuation">(</span><span class="token string">"计算唯一码url程序"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 rootCommand<span class="token punctuation">.</span><span class="token function">AddArgument</span><span class="token punctuation">(</span>urlArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
 rootCommand<span class="token punctuation">.</span><span class="token function">AddOption</span><span class="token punctuation">(</span>startTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
 rootCommand<span class="token punctuation">.</span><span class="token function">AddOption</span><span class="token punctuation">(</span>endTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
 rootCommand<span class="token punctuation">.</span><span class="token function">AddOption</span><span class="token punctuation">(</span>isDemoOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-IServiceCollection services <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServiceCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-IConfiguration configuration <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConfigurationBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token class-name">IServiceCollection</span> services <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ServiceCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">IConfiguration</span> configuration <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ConfigurationBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">SetBasePath</span><span class="token punctuation">(</span>Directory<span class="token punctuation">.</span><span class="token function">GetCurrentDirectory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">AddJsonFile</span><span class="token punctuation">(</span><span class="token string">"appsettings.json"</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">Build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Log<span class="token punctuation">.</span>Logger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LoggerConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+Log<span class="token punctuation">.</span>Logger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">LoggerConfiguration</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span>MinimumLevel<span class="token punctuation">.</span><span class="token function">Information</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span>MinimumLevel<span class="token punctuation">.</span><span class="token function">Override</span><span class="token punctuation">(</span><span class="token string">"Microsoft.EntityFrameworkCore"</span><span class="token punctuation">,</span> Serilog<span class="token punctuation">.</span>Events<span class="token punctuation">.</span>LogEventLevel<span class="token punctuation">.</span>Warning<span class="token punctuation">)</span>
                 <span class="token punctuation">.</span>WriteTo<span class="token punctuation">.</span><span class="token function">Console</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token comment" spellcheck="true">//.WriteTo.File($"logs/&amp;#123;DateTimeOffset.Now:d_HH_mm&amp;#125;.log")</span>
+                <span class="token comment">//.WriteTo.File($"logs/&#123;DateTimeOffset.Now:d_HH_mm&#125;.log")</span>
                 <span class="token punctuation">.</span><span class="token function">CreateLogger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-services<span class="token punctuation">.</span><span class="token function">AddLogging</span><span class="token punctuation">(</span>loggerBuilder <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+services<span class="token punctuation">.</span><span class="token function">AddLogging</span><span class="token punctuation">(</span>loggerBuilder <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
     loggerBuilder<span class="token punctuation">.</span><span class="token function">AddSerilog</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     loggerBuilder<span class="token punctuation">.</span><span class="token function">AddConfiguration</span><span class="token punctuation">(</span>configuration<span class="token punctuation">.</span><span class="token function">GetSection</span><span class="token punctuation">(</span><span class="token string">"Logging"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-services<span class="token punctuation">.</span><span class="token generic-method function">AddDbContext<span class="token punctuation">&lt;</span>TUSContext<span class="token punctuation">></span></span><span class="token punctuation">(</span>o <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    o<span class="token punctuation">.</span><span class="token function">UseNpgsql</span><span class="token punctuation">(</span>configuration<span class="token punctuation">.</span><span class="token function">GetConnectionString</span><span class="token punctuation">(</span><span class="token string">"DefaultConnection"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> contextOption <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+services<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">AddDbContext</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TUSContext<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>o <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    o<span class="token punctuation">.</span><span class="token function">UseNpgsql</span><span class="token punctuation">(</span>configuration<span class="token punctuation">.</span><span class="token function">GetConnectionString</span><span class="token punctuation">(</span><span class="token string">"DefaultConnection"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> contextOption <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
         contextOption<span class="token punctuation">.</span><span class="token function">MaxBatchSize</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-services<span class="token punctuation">.</span><span class="token function">AddMediatR</span><span class="token punctuation">(</span>cfg <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    cfg<span class="token punctuation">.</span><span class="token function">RegisterServicesFromAssembly</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span>Program<span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-IServiceProvider servicesProvider <span class="token operator">=</span> services<span class="token punctuation">.</span><span class="token function">BuildServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+services<span class="token punctuation">.</span><span class="token function">AddMediatR</span><span class="token punctuation">(</span>cfg <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    cfg<span class="token punctuation">.</span><span class="token function">RegisterServicesFromAssembly</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token type-expression class-name">Program</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Assembly<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">IServiceProvider</span> servicesProvider <span class="token operator">=</span> services<span class="token punctuation">.</span><span class="token function">BuildServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-rootCommand<span class="token punctuation">.</span><span class="token function">SetHandler</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">string</span> url <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForArgument</span><span class="token punctuation">(</span>urlArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> startTime <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>startTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> endTime <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>endTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> isDemo <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>isDemoOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> updateQrUrlCommand <span class="token operator">=</span> servicesProvider<span class="token punctuation">.</span><span class="token generic-method function">GetService<span class="token punctuation">&lt;</span>ISender<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> cancellationToken <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">GetCancellationToken</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    context<span class="token punctuation">.</span>ExitCode <span class="token operator">=</span> <span class="token keyword">await</span> updateQrUrlCommand<span class="token punctuation">.</span><span class="token function">Send</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">UpdateQrUrlCommand</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+rootCommand<span class="token punctuation">.</span><span class="token function">SetHandler</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">string</span></span> url <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForArgument</span><span class="token punctuation">(</span>urlArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> startTime <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>startTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> endTime <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>endTimeOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> isDemo <span class="token operator">=</span> context<span class="token punctuation">.</span>ParseResult<span class="token punctuation">.</span><span class="token function">GetValueForOption</span><span class="token punctuation">(</span>isDemoOption<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> updateQrUrlCommand <span class="token operator">=</span> servicesProvider<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetService</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>ISender<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> cancellationToken <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">GetCancellationToken</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    context<span class="token punctuation">.</span>ExitCode <span class="token operator">=</span> <span class="token keyword">await</span> updateQrUrlCommand<span class="token punctuation">.</span><span class="token function">Send</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token constructor-invocation class-name">UpdateQrUrlCommand</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         Url <span class="token operator">=</span> url<span class="token punctuation">,</span>
         StartDate <span class="token operator">=</span> startTime<span class="token punctuation">,</span>
         EndDate <span class="token operator">=</span> endTime<span class="token punctuation">,</span>
         IsDemo <span class="token operator">=</span> isDemo<span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">return</span> <span class="token keyword">await</span> rootCommand<span class="token punctuation">.</span><span class="token function">InvokeAsync</span><span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ServiceProviderBinder</span> <span class="token punctuation">:</span> BinderBase<span class="token operator">&lt;</span>IServiceProvider<span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token function">ServiceProviderBinder</span><span class="token punctuation">(</span>IServiceProvider serviceProvider<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> <span class="token class-name">ServiceProviderBinder</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">BinderBase<span class="token punctuation">&lt;</span>IServiceProvider<span class="token punctuation">></span></span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token function">ServiceProviderBinder</span><span class="token punctuation">(</span><span class="token class-name">IServiceProvider</span> serviceProvider<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         ServiceProvider <span class="token operator">=</span> serviceProvider<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">public</span> IServiceProvider ServiceProvider <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">IServiceProvider</span> ServiceProvider <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">protected</span> <span class="token keyword">override</span> IServiceProvider <span class="token function">GetBoundValue</span><span class="token punctuation">(</span>BindingContext bindingContext<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name">IServiceProvider</span> <span class="token function">GetBoundValue</span><span class="token punctuation">(</span><span class="token class-name">BindingContext</span> bindingContext<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">return</span> ServiceProvider<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 </code></pre>
+
 <p>这个例子展示了模型转换,依赖注入,如何设置命令</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>更多使用方式,请参考文档</p>
 <p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/standard/commandline/">官方文档</a></p>
 
+                
             </div>
             <hr/>
 
@@ -853,6 +865,8 @@ rootCommand<span class="token punctuation">.</span><span class="token function">
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -872,9 +886,7 @@ rootCommand<span class="token punctuation">.</span><span class="token function">
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是整洁架构在干净的架构中，领域和应用程序层是设计的中心。这被称为系统的核心。
-域层包含企业逻辑和类型，应用程序层包含业务逻辑和类型。不同之处在于，企业逻辑可以在许多系统之间共享，而业务逻辑通常只在此系统内使用。
-核心不应依赖于数据访问和
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -911,9 +923,7 @@ rootCommand<span class="token punctuation">.</span><span class="token function">
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是WPF?WPF，全称 Windows Presentation Foundation，中文叫 Windows 呈现基础
-
-欢迎使用 Windows Presentation Foundation (WPF) 桌面指南，这是一个与分辨率
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -969,16 +979,9 @@ rootCommand<span class="token punctuation">.</span><span class="token function">
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1136,6 +1139,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1213,10 +1219,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1264,6 +1355,7 @@ $(function () {
 
     
 
+	
     
 
     

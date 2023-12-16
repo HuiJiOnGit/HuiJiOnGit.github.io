@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -477,6 +478,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="在-vue2-中使用-render-函数和-Jsx"><a href="#在-vue2-中使用-render-函数和-Jsx" class="headerlink" title="在 vue2 中使用 render 函数和 Jsx"></a>在 vue2 中使用 render 函数和 Jsx</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><blockquote>
@@ -494,34 +503,35 @@
 <h3 id="了解render函数"><a href="#了解render函数" class="headerlink" title="了解render函数"></a>了解<code>render</code>函数</h3><p>想要完全动态生成组件, 你就得了解<code>render</code>用法, 具体可以看 <a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/guide/render-function.html#%E5%9F%BA%E7%A1%80">vue2 文档</a> 和 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/extras/render-function.html#creating-vnodes">vue3 文档</a> vue3 直接看 vue3 的,vue2 可以掺和看下 vue3, 因为这里 vue2 的文档太简单了, 不好理解</p>
 <h4 id="render的参数"><a href="#render的参数" class="headerlink" title="render的参数"></a><code>render</code>的参数</h4><p>先来看看<a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/guide/render-function.html#createElement-%E5%8F%82%E6%95%B0">参数</a></p>
 <p>从参数可以知道,这个函数使用是非常灵活的, 搬运下 vue3 你就知道了</p>
-<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 除了类型必填以外，其他的参数都是可选的</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;div>&lt;/div></span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> id<span class="token punctuation">:</span> <span class="token string">"foo"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;div id="foo">&lt;/div></span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 除了类型必填以外，其他的参数都是可选的</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;div>&lt;/div></span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token string">"foo"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;div id="foo">&lt;/div></span>
 
-<span class="token comment" spellcheck="true">// attribute 和 property 都能在 prop 中书写</span>
-<span class="token comment" spellcheck="true">// Vue 会自动将它们分配到正确的位置</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">class</span><span class="token punctuation">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span> innerHTML<span class="token punctuation">:</span> <span class="token string">"hello"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//&lt;div class="bar">hello&lt;/div></span>
+<span class="token comment">// attribute 和 property 都能在 prop 中书写</span>
+<span class="token comment">// Vue 会自动将它们分配到正确的位置</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token keyword">class</span><span class="token operator">:</span> <span class="token string">"bar"</span><span class="token punctuation">,</span> <span class="token literal-property property">innerHTML</span><span class="token operator">:</span> <span class="token string">"hello"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//&lt;div class="bar">hello&lt;/div></span>
 
-<span class="token comment" spellcheck="true">// props modifiers such as .prop and .attr can be added</span>
-<span class="token comment" spellcheck="true">// with '.' and `^' prefixes respectively</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">".name"</span><span class="token punctuation">:</span> <span class="token string">"some-name"</span><span class="token punctuation">,</span> <span class="token string">"^width"</span><span class="token punctuation">:</span> <span class="token string">"100"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// props modifiers such as .prop and .attr can be added</span>
+<span class="token comment">// with '.' and `^' prefixes respectively</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token string-property property">".name"</span><span class="token operator">:</span> <span class="token string">"some-name"</span><span class="token punctuation">,</span> <span class="token string-property property">"^width"</span><span class="token operator">:</span> <span class="token string">"100"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// 类与样式可以像在模板中一样</span>
-<span class="token comment" spellcheck="true">// 用数组或对象的形式书写</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">class</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>foo<span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> bar <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> style<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> color<span class="token punctuation">:</span> <span class="token string">"red"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 类与样式可以像在模板中一样</span>
+<span class="token comment">// 用数组或对象的形式书写</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token keyword">class</span><span class="token operator">:</span> <span class="token punctuation">[</span>foo<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> bar <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token literal-property property">style</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">"red"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// 事件监听器应以 onXxx 的形式书写</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> onClick<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 事件监听器应以 onXxx 的形式书写</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token function-variable function">onClick</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// children 可以是一个字符串</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> id<span class="token punctuation">:</span> <span class="token string">"foo"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// children 可以是一个字符串</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token string">"foo"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// 没有 props 时可以省略不写</span>
+<span class="token comment">// 没有 props 时可以省略不写</span>
 <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// children 数组可以同时包含 vnodes 与字符串</span>
+<span class="token comment">// children 数组可以同时包含 vnodes 与字符串</span>
 <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"span"</span><span class="token punctuation">,</span> <span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>接下来你还可以看看第二个参数的数据结构, 平时我们在使用的各种动态绑定,事件啊,就其实可以写到这里</p>
 <p>第三个参数, 这个就是<code>children</code> 元素了, 很好理解, 就是这个组件下面要渲染的 <code>VNode</code>, 就是告诉 vue, 这个标签包裹的是要渲染什么内容, 是一个组件,还是一个 p 标签,还是一段文字</p>
 <p>以上就是我简单的理解, 更多的请看文档</p>
@@ -541,86 +551,90 @@
 <h3 id="各种模板语法在JSX和render的写法"><a href="#各种模板语法在JSX和render的写法" class="headerlink" title="各种模板语法在JSX和render的写法"></a>各种模板语法在<code>JSX</code>和<code>render</code>的写法</h3><h4 id="事件修饰符"><a href="#事件修饰符" class="headerlink" title="事件修饰符"></a>事件修饰符</h4><p>(vue3)对于 .passive、.capture 和 .once 事件修饰符，可以使用驼峰写法将他们拼接在事件名后面：</p>
 <p>这一点 2 和 3 有区别</p>
 <h4 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a><code>v-model</code></h4><p>在 render 里面并没有直接支持这个东西的, 这个实现其实是通过 props 传入一个 value, 并同时监听 input 事件,去实现的, 比如我现在要使用一个 el-input,那我就要 v-model 去绑定一个值, 那放到模板很容易书写,在 jsx 中要怎么写呢?</p>
-<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//template</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//template</span>
 <span class="token operator">&lt;</span>el<span class="token operator">-</span>input v<span class="token operator">-</span>model<span class="token operator">=</span><span class="token string">"value"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>el<span class="token operator">-</span>input<span class="token operator">></span>
-<span class="token comment" spellcheck="true">//jsx</span>
-<span class="token operator">&lt;</span>el<span class="token operator">-</span>input value<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> onInput<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> val<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>el<span class="token operator">-</span>input<span class="token operator">></span>
-<span class="token comment" spellcheck="true">//render</span>
-<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"el-input"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token string">"attrs"</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token string">"value"</span><span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token string">"on"</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token string">"input"</span><span class="token punctuation">:</span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> val
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token comment">//jsx</span>
+<span class="token operator">&lt;</span>el<span class="token operator">-</span>input value<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">&#125;</span> onInput<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">(</span><span class="token parameter">val</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> val<span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>el<span class="token operator">-</span>input<span class="token operator">></span>
+<span class="token comment">//render</span>
+<span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"el-input"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    <span class="token string-property property">"attrs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string-property property">"value"</span><span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"on"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string-property property">"input"</span><span class="token operator">:</span> <span class="token parameter">val</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> val
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <h4 id="插槽"><a href="#插槽" class="headerlink" title="插槽"></a>插槽</h4><p>不得不说,感觉 vue2 的文档说这个太简单了, 太难理解的可以去看 vue3 的文档</p>
 <p>首先, 插槽的数据从何而来? 很简单,就是父组件在子组件的闭合中写入了其他的内容,这些内容都是插槽的内容</p>
 <p>在 vue2 的例子中,你可以看到</p>
-<pre class=" language-js"><code class="language-js">render<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>createElement<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">// `&lt;div>&lt;slot>&lt;/slot>&lt;/div>`</span>
-  <span class="token keyword">return</span> <span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span><span class="token keyword">default</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//使用</span>
-<span class="token comment" spellcheck="true">// &lt;child>&lt;p>插槽内容&lt;/p>&lt;/child></span></code></pre>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">createElement</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// `&lt;div>&lt;slot>&lt;/slot>&lt;/div>`</span>
+  <span class="token keyword">return</span> <span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>default<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//使用</span>
+<span class="token comment">// &lt;child>&lt;p>插槽内容&lt;/p>&lt;/child></span></code></pre>
+
 <p>从这个例子中, <code>this.$slots.default</code>里面的内容就是<code>&lt;p&gt;插槽内容&lt;/p&gt;</code>, 然后这个组件要怎么渲染就很明显了, render 的 children 是插槽中 default 的内容, 子组件就是直接渲染默认 slot 的内容.</p>
 <ul>
 <li>具名插槽要定义和使用</li>
 </ul>
-<pre class=" language-html"><code class="language-html"><span class="token comment" spellcheck="true">&lt;!--father--></span>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token comment">&lt;!--father--></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>this is father<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>child</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>default slot content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>father render header<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>father render footer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name"><span class="token namespace">v-slot:</span>append</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>slotProps<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-            <span class="token entity" title="&#123;">&amp;#123;</span><span class="token entity" title="&#123;">&amp;#123;</span> slotProps.user.firstName <span class="token entity" title="&#125;">&amp;#125;</span><span class="token entity" title="&#125;">&amp;#125;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>father render header<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>father render footer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name"><span class="token namespace">v-slot:</span>append</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>slotProps<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            &#123;&#123; slotProps.user.firstName &#125;&#125;
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>child</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-<span class="token comment" spellcheck="true">&lt;!--child--></span>
+<span class="token comment">&lt;!--child--></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span>child render default<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>child render header<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>child render footer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>append<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">v-bind:</span>user</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>user<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-            <span class="token entity" title="&#123;">&amp;#123;</span><span class="token entity" title="&#123;">&amp;#123;</span> user.lastName <span class="token entity" title="&#125;">&amp;#125;</span><span class="token entity" title="&#125;">&amp;#125;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>child render header<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>child render footer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>append<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">v-bind:</span>user</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>user<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            &#123;&#123; user.lastName &#125;&#125;
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span></code></pre>
+
 <p>这个例子展示了默认插槽,具名插槽和插槽作用域,下面展示一下jsx中和render是怎样子的</p>
-<pre class=" language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">Father</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">const</span> scopedSlots <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    append<span class="token punctuation">:</span> <span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> <span class="token operator">&lt;</span>p<span class="token operator">></span>father render scopedSlots append content <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>user<span class="token punctuation">.</span>firstName<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Father</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> scopedSlots <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token function-variable function">append</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">user</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span> <span class="token operator">&lt;</span>p<span class="token operator">></span>father render scopedSlots append content <span class="token punctuation">&#123;</span>user<span class="token punctuation">.</span>firstName<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
     <span class="token operator">&lt;</span>div<span class="token operator">></span>
       <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token keyword">this</span> is father<span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
-      <span class="token operator">&lt;</span>child scopedSlots<span class="token operator">=</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>scopedSlots<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>child scopedSlots<span class="token operator">=</span><span class="token punctuation">&#123;</span>scopedSlots<span class="token punctuation">&#125;</span><span class="token operator">></span>
         <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token keyword">default</span> slot content<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
         <span class="token operator">&lt;</span>p slot<span class="token operator">=</span><span class="token string">"header"</span><span class="token operator">></span>father render header<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
         <span class="token operator">&lt;</span>p slot<span class="token operator">=</span><span class="token string">"footer"</span><span class="token operator">></span>father render footer<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
       <span class="token operator">&lt;</span><span class="token operator">/</span>child<span class="token operator">></span>
     <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
   <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
     <span class="token operator">&lt;</span>div<span class="token operator">></span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>header <span class="token operator">||</span> <span class="token string">"child render header"</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>header <span class="token operator">||</span> <span class="token string">"child render header"</span><span class="token punctuation">&#125;</span>
       <span class="token operator">&lt;</span>h2<span class="token operator">></span><span class="token keyword">this</span> is child<span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span><span class="token keyword">default</span> <span class="token operator">||</span> <span class="token string">"child render default"</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>footer <span class="token operator">||</span> <span class="token string">"child render footer"</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span>append <span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">.</span>lastName<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>default <span class="token operator">||</span> <span class="token string">"child render default"</span><span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>footer <span class="token operator">||</span> <span class="token string">"child render footer"</span><span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span>append <span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">.</span>lastName<span class="token punctuation">&#125;</span>
     <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
   <span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>这里有几个关键点:</p>
 <ol>
 <li>父组件传递默认插槽: 直接在子组件标签中写内容就行</li>
@@ -632,43 +646,44 @@
 <li>子组件定义插槽作用域: 使用$scopedSlots获取而不是$slots, 然后把内容写进去即可</li>
 </ol>
 <p>那么再看看render中生成的内容, 按号入座, 能更深刻理解render</p>
-<pre class=" language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">Father</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  <span class="token keyword">const</span> scopedSlots <span class="token operator">=</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    append<span class="token punctuation">:</span> user <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Father</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> scopedSlots <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token function-variable function">append</span><span class="token operator">:</span> <span class="token parameter">user</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
       <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> 
       <span class="token punctuation">[</span><span class="token string">"father render scopedSlots append content "</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span>firstName<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> 
   <span class="token punctuation">[</span>
     <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"h1"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"this is father"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-    <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"child"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token string">"scopedSlots"</span><span class="token punctuation">:</span> scopedSlots
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> 
+    <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"child"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+        <span class="token string-property property">"scopedSlots"</span><span class="token operator">:</span> scopedSlots
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> 
     <span class="token punctuation">[</span>
         <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"default slot content"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-        <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token string">"slot"</span><span class="token punctuation">:</span> <span class="token string">"header"</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"father render header"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-        <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token string">"slot"</span><span class="token punctuation">:</span> <span class="token string">"footer"</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"father render footer"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+            <span class="token string-property property">"slot"</span><span class="token operator">:</span> <span class="token string">"header"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"father render header"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+        <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"p"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+            <span class="token string-property property">"slot"</span><span class="token operator">:</span> <span class="token string">"footer"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"father render footer"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
     <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"div"</span><span class="token punctuation">,</span> 
   <span class="token punctuation">[</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>header <span class="token operator">||</span> <span class="token string">"child render header"</span><span class="token punctuation">,</span> 
     <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">"h2"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"this is child"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-    <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span><span class="token keyword">default</span> <span class="token operator">||</span> <span class="token string">"child render default"</span><span class="token punctuation">,</span> 
+    <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>default <span class="token operator">||</span> <span class="token string">"child render default"</span><span class="token punctuation">,</span> 
     <span class="token keyword">this</span><span class="token punctuation">.</span>$slots<span class="token punctuation">.</span>footer <span class="token operator">||</span> <span class="token string">"child render footer"</span><span class="token punctuation">,</span> 
     <span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span>append <span class="token operator">?</span> 
-        <span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token punctuation">:</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>$scopedSlots<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token operator">:</span> 
         <span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">.</span>lastName
   <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 </code></pre>
+
 <p>仔细观察可以发现以下几点</p>
 <ol>
 <li>无论是父组件对于默认插槽还是具名插槽都是放到children参数中, 然后在第二个参数的数据对象中指明了slot是xxx,告诉vue这是具名插槽中的内容</li>
@@ -679,25 +694,28 @@
 </ul>
 <p>如果我想做一个在模板中只有一个组件,剩下的组件全是动态渲染的话, 那你必须要注意作用域的问题.</p>
 <p>我现在的目标是生成如下内容</p>
-<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>root</span><span class="token punctuation">></span></span>
-    <span class="token comment" spellcheck="true">&lt;!--这个组件可以接受数据,动态渲染出下面的组件--></span>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>root</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!--这个组件可以接受数据,动态渲染出下面的组件--></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>render</span><span class="token punctuation">></span></span>
-        <span class="token comment" spellcheck="true">&lt;!--这里都是我动态生成的组件--></span>
+        <span class="token comment">&lt;!--这里都是我动态生成的组件--></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token punctuation">/></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>b</span> <span class="token punctuation">/></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>c</span> <span class="token punctuation">/></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>render</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>root</span><span class="token punctuation">></span></span>
 </code></pre>
+
 <p>然后我在data中定义一些变量, 想给a,b,c组件使用,这是不行的. 因为作用域的限制, 组件只能访问自己的data和prop,不能直接访问父组件的data的, 你或许会疑惑为什么平时我定义个模板, 随便访问data中的数据, 那是因为整个模板实际都是root渲染的, 换成render函数来说, 就是你看到的render组件只是在root中放到children参数中,作用域还是在root的, 所以能访问所有的data</p>
-<pre class=" language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">render</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'render'</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">render</span><span class="token punctuation">(</span><span class="token parameter">h</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'render'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span> <span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://v2.cn.vuejs.org/v2/guide/render-function.html">vue2文档</a></p>
 <p><a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/extras/render-function.html#creating-vnodes">vue3文档</a></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7016487837096738853#heading-0">在 Vue2 中使用 JSX 写组件，props、data、slot 到底应该怎么写？</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ruienger/article/details/114526311">VUE render 函数中使用插槽、具名插槽与作用域插槽</a></p>
 
+                
             </div>
             <hr/>
 
@@ -934,6 +952,8 @@
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -953,11 +973,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录下使用vuepress的过程安装我是使用了vuepress2的v2.0.0-beta.60版本
-开头的内容跟着官方文档做就行
-下面只记录要点
-配置config.ts
-import &amp;#123; defineUserConfig 
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1010,10 +1026,7 @@ import &amp;#123; defineUserConfig
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在ef core中使用自定义函数
-在有些时候,我们因各种原因不得不使用数据库函数的时候, 真希望ef直接全部都支持, 但实际这是太过理想了, 但是ef本身也留下了自定义函数的路子, 下面我来记录下我的尝试过程
-
-1. 首先肯定是搜索啊于是乎
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1069,16 +1082,9 @@ import &amp;#123; defineUserConfig
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1236,6 +1242,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1313,10 +1322,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1364,6 +1458,7 @@ $(function () {
 
     
 
+	
     
 
     

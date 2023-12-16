@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,6 +470,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="大概说下各个版本更新了什么"><a href="#大概说下各个版本更新了什么" class="headerlink" title="大概说下各个版本更新了什么"></a>大概说下各个版本更新了什么</h2><ul>
@@ -502,77 +511,78 @@
 </li>
 <li><p>什么是EF中的预编译查询（Compiled Query）？</p>
 <p> 预编译查询是一种优化查询性能的技术，可以将查询编译成LINQ表达式并缓存起来，以便多次重复使用。这样可以减少查询执行的开销，提高性能。<br> `public static Func&lt;MyDbContext, int, User&gt; GetUserById =<br> EF.CompileQuery((MyDbContext context, int id) =&gt;</p>
-<pre><code> context.Users.FirstOrDefault(u =&gt; u.Id == id));`</code></pre>
+<pre><code> context.Users.FirstOrDefault(u =&gt; u.Id == id));`
+</code></pre>
 </li>
 <li><p>在EF中如何配置继承关系（Table Per Hierarchy）？<br>可以使用<code>Table Per Hierarchy（TPH）</code>策略来配置继承关系，将所有派生类映射到一个表中，并使用一个<code>Discriminator</code>列来区分不同的子类。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Animal</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicint Id <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    publicstring Name <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Animal</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicint</span> Id <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token return-type class-name">publicstring</span> Name <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Dog</span> <span class="token punctuation">:</span> Animal
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicstring Breed <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Dog</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">Animal</span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicstring</span> Breed <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Cat</span> <span class="token punctuation">:</span> Animal
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicint Lives <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Cat</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">Animal</span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicint</span> Lives <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token comment" spellcheck="true">// 配置继承关系</span>
-<span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">OnModelCreating</span><span class="token punctuation">(</span>ModelBuilder modelBuilder<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    modelBuilder<span class="token punctuation">.</span><span class="token generic-method function">Entity<span class="token punctuation">&lt;</span>Animal<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token generic-method function">HasDiscriminator<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"AnimalType"</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token generic-method function">HasValue<span class="token punctuation">&lt;</span>Dog<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"Dog"</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token generic-method function">HasValue<span class="token punctuation">&lt;</span>Cat<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token string">"Cat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token comment">// 配置继承关系</span>
+<span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnModelCreating</span><span class="token punctuation">(</span><span class="token class-name">ModelBuilder</span> modelBuilder<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    modelBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Entity</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Animal<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">HasDiscriminator</span><span class="token generic class-name"><span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token string">"AnimalType"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">HasValue</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Dog<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token string">"Dog"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">HasValue</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Cat<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token string">"Cat"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 </li>
 <li><p>如何在EF中配置多对多（Many-to-Many）关系？</p>
 <p>在EF中配置多对多关系需要创建一个中间实体，将多对多关系转化为两个一对多关系。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Student</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicint Id <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    publicstring Name <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Student</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicint</span> Id <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token return-type class-name">publicstring</span> Name <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">public</span> ICollection<span class="token operator">&lt;</span>CourseStudent<span class="token operator">></span> Courses <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">ICollection<span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span> Courses <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Course</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicint Id <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    publicstring Name <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicint</span> Id <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token return-type class-name">publicstring</span> Name <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">public</span> ICollection<span class="token operator">&lt;</span>CourseStudent<span class="token operator">></span> Students <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">ICollection<span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span> Students <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CourseStudent</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    publicint StudentId <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> Student Student <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token return-type class-name">publicint</span> StudentId <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">Student</span> Student <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
 
-    publicint CourseId <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> Course Course <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token return-type class-name">publicint</span> CourseId <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">Course</span> Course <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token comment" spellcheck="true">// 配置多对多关系</span>
-<span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">void</span> <span class="token function">OnModelCreating</span><span class="token punctuation">(</span>ModelBuilder modelBuilder<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    modelBuilder<span class="token punctuation">.</span><span class="token generic-method function">Entity<span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">HasKey</span><span class="token punctuation">(</span>cs <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> cs<span class="token punctuation">.</span>StudentId<span class="token punctuation">,</span> cs<span class="token punctuation">.</span>CourseId <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 配置多对多关系</span>
+<span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnModelCreating</span><span class="token punctuation">(</span><span class="token class-name">ModelBuilder</span> modelBuilder<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    modelBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Entity</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">HasKey</span><span class="token punctuation">(</span>cs <span class="token operator">=></span> <span class="token keyword">new</span> <span class="token punctuation">&#123;</span> cs<span class="token punctuation">.</span>StudentId<span class="token punctuation">,</span> cs<span class="token punctuation">.</span>CourseId <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    modelBuilder<span class="token punctuation">.</span><span class="token generic-method function">Entity<span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">HasOne</span><span class="token punctuation">(</span>cs <span class="token operator">=</span><span class="token operator">></span> cs<span class="token punctuation">.</span>Student<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">WithMany</span><span class="token punctuation">(</span>s <span class="token operator">=</span><span class="token operator">></span> s<span class="token punctuation">.</span>Courses<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">HasForeignKey</span><span class="token punctuation">(</span>cs <span class="token operator">=</span><span class="token operator">></span> cs<span class="token punctuation">.</span>StudentId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    modelBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Entity</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">HasOne</span><span class="token punctuation">(</span>cs <span class="token operator">=></span> cs<span class="token punctuation">.</span>Student<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">WithMany</span><span class="token punctuation">(</span>s <span class="token operator">=></span> s<span class="token punctuation">.</span>Courses<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">HasForeignKey</span><span class="token punctuation">(</span>cs <span class="token operator">=></span> cs<span class="token punctuation">.</span>StudentId<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    modelBuilder<span class="token punctuation">.</span><span class="token generic-method function">Entity<span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">HasOne</span><span class="token punctuation">(</span>cs <span class="token operator">=</span><span class="token operator">></span> cs<span class="token punctuation">.</span>Course<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">WithMany</span><span class="token punctuation">(</span>c <span class="token operator">=</span><span class="token operator">></span> c<span class="token punctuation">.</span>Students<span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">HasForeignKey</span><span class="token punctuation">(</span>cs <span class="token operator">=</span><span class="token operator">></span> cs<span class="token punctuation">.</span>CourseId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+    modelBuilder<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Entity</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>CourseStudent<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">HasOne</span><span class="token punctuation">(</span>cs <span class="token operator">=></span> cs<span class="token punctuation">.</span>Course<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">WithMany</span><span class="token punctuation">(</span>c <span class="token operator">=></span> c<span class="token punctuation">.</span>Students<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">HasForeignKey</span><span class="token punctuation">(</span>cs <span class="token operator">=></span> cs<span class="token punctuation">.</span>CourseId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 </li>
 <li><p>什么是EF中的N+1查询问题？如何解决N+1查询问题？</p>
 <p>N+1查询问题是指在查询包含导航属性的实体时，EF会执行额外的N条SQL查询来加载导航属性的数据，导致性能问题。为了解决N+1查询问题，可以使用Eager Loading（贪婪加载）或显式加载导航属性的方法来减少查询次数。</p>
@@ -582,6 +592,7 @@
 </li>
 </ol>
 
+                
             </div>
             <hr/>
 
@@ -810,6 +821,8 @@
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -829,12 +842,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            索引索引的几种类型或分类
-从物理结构上可以分为聚集索引和非聚集索引两类：
-
-聚簇索引指索引的键值的逻辑顺序与表中相应行的物理顺序一致，即每张表只能有一个聚簇索引，也就是我们常说的主键索引；
-非聚簇索引的逻辑顺序则与数据行的物理顺序不一致。
-
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -883,7 +891,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            请简述.NET Core中的中间件（Middleware）的作用及其使用方法中间件（Middleware）是.NET Core中的一种特殊组件，它可以处理HTTP请求和响应，并把请求传递到下一个中间件或终止请求。中间件在ASP.NET应用程
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -939,16 +947,9 @@
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1106,6 +1107,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1183,10 +1187,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1234,6 +1323,7 @@ $(function () {
 
     
 
+	
     
 
     

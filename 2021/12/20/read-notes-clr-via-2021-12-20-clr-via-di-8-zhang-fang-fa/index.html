@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,6 +474,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="第8章-方法"><a href="#第8章-方法" class="headerlink" title="第8章 方法"></a>第8章 方法</h2><h3 id="1-实例构造器和类-引用类型"><a href="#1-实例构造器和类-引用类型" class="headerlink" title="1. 实例构造器和类(引用类型)"></a>1. 实例构造器和类(引用类型)</h3><ul>
@@ -499,18 +508,19 @@
 <p>不要在构造器中调用虚方法, 原因是假如实例化的类型重写虚方法,那么就会执行派生类对虚方法的实现,但是这个时候,尚未完成对继承车层次结构中的所有字段的初始化(被实例化的类型的构造器还没有运行呢),所以,调用虚方法会导致无法预测的行为,归根到底,这是由于调用虚方法时,直到运行时之前都不会选择执行该方法的实际类型</p>
 </blockquote>
 <p>有以下一个类型</p>
-<pre class=" language-c#"><code class="language-c#">public sealed class SomeType
+<pre class="language-c#" data-language="c#"><code class="language-c#">public sealed class SomeType
 &#123;
-    private int m_x = 5;
+    private int m_x &#x3D; 5;
     public SomeType()
     &#123;
-        //1. m_x = 5;
-        //2. base.ctor()
-        //3.自定义的代码
-        m_x = 10;
+        &#x2F;&#x2F;1. m_x &#x3D; 5;
+        &#x2F;&#x2F;2. base.ctor()
+        &#x2F;&#x2F;3.自定义的代码
+        m_x &#x3D; 10;
     &#125;
 &#125;
 </code></pre>
+
 <p>这个<code>SomeType</code>的<code>m_x</code>字段被初始化为了5,这是怎么做到的?</p>
 <blockquote>
 <p>根据IL可知,构造器先把值5存到呢字段<code>m_x</code>,再调用基类的构造器.换句话说,编译器提供了一个简化的语法,允许以内联方法初始化实例字段.但是在幕后,它会将这种语法转换成构造器方法中的代码来执行初始化.</p>
@@ -524,14 +534,15 @@
 </blockquote>
 <p>现在有个一个引用类型, 包含了一个值类型的字段和默认的无参构造器, 当调用构造器的时候,考虑到性能,CLR不会为包含在引用类型中的每个值类型字段都主动调用构造器.所以值类型的字段会被初始化为0或null</p>
 <p>CLR也允许为值类型定义构造器,但是必须显式调用才会执行,也就是主动<code>new</code>.但是编译器是不允许你主动<code>new Point()</code>这样去主动调用一个值类型的无参构造器,实际上如果你写了这样的无参构造器</p>
-<pre class=" language-c#"><code class="language-c#">public struct Point
+<pre class="language-c#" data-language="c#"><code class="language-c#">public struct Point
 &#123;
     public int x,y;
     public Point()
     &#123;
-        x = y = 5;
+        x &#x3D; y &#x3D; 5;
     &#125;
 &#125;</code></pre>
+
 <p>在编译器中是会直接报错的,会提示</p>
 <blockquote>
 <p>error CS0568: 结构不能包含显示的无参数构造器</p>
@@ -545,11 +556,12 @@
 </ul>
 <h3 id="3-类型构造器"><a href="#3-类型构造器" class="headerlink" title="3. 类型构造器"></a>3. 类型构造器</h3><p>除了实例构造器, clr还支持类型构造器,也就是俗称的静态构造器</p>
 <p>对应的实例构造器是设置类型的实例的初始状态, 对应的,类型构造器是设置类型的初始状态. 类型默认没有定义类型构造器,如果定义也只能定义一个.此外, 类型构造器永远没有参数</p>
-<pre class=" language-c#"><code class="language-c#">public sealed class SomeType
+<pre class="language-c#" data-language="c#"><code class="language-c#">public sealed class SomeType
 &#123;
     static SomeType()&#123;&#125;
 &#125;
 </code></pre>
+
 <p>类型构造器总是私有的,编译器会自动标记为<code>private</code>,之所以必须私有,是为了防止任何由开发人员写的代码调用它,对它的调用总是由CLR负责</p>
 <blockquote>
 <p>类型构造器的调用比较麻烦, JIT编译器在编译一个方法时,会查看代码中都引用了哪些类型. 任何一个类型定义了类型构造器, JIT编译器都会检查针对当前<code>AppDomain</code>,是否已经执行了这个类型构造器.如果构造器从未执行,JIT编译器会在它生成本机(native)代码中添加对类型构造器的调用.如果类型构造器已经执行,JIT编译器就不添加对它的调用,因为它知道类型已经初始化好了.</p>
@@ -564,24 +576,26 @@
 </li>
 </ul>
 <h3 id="4-操作符重载方法"><a href="#4-操作符重载方法" class="headerlink" title="4. 操作符重载方法"></a>4. 操作符重载方法</h3><p>在c#中的操作符重载对于CLR来说都不是不可知的,本质都是调用CLR方法.CLR 规范要求操作符重载方法必须是<code>public</code>和<code>static</code>方法.</p>
-<pre class=" language-c#"><code class="language-c#">public sealed class Complex&#123;
+<pre class="language-c#" data-language="c#"><code class="language-c#">public sealed class Complex&#123;
     public static Complex operator+(Complex c1, Complex c2)&#123;...&#125;
 &#125;</code></pre>
+
 <h3 id="5-转换操作符方法"><a href="#5-转换操作符方法" class="headerlink" title="5. 转换操作符方法"></a>5. 转换操作符方法</h3><p>有时候需要将对象从一种类型转换为另一种类型.当源类型和目标类型都是编译器识别的基元类型时,编译器自己就知道如何生成转换对象所需的代码.</p>
 <p>但是如果不是基元类型,编译器会生成代码,要求CLR执行转换(强制转型),假如你需要这样的转换,可以这样定义转换构造器和方法</p>
-<pre class=" language-c#"><code class="language-c#">public sealed class Rational &#123;
+<pre class="language-c#" data-language="c#"><code class="language-c#">public sealed class Rational &#123;
     public Rational(int num)&#123;&#125;
     public Rational(Single num)&#123;&#125;
     public int ToInt()&#123;&#125;
     public Single ToSingle()&#123;&#125;
 &#125;</code></pre>
+
 <p>事实上,c#还提供了转换操作符重载, 可以使用特殊的语法来定义转换操作符方法.CLR规范要求转换操作符重载方法必须时<code>public</code> 和<code>static</code>.此外,c#要求参数类型和返回类型二者必有其一与定义转换方法的类型相同.之所以要进行这个限制,是为了使c#编译器能在一个合理的时间内找到要绑定的操作符方法</p>
-<pre class=" language-c#"><code class="language-c#">public sealed class Rational &#123;
+<pre class="language-c#" data-language="c#"><code class="language-c#">public sealed class Rational &#123;
     public Rational(int num)&#123;&#125;
     public Rational(Single num)&#123;&#125;
     public int ToInt()&#123;&#125;
     public Single ToSingle()&#123;&#125;
-    // 由一个int隐式构造并返回一个Rational
+    &#x2F;&#x2F; 由一个int隐式构造并返回一个Rational
     public static implicit operator Rational(int num)&#123;
         return new Rational(num);
     &#125;
@@ -590,16 +604,18 @@
         return new Rational(num);
     &#125;
 
-    //由一个Rational显式返回一个int
+    &#x2F;&#x2F;由一个Rational显式返回一个int
     public static explicit operator int(Rational r)&#123;
         return r.ToInt();
     &#125;
 &#125;</code></pre>
+
 <p><code>implicit</code>关键字告诉编译器为了生成代码来调用方法,不需要再源代码中进行显式转型.相反,<code>explicit</code>告诉了编译器只有再发现了显式转型时,才调用方法</p>
 <p>在<code>implicit</code>和<code>explicit</code>关键字之后,要指定<code>operator</code>关键字告诉编译该方法是一个转换操作符.在<code>operator</code>之后,指定对象要转换成什么类型.在圆括号中,则指定要从什么类型转换.</p>
-<pre class=" language-c#"><code class="language-c#">//使用
-Rational r1  = 5;//int 隐式转型为Rational
-int x = (int)r1;//Rational 显式转型为int</code></pre>
+<pre class="language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;使用
+Rational r1  &#x3D; 5;&#x2F;&#x2F;int 隐式转型为Rational
+int x &#x3D; (int)r1;&#x2F;&#x2F;Rational 显式转型为int</code></pre>
+
 <ul>
 <li>什么时候改用隐式,什么时候该用显式?</li>
 </ul>
@@ -623,6 +639,7 @@ int x = (int)r1;//Rational 显式转型为int</code></pre>
 <li>分部方法总是被视为<code>private</code>,但是c#编译器禁止在分部方法声明之前添加<code>private</code>关键字</li>
 </ul>
 
+                
             </div>
             <hr/>
 
@@ -855,6 +872,8 @@ int x = (int)r1;//Rational 显式转型为int</code></pre>
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -874,14 +893,7 @@ int x = (int)r1;//Rational 显式转型为int</code></pre>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            第9章 参数1.可选参数和命名参数
-可以为方法,构造器方法和有参属性的参数指定默认值, 还可以为属于委托定义的一部分的参数指定默认值
-
-有默认值的参数必须放在没有默认值的所有参数之后
-
-默认值必须是编译时能确定的常量值
-
-小心重命名,因为上
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -934,12 +946,7 @@ int x = (int)r1;//Rational 显式转型为int</code></pre>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            常量和字段常量几个重要知识
-常量是指值从不变化的符号,它的值总是在编译时就确定
-
-编译器会将常量保存到程序集的元数据中(题外话,程序集,元数据都保存了什么,请看其他章节)
-
-一般常量会定义为基元类型,但是c#允许定义为自定义类型,前提是把值
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -999,16 +1006,9 @@ int x = (int)r1;//Rational 显式转型为int</code></pre>
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1166,6 +1166,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1243,10 +1246,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1294,6 +1382,7 @@ $(function () {
 
     
 
+	
     
 
     

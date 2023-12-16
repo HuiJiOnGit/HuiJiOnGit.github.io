@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -464,6 +465,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="使用winget来安装应用"><a href="#使用winget来安装应用" class="headerlink" title="使用winget来安装应用"></a>使用winget来安装应用</h2><p>我用的powershell是 7.2.4 ,正好可以在今天升级,搭配 window 终端来使用更佳</p>
@@ -471,65 +480,68 @@
 <ul>
 <li><code>winget</code></li>
 </ul>
-<pre class=" language-shell"><code class="language-shell">Windows 程序包管理器 v1.2.10941
-版权所有 (C) Microsoft Corporation。保留所有权利。
+<pre class="language-bash" data-language="bash"><code class="language-bash">Windows 程序包管理器 v1.2.10941
+版权所有 <span class="token punctuation">(</span>C<span class="token punctuation">)</span> Microsoft Corporation。保留所有权利。
 
 WinGet 命令行实用工具可从命令行安装应用程序和其他程序包。
 
-使用情况: winget [<命令>] [<选项>]
+使用情况: winget <span class="token punctuation">[</span><span class="token operator">&lt;</span>命令<span class="token operator">></span><span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>选项<span class="token operator">></span><span class="token punctuation">]</span>
 
 下列命令有效:
-  install    安装给定的程序包
+  <span class="token function">install</span>    安装给定的程序包
   show       显示包的相关信息
-  source     管理程序包的来源
+  <span class="token builtin class-name">source</span>     管理程序包的来源
   search     查找并显示程序包的基本信息
   list       显示已安装的程序包
   upgrade    升级给定的程序包
   uninstall  卸载给定的程序包
-  hash       哈希安装程序的帮助程序
+  <span class="token builtin class-name">hash</span>       哈希安装程序的帮助程序
   validate   验证清单文件
   settings   打开设置或设置管理员设置
   features   显示实验性功能的状态
-  export     导出已安装程序包的列表
-  import     安装文件中的所有程序包
+  <span class="token builtin class-name">export</span>     导出已安装程序包的列表
+  <span class="token function">import</span>     安装文件中的所有程序包
 
-如需特定命令的更多详细信息，请向其传递帮助参数。 [-?]
+如需特定命令的更多详细信息，请向其传递帮助参数。 <span class="token punctuation">[</span>-?<span class="token punctuation">]</span>
 
 下列选项可用：
   -v,--version  显示工具的版本
-  --info        显示工具的常规信息
+  <span class="token parameter variable">--info</span>        显示工具的常规信息
 
 可在此找到更多帮助： https://aka.ms/winget-command-help</code></pre>
+
 <p>提示已经很明白了,好,那么我们先来 搜索下我们要安装的包 <code>powershell</code> ,要小心这里可能也有其他人上传包名一样的,要用id来下载</p>
 <ul>
 <li><code>winget search powershell</code></li>
 </ul>
-<pre class=" language-shell"><code class="language-shell">
+<pre class="language-bash" data-language="bash"><code class="language-bash">
 名称                            ID                                          版本         匹配            源
 ----------------------------------------------------------------------------------------------------------------
 PowerShell                      9MZ1SNWT0N5D                                Unknown                      msstore
 PowerShell Preview              9P95ZZKTNRN4                                Unknown                      msstore
-PowerShell Conference Asia 2015 9WZDNCRD37D8                                Unknown                      msstore
-PowerShell                      Microsoft.PowerShell                        7.2.5.0                      winget
-Windows Terminal Preview        Microsoft.WindowsTerminal.Preview           1.14.1432.0  Tag: PowerShell winget
-Windows Terminal                Microsoft.WindowsTerminal                   1.13.11431.0 Tag: powershell winget
-PowerShell Preview              Microsoft.PowerShell.Preview                7.3.0.5      Tag: powershell winget
-ConEmu                          Maximus5.ConEmu                             11.220.4180  Tag: powershell winget
-EasyConnect                     lstratman.easyconnect                       3.1.0.105    Tag: powershell winget
-Oh My Posh                      JanDeDobbeleer.OhMyPosh                     8.6.0        Tag: powershell winget
-TfsCmdlets                      Igoravl.TfsCmdlets                          2.4.0.2768   Tag: powershell winget
-electerm                        electerm.electerm                           1.21.88      Tag: powershell winget
-wol                             DarkfullDante.wol                           1.0.2        Tag: powershell winget
-AutomatedLab                    AutomatedLab.AutomatedLab                   5.42.0       Tag: powershell winget
-PowerShell Universal            IronmanSoftware.PowerShellUniversal         2.10.2                       winget
-PowerShell Universal Desktop    IronmanSoftware.PowerShellUniversal.Desktop 2.10.2                       winget
+PowerShell Conference Asia <span class="token number">2015</span> 9WZDNCRD37D8                                Unknown                      msstore
+PowerShell                      Microsoft.PowerShell                        <span class="token number">7.2</span>.5.0                      winget
+Windows Terminal Preview        Microsoft.WindowsTerminal.Preview           <span class="token number">1.14</span>.1432.0  Tag: PowerShell winget
+Windows Terminal                Microsoft.WindowsTerminal                   <span class="token number">1.13</span>.11431.0 Tag: powershell winget
+PowerShell Preview              Microsoft.PowerShell.Preview                <span class="token number">7.3</span>.0.5      Tag: powershell winget
+ConEmu                          Maximus5.ConEmu                             <span class="token number">11.220</span>.4180  Tag: powershell winget
+EasyConnect                     lstratman.easyconnect                       <span class="token number">3.1</span>.0.105    Tag: powershell winget
+Oh My Posh                      JanDeDobbeleer.OhMyPosh                     <span class="token number">8.6</span>.0        Tag: powershell winget
+TfsCmdlets                      Igoravl.TfsCmdlets                          <span class="token number">2.4</span>.0.2768   Tag: powershell winget
+electerm                        electerm.electerm                           <span class="token number">1.21</span>.88      Tag: powershell winget
+wol                             DarkfullDante.wol                           <span class="token number">1.0</span>.2        Tag: powershell winget
+AutomatedLab                    AutomatedLab.AutomatedLab                   <span class="token number">5.42</span>.0       Tag: powershell winget
+PowerShell Universal            IronmanSoftware.PowerShellUniversal         <span class="token number">2.10</span>.2                       winget
+PowerShell Universal Desktop    IronmanSoftware.PowerShellUniversal.Desktop <span class="token number">2.10</span>.2                       winget
 </code></pre>
+
 <p>我们要使用 Id是 <code>Microsoft.PowerShell</code> 这个</p>
 <ul>
 <li><code>winget install Microsoft.PowerShell</code></li>
 </ul>
 <p>然后就可以自动下载软件了,省的自己去<code>GitHub</code>下载一次,因为我这里经常抽风,连不上</p>
 
+                
             </div>
             <hr/>
 
@@ -762,6 +774,8 @@ PowerShell Universal Desktop    IronmanSoftware.PowerShellUniversal.Desktop 2.10
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -781,11 +795,7 @@ PowerShell Universal Desktop    IronmanSoftware.PowerShellUniversal.Desktop 2.10
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            手动封装一个select
-Q: 为什么要手动封装?
-
-
-用户提出需求是可以根据select中值的不同显示不同的样式, 比如选 true 显示绿色, 选 false 显示红色,一开始我以为能用css自定义的,但是查阅mdn之后发现像selec
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -834,10 +844,7 @@ Q: 为什么要手动封装?
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            分享一个自动给aspnetcore mvc razorpage应用自动添加version的方案使用taghelper
-直接上代码
-using System.Text.Encodings.Web;
-using Microsoft.AspNet
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -897,16 +904,9 @@ using Microsoft.AspNet
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1064,6 +1064,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1141,10 +1144,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1192,6 +1280,7 @@ $(function () {
 
     
 
+	
     
 
     

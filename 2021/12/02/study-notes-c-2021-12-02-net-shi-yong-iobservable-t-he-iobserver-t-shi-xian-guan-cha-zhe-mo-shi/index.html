@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,6 +474,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="1-观察者模式是什么"><a href="#1-观察者模式是什么" class="headerlink" title="1. 观察者模式是什么?"></a>1. 观察者模式是什么?</h1><p>当一个对象被修改时，则会自动通知依赖它的对象。这时候我们就可以使用观察者模式了<br>很简单的一个列子, 拍卖东西, 当拍卖价格(变化的类)发生变化, 那拍卖员(通知类)就要通知所有参加拍卖的人(观察者)</p>
@@ -482,14 +491,14 @@
 <ul>
 <li>第一步我们定义一个信息类,它包含了一些信息</li>
 </ul>
-<pre class=" language-c#"><code class="language-c#">public struct Location
+<pre class="language-c#" data-language="c#"><code class="language-c#">public struct Location
 &#123;
    double lat, lon;
 
    public Location(double latitude, double longitude)
    &#123;
-      this.lat = latitude;
-      this.lon = longitude;
+      this.lat &#x3D; latitude;
+      this.lon &#x3D; longitude;
    &#125;
 
    public double Latitude
@@ -498,48 +507,49 @@
    public double Longitude
    &#123; get &#123; return this.lon; &#125; &#125;
 &#125;</code></pre>
+
 <p>这里有个包含位置信息的结构,有经度纬度</p>
 <ul>
 <li>第二步我们使用<code>IObservable&lt;T&gt;</code>来定义一个位置跟踪类, 这个类会在位置变化的时候发送通知</li>
 </ul>
-<pre class=" language-c#"><code class="language-c#">public class LocationTracker : IObservable<Location>
+<pre class="language-c#" data-language="c#"><code class="language-c#">public class LocationTracker : IObservable&lt;Location&gt;
 &#123;
-    //私有集合用来存储观察者们
-   private List<IObserver<Location>> observers;
+    &#x2F;&#x2F;私有集合用来存储观察者们
+   private List&lt;IObserver&lt;Location&gt;&gt; observers;
 
    public LocationTracker()
    &#123;
-      //初始化集合
-      observers = new List<IObserver<Location>>();
+      &#x2F;&#x2F;初始化集合
+      observers &#x3D; new List&lt;IObserver&lt;Location&gt;&gt;();
    &#125;
-
-   // 微软文档中最精妙的地方,很好的利用的c#的特性,普通的观察者实现中肯定是要有个取消订阅的方法的,但是这个没有, 重点就是返回了一个实现了IDisposable接口的对象, 而这个实现了IDisposable接口的对象是一个嵌套类,这样观察者的释放就只能由被观察对象本身释放,不会轻易被外部修改, 提高了健壮性
-   public IDisposable Subscribe(IObserver<Location> observer)
+   
+   &#x2F;&#x2F; 微软文档中最精妙的地方,很好的利用的c#的特性,普通的观察者实现中肯定是要有个取消订阅的方法的,但是这个没有, 重点就是返回了一个实现了IDisposable接口的对象, 而这个实现了IDisposable接口的对象是一个嵌套类,这样观察者的释放就只能由被观察对象本身释放,不会轻易被外部修改, 提高了健壮性
+   public IDisposable Subscribe(IObserver&lt;Location&gt; observer)
    &#123;
       if (! observers.Contains(observer))
          observers.Add(observer);
       return new Unsubscriber(observers, observer);
    &#125;
-// 嵌套类, 嵌套类不能直接访问包含类
+&#x2F;&#x2F; 嵌套类, 嵌套类不能直接访问包含类
    private class Unsubscriber : IDisposable
    &#123;
-      private List<IObserver<Location>>_observers;
-      private IObserver<Location> _observer;
+      private List&lt;IObserver&lt;Location&gt;&gt;_observers;
+      private IObserver&lt;Location&gt; _observer;
 
-      public Unsubscriber(List<IObserver<Location>> observers, IObserver<Location> observer)
+      public Unsubscriber(List&lt;IObserver&lt;Location&gt;&gt; observers, IObserver&lt;Location&gt; observer)
       &#123;
-         this._observers = observers;
-         this._observer = observer;
+         this._observers &#x3D; observers;
+         this._observer &#x3D; observer;
       &#125;
 
       public void Dispose()
       &#123;
-         if (_observer != null && _observers.Contains(_observer))
+         if (_observer !&#x3D; null &amp;&amp; _observers.Contains(_observer))
             _observers.Remove(_observer);
       &#125;
    &#125;
-//当位置发生变化时,向所有观察者发布消息
-   public void TrackLocation(Nullable<Location> loc)
+&#x2F;&#x2F;当位置发生变化时,向所有观察者发布消息
+   public void TrackLocation(Nullable&lt;Location&gt; loc)
    &#123;
       foreach (var observer in observers) &#123;
          if (! loc.HasValue)
@@ -548,7 +558,7 @@
             observer.OnNext(loc.Value);
       &#125;
    &#125;
-//当被观察对象都结束传播, 那通知对象自然就要清除相关观察者
+&#x2F;&#x2F;当被观察对象都结束传播, 那通知对象自然就要清除相关观察者
    public void EndTransmission()
    &#123;
       foreach (var observer in observers.ToArray())
@@ -558,56 +568,59 @@
       observers.Clear();
    &#125;
 &#125;</code></pre>
+
 <ul>
 <li>第三个观察者类</li>
 </ul>
-<pre class=" language-c#"><code class="language-c#">public class LocationReporter : IObserver<Location>
+<pre class="language-c#" data-language="c#"><code class="language-c#">public class LocationReporter : IObserver&lt;Location&gt;
 &#123;
    private IDisposable unsubscriber;
-   private string instName;//观察者标识
+   private string instName;&#x2F;&#x2F;观察者标识
 
    public LocationReporter(string name)
    &#123;
-      this.instName = name;
+      this.instName &#x3D; name;
    &#125;
 
    public string Name
    &#123;  get&#123; return this.instName; &#125; &#125;
 
-//订阅,实际使用调用通知对象的订阅方法,并且获取了发布中的私有对象
-   public virtual void Subscribe(IObservable<Location> provider)
+&#x2F;&#x2F;订阅,实际使用调用通知对象的订阅方法,并且获取了发布中的私有对象
+   public virtual void Subscribe(IObservable&lt;Location&gt; provider)
    &#123;
-      if (provider != null)
-         unsubscriber = provider.Subscribe(this);
+      if (provider !&#x3D; null)
+         unsubscriber &#x3D; provider.Subscribe(this);
    &#125;
-//完成,之后,再取消订阅
+&#x2F;&#x2F;完成,之后,再取消订阅
    public virtual void OnCompleted()
    &#123;
-      Console.WriteLine("The Location Tracker has completed transmitting data to &#123;0&#125;.", this.Name);
+      Console.WriteLine(&quot;The Location Tracker has completed transmitting data to &#123;0&#125;.&quot;, this.Name);
       this.Unsubscribe();
    &#125;
-//发生错误
+&#x2F;&#x2F;发生错误
    public virtual void OnError(Exception e)
    &#123;
-      Console.WriteLine("&#123;0&#125;: The location cannot be determined.", this.Name);
+      Console.WriteLine(&quot;&#123;0&#125;: The location cannot be determined.&quot;, this.Name);
    &#125;
-//发生变化时的处理
+&#x2F;&#x2F;发生变化时的处理
    public virtual void OnNext(Location value)
    &#123;
-      Console.WriteLine("&#123;2&#125;: The current location is &#123;0&#125;, &#123;1&#125;", value.Latitude, value.Longitude, this.Name);
+      Console.WriteLine(&quot;&#123;2&#125;: The current location is &#123;0&#125;, &#123;1&#125;&quot;, value.Latitude, value.Longitude, this.Name);
    &#125;
-//取消订阅, 通过IDisposable对象的关联,可以把自身在通知对象中的引用清除,这样就实现了取消订阅
+&#x2F;&#x2F;取消订阅, 通过IDisposable对象的关联,可以把自身在通知对象中的引用清除,这样就实现了取消订阅
    public virtual void Unsubscribe()
    &#123;
       unsubscriber.Dispose();
    &#125;
 &#125;</code></pre>
+
 <p>总结: 通过一个<code>IDisposable</code> 和 嵌套对象,巧妙的结合,充分发挥了c#的语言特性,优雅的实现了观察者和被观察者,值得学习.</p>
 <p>引用链接:</p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.iobserver-1?view=net-6.0"><code>IObserver&lt;T&gt; 接口</code></a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/api/system.iobservable-1?view=net-6.0"><code>IObservable&lt;T&gt; 接口</code></a></p>
 <p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/nested-types">嵌套类型</a></p>
 
+                
             </div>
             <hr/>
 
@@ -840,6 +853,8 @@
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -859,12 +874,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            常量和字段常量几个重要知识
-常量是指值从不变化的符号,它的值总是在编译时就确定
-
-编译器会将常量保存到程序集的元数据中(题外话,程序集,元数据都保存了什么,请看其他章节)
-
-一般常量会定义为基元类型,但是c#允许定义为自定义类型,前提是把值
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -917,7 +927,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            表达式树的一些简单应用1. 表达式树是什么表达式树以树形数据结构表示代码，其中每一个节点都是一种表达式，比如方法调用和 x &lt; y 这样的二元运算等。coder可以对表达式树中的代码进行编辑和运算,这样能动态的修改可执行的代码.更多请
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -977,16 +987,9 @@
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1144,6 +1147,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1221,10 +1227,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1272,6 +1363,7 @@ $(function () {
 
     
 
+	
     
 
     

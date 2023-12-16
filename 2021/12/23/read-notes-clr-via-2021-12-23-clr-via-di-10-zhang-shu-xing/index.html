@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,6 +474,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="第10章-属性"><a href="#第10章-属性" class="headerlink" title="第10章 属性"></a>第10章 属性</h2><h3 id="1-无参属性"><a href="#1-无参属性" class="headerlink" title="1.无参属性"></a>1.无参属性</h3><blockquote>
@@ -493,19 +502,21 @@
 <li><p>编译器会在托管程序集的元数据中生成了一个属性的定义项,包括一些标志(flags)以及属性的类型,这些信息的作用就是在属性这种抽象概念于它的访问器之间建立一个联系.编译器和其他工具就可以利用这种元数据信息. 但是CLR不使用这种元数据信息,在运行时只需要访问器方法</p>
 </li>
 </ul>
-<h4 id="对象和集合初始化器"><a href="#对象和集合初始化器" class="headerlink" title="对象和集合初始化器"></a>对象和集合初始化器</h4><pre class=" language-c#"><code class="language-c#">Emplyee e = new Emplyee
+<h4 id="对象和集合初始化器"><a href="#对象和集合初始化器" class="headerlink" title="对象和集合初始化器"></a>对象和集合初始化器</h4><pre class="language-c#" data-language="c#"><code class="language-c#">Emplyee e &#x3D; new Emplyee
 &#123;
-    Name = "Jeff",
-    Age = 45
+    Name &#x3D; &quot;Jeff&quot;,
+    Age &#x3D; 45
 &#125;
-List<string> arr = new List<string>
+List&lt;string&gt; arr &#x3D; new List&lt;string&gt;
 &#123;
-    "1","2","3"
+    &quot;1&quot;,&quot;2&quot;,&quot;3&quot;
 &#125;</code></pre>
+
 <p>上述的初始化本质是编译器帮你调用构造器,再手动帮你给每个属性赋值,但是这样子写增强了代码的可读性;集合的就是帮你add</p>
-<h4 id="匿名类型"><a href="#匿名类型" class="headerlink" title="匿名类型"></a>匿名类型</h4><pre class=" language-c#"><code class="language-c#">var o = new &#123;
-    Name = "张三"
+<h4 id="匿名类型"><a href="#匿名类型" class="headerlink" title="匿名类型"></a>匿名类型</h4><pre class="language-c#" data-language="c#"><code class="language-c#">var o &#x3D; new &#123;
+    Name &#x3D; &quot;张三&quot;
 &#125;</code></pre>
+
 <p>这里是一个匿名的类型,编译器会推断每个表达式的类型, 创建推断类型的私有字段, 为每个字段创建公共只读属性,并创建一个构造器来接受所有这些表达式. 除此之外,编译器还会重写<code>Object</code>的<code>Equal</code>,<code>GetHashCode</code>和<code>ToString</code>方法</p>
 <ul>
 <li>编译器在定义匿名类型时是非常智能的, 假如你在代码中定义了多个匿名类型,并具有相同的结构,,那它只会创建一个匿名类型定义, 但是创建该类型的多个实例.</li>
@@ -522,6 +533,7 @@ List<string> arr = new List<string>
 </blockquote>
 <h3 id="3-调用属性访问器方法时的性能"><a href="#3-调用属性访问器方法时的性能" class="headerlink" title="3.调用属性访问器方法时的性能"></a>3.调用属性访问器方法时的性能</h3><p>JIT会将get,set访问器方法内联(或者说嵌入), 这样一来,使用属性就没有性能上的损失.内敛是指将方法直接编译到调用它的方法中,避免在运行时发出调用产生开销</p>
 
+                
             </div>
             <hr/>
 
@@ -754,6 +766,8 @@ List<string> arr = new List<string>
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -773,11 +787,7 @@ List<string> arr = new List<string>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            问题描述
-使用System.Drawing.Image.Save将一个png图片保存为tif格式的图片, 老是遇到 params is not valid 错误
-
-这个方法我使用的是这个重载
-第二个参数好理解,就是指定输出MimeType,
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -826,14 +836,7 @@ List<string> arr = new List<string>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            第9章 参数1.可选参数和命名参数
-可以为方法,构造器方法和有参属性的参数指定默认值, 还可以为属于委托定义的一部分的参数指定默认值
-
-有默认值的参数必须放在没有默认值的所有参数之后
-
-默认值必须是编译时能确定的常量值
-
-小心重命名,因为上
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -893,16 +896,9 @@ List<string> arr = new List<string>
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1060,6 +1056,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1137,10 +1136,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1188,6 +1272,7 @@ $(function () {
 
     
 
+	
     
 
     

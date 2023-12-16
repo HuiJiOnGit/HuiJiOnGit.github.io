@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,6 +474,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="MQ-的基础概念"><a href="#MQ-的基础概念" class="headerlink" title="MQ 的基础概念"></a>MQ 的基础概念</h2><h3 id="什么是-MQ"><a href="#什么是-MQ" class="headerlink" title="什么是 MQ"></a>什么是 MQ</h3><p>MQ(message queue)，从字面意思上看就个 FIFO 先入先出的队列，只不过队列中存放的内容是 message 而已，它是一种具有接收数据、存储数据、发送数据等功能的技术服务</p>
@@ -602,15 +611,16 @@
 <h3 id="多主集群转发部署模式"><a href="#多主集群转发部署模式" class="headerlink" title="多主集群转发部署模式"></a>多主集群转发部署模式</h3><p>todo</p>
 <h3 id="Master-slave-与-Breoker-cluster-组合的方案"><a href="#Master-slave-与-Breoker-cluster-组合的方案" class="headerlink" title="Master-slave 与 Breoker-cluster 组合的方案"></a>Master-slave 与 Breoker-cluster 组合的方案</h3><p>todo</p>
 <h2 id="安装启动"><a href="#安装启动" class="headerlink" title="安装启动"></a>安装启动</h2><p>这里使用 docker 安装</p>
-<pre class=" language-shell"><code class="language-shell">
-# 拉取镜像, 带management结尾的会有一个网页的管理插件,推荐用这个镜像
+<pre class="language-bash" data-language="bash"><code class="language-bash">
+<span class="token comment"># 拉取镜像, 带management结尾的会有一个网页的管理插件,推荐用这个镜像</span>
 
-docker pull rabbitmq:management
+<span class="token function">docker</span> pull rabbitmq:management
 
-# 运行镜像
+<span class="token comment"># 运行镜像</span>
 
-docker run -d --name rabbitmq -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=123456 -v=/d/DB/RabbitMQ:/var/lib/rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:management
+<span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> rabbitmq <span class="token parameter variable">-e</span> <span class="token assign-left variable">RABBITMQ_DEFAULT_USER</span><span class="token operator">=</span>guest <span class="token parameter variable">-e</span> <span class="token assign-left variable">RABBITMQ_DEFAULT_PASS</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token parameter variable">-v</span><span class="token operator">=</span>/d/DB/RabbitMQ:/var/lib/rabbitmq <span class="token parameter variable">-p</span> <span class="token number">15672</span>:15672 <span class="token parameter variable">-p</span> <span class="token number">5672</span>:5672 rabbitmq:management
 </code></pre>
+
 <h2 id="RabbitMQ-架构组成"><a href="#RabbitMQ-架构组成" class="headerlink" title="RabbitMQ 架构组成"></a>RabbitMQ 架构组成</h2><p><img src="https://img-blog.csdnimg.cn/img_convert/028770482d7562c40fd7a4408d22a57d.png" alt="img"></p>
 <ul>
 <li><p><code>Broker</code>：就是 RabbitMQ 服务，用于接收和分发消息，接受客户端的连接，实现 AMQP 实体服务。</p>
@@ -716,69 +726,72 @@ docker run -d --name rabbitmq -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT
 <p><img src="https://img-blog.csdnimg.cn/img_convert/41d4a9039e12467eff83e0d3dee7fb0b.png" alt="img"></p>
 <p>注意：简单模式和工作模式虽然途中没有画出交换机，但是都会有一个默认的交换机，类型为 direct</p>
 <h3 id="简单模式"><a href="#简单模式" class="headerlink" title="简单模式"></a>简单模式</h3><p>一个生产者，一个消费者，一个队列，采用默认交换机。可以理解为生产者 P 发送消息到队列 Q，一个消费者 C 接收。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//生产者</span>
-<span class="token comment" spellcheck="true">// 注意队列声明之后不可以修改,比如把durable改成true</span>
-MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span> durable<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span> exclusive<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span> autoDelete<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span> arguments<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">string</span> message <span class="token operator">=</span> <span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-MQChannel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> routingKey<span class="token punctuation">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span> basicProperties<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> body<span class="token punctuation">:</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//消费者</span>
-<span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>sender<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> body <span class="token operator">=</span> args<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">"&amp;#123;consumerName&amp;#125;已消费: &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> consumerName<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">//生产者</span>
+<span class="token comment">// 注意队列声明之后不可以修改,比如把durable改成true</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">durable</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">exclusive</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">autoDelete</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">arguments</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">string</span></span> message <span class="token operator">=</span> <span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//消费者</span>
+<span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token punctuation">(</span>sender<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> args<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">"&#123;consumerName&#125;已消费: &#123;message&#125;"</span><span class="token punctuation">,</span> consumerName<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><p>一个生产者，多个消费者，一个队列，采用默认交换机。可以理解为生产者 P 发送消息到队列 Q，可以由多个消费者 C1、C2 进行接收。</p>
 <p>生产者</p>
-<pre class=" language-csharp"><code class="language-csharp"> <span class="token comment" spellcheck="true">// 同时使用 durable 和 Persistent 为true,就可以将消息持久化到Mq中</span>
- MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token comment" spellcheck="true">//将 BasicQos 方法与 prefetchCount = 1 设置一起使用。这告诉 RabbitMQ 不要付出更多 一次给工作人员一条消息。或者，换句话说，不要调度 给工作人员的新消息，直到它处理并确认 前一个</span>
- MQChannel<span class="token punctuation">.</span><span class="token function">BasicQos</span><span class="token punctuation">(</span>prefetchSize<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> prefetchCount<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">global</span><span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">var</span> message <span class="token operator">=</span> <span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">var</span> messageByte <span class="token operator">=</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">var</span> properties <span class="token operator">=</span> MQChannel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- properties<span class="token punctuation">.</span>Persistent <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
- <span class="token keyword">using</span> PeriodicTimer periodicTimer <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>TimeSpan<span class="token punctuation">.</span><span class="token function">FromMilliseconds</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">try</span>
- <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-     <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">await</span> periodicTimer<span class="token punctuation">.</span><span class="token function">WaitForNextTickAsync</span><span class="token punctuation">(</span>stoppingToken<span class="token punctuation">)</span><span class="token punctuation">)</span>
-     <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-         MQChannel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> properties<span class="token punctuation">,</span> messageByte<span class="token punctuation">)</span><span class="token punctuation">;</span>
-         <span class="token comment" spellcheck="true">//Logger.LogInformation("生产者已发送消息");</span>
-     <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
- <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
- <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OperationCanceledException</span><span class="token punctuation">)</span>
- <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
- <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
- <span class="token keyword">finally</span>
- <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-     periodicTimer<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">// 同时使用 durable 和 Persistent 为true,就可以将消息持久化到Mq中</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//将 BasicQos 方法与 prefetchCount = 1 设置一起使用。这告诉 RabbitMQ 不要付出更多 一次给工作人员一条消息。或者，换句话说，不要调度 给工作人员的新消息，直到它处理并确认 前一个</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">BasicQos</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">prefetchSize</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">prefetchCount</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">global</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> <span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> messageByte <span class="token operator">=</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">.</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> properties <span class="token operator">=</span> MQChannel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+properties<span class="token punctuation">.</span>Persistent <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name">PeriodicTimer</span> periodicTimer <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>TimeSpan<span class="token punctuation">.</span><span class="token function">FromMilliseconds</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">try</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">await</span> periodicTimer<span class="token punctuation">.</span><span class="token function">WaitForNextTickAsync</span><span class="token punctuation">(</span>stoppingToken<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        MQChannel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> properties<span class="token punctuation">,</span> messageByte<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//Logger.LogInformation("生产者已发送消息");</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">OperationCanceledException</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">finally</span>
+<span class="token punctuation">&#123;</span>
+    periodicTimer<span class="token punctuation">.</span><span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>消费者</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer4"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer5"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer6"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token string">"Consumer7"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token keyword">string</span> consumerName<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AsyncEventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>sender<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">CreateBasicConsumer</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> consumerName<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">AsyncEventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>sender<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">await</span> Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span>Random<span class="token punctuation">.</span>Shared<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> body <span class="token operator">=</span> args<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">"&amp;#123;consumerName&amp;#125;已消费: &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> consumerName<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// 手动ack</span>
-        MQChannel<span class="token punctuation">.</span><span class="token function">BasicAck</span><span class="token punctuation">(</span>args<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-    MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+        <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> args<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">"&#123;consumerName&#125;已消费: &#123;message&#125;"</span><span class="token punctuation">,</span> consumerName<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 手动ack</span>
+        MQChannel<span class="token punctuation">.</span><span class="token function">BasicAck</span><span class="token punctuation">(</span>args<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token string">"task_queue"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="发布-订阅模式（fanout）"><a href="#发布-订阅模式（fanout）" class="headerlink" title="发布/订阅模式（fanout）"></a>发布/订阅模式（fanout）</h3><p>功能：一个生产者、一个 fanout 类型的交换机、多个队列、多个消费者。一个生产者发送的消息会被多个消费者获取。其中 fanout 类型就是发布订阅模式，只有订阅该生产者的消费者会收到消息。</p>
 <ol>
 <li>先声明两个队列, Type 是<code>classic</code></li>
@@ -786,14 +799,15 @@ MQChannel<span class="token punctuation">.</span><span class="token function">Ba
 <li>然后在交换机中发送一条消息</li>
 <li>回到队列中,就能看到两个队列都收到这个消息了</li>
 </ol>
-<pre class=" language-csharp"><code class="language-csharp">MQChannel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"logs"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Fanout<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//当我们不向 QueueDeclare（） 提供任何参数时，我们会创建一个具有生成名称的非持久、独占、自动删除队列</span>
-<span class="token keyword">var</span> queueName <span class="token operator">=</span> MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"subAndPub"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//我们已经创建了一个扇出交换和一个队列。现在我们需要 告诉交易所将消息发送到我们的队列。这种关系 交换和队列之间称为绑定。</span>
-MQChannel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
-          exchange<span class="token punctuation">:</span> <span class="token string">"logs"</span><span class="token punctuation">,</span>
-          routingKey<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//发送接受和其他无异</span></code></pre>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp">MQChannel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"logs"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Fanout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//当我们不向 QueueDeclare（） 提供任何参数时，我们会创建一个具有生成名称的非持久、独占、自动删除队列</span>
+<span class="token class-name"><span class="token keyword">var</span></span> queueName <span class="token operator">=</span> MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"subAndPub"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//我们已经创建了一个扇出交换和一个队列。现在我们需要 告诉交易所将消息发送到我们的队列。这种关系 交换和队列之间称为绑定。</span>
+MQChannel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
+          <span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"logs"</span><span class="token punctuation">,</span>
+          <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//发送接受和其他无异</span></code></pre>
+
 <h3 id="路由模式（direct）"><a href="#路由模式（direct）" class="headerlink" title="路由模式（direct）"></a>路由模式（direct）</h3><p>功能：一个生产者，一个 direct 类型的交换机，多个队列，交换机与队列之间通过 routing-key 进行关联绑定，多个消费者。生产者发送消息到交换机并且要指定 routing-key，然后消息根据这交换机与队列之间的 routing-key 绑定规则进行路由被指定消费者消费。</p>
 <ol>
 <li>首先我们使用<code>direct</code>类型的交换机</li>
@@ -801,64 +815,66 @@ MQChannel<span class="token punctuation">.</span><span class="token function">Qu
 <li>然后在交换机中发一条消息, 指定 routing-key,就能看到只有指定的队列才会收到消息</li>
 </ol>
 <p>生产者</p>
-<pre class=" language-csharp"><code class="language-csharp">MQChannel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token string">"direct_logs"</span><span class="token punctuation">,</span> type<span class="token punctuation">:</span> ExchangeType<span class="token punctuation">.</span>Direct<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> severity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"info"</span><span class="token punctuation">,</span> <span class="token string">"warning"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">,</span> <span class="token string">"Critical"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> severity<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">string</span> queueName <span class="token operator">=</span> item <span class="token operator">+</span> <span class="token string">"_queue"</span><span class="token punctuation">;</span>
-    MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> queueName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp">MQChannel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"direct_logs"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">type</span><span class="token punctuation">:</span> ExchangeType<span class="token punctuation">.</span>Direct<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> severity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">&#123;</span> <span class="token string">"info"</span><span class="token punctuation">,</span> <span class="token string">"warning"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">,</span> <span class="token string">"Critical"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> item <span class="token keyword">in</span> severity<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">string</span></span> queueName <span class="token operator">=</span> item <span class="token operator">+</span> <span class="token string">"_queue"</span><span class="token punctuation">;</span>
+    MQChannel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> queueName<span class="token punctuation">)</span><span class="token punctuation">;</span>
     MQChannel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span>queueName<span class="token punctuation">,</span> <span class="token string">"direct_logs"</span><span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">using</span> PeriodicTimer periodicTimer <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>TimeSpan<span class="token punctuation">.</span><span class="token function">FromSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token function">TimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name">PeriodicTimer</span> periodicTimer <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span>TimeSpan<span class="token punctuation">.</span><span class="token function">FromSeconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">await</span> periodicTimer<span class="token punctuation">.</span><span class="token function">WaitForNextTickAsync</span><span class="token punctuation">(</span>stoppingToken<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> index <span class="token operator">=</span> Random<span class="token punctuation">.</span>Shared<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> index <span class="token operator">=</span> Random<span class="token punctuation">.</span>Shared<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     MQChannel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token string">"direct_logs"</span><span class="token punctuation">,</span> severity<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>消费者</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token keyword">override</span> Task <span class="token function">ExecuteAsync</span><span class="token punctuation">(</span>CancellationToken stoppingToken<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> severity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"info"</span><span class="token punctuation">,</span> <span class="token string">"warning"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">,</span><span class="token string">"Critical"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> item <span class="token keyword">in</span> severity<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name">Task</span> <span class="token function">ExecuteAsync</span><span class="token punctuation">(</span><span class="token class-name">CancellationToken</span> stoppingToken<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> severity <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">&#123;</span> <span class="token string">"info"</span><span class="token punctuation">,</span> <span class="token string">"warning"</span><span class="token punctuation">,</span> <span class="token string">"error"</span><span class="token punctuation">,</span><span class="token string">"Critical"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">int</span></span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> item <span class="token keyword">in</span> severity<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         _eventingBasicConsumers<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">CreateConsumer</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
         i<span class="token operator">++</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     <span class="token keyword">return</span> Task<span class="token punctuation">.</span>CompletedTask<span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">private</span> EventingBasicConsumer <span class="token function">CreateConsumer</span><span class="token punctuation">(</span><span class="token keyword">string</span> routingKey<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">string</span> caseKey <span class="token operator">=</span> routingKey<span class="token punctuation">;</span>
-    consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">EventingBasicConsumer</span> <span class="token function">CreateConsumer</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> routingKey<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>MQChannel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">string</span></span> caseKey <span class="token operator">=</span> routingKey<span class="token punctuation">;</span>
+    consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">switch</span> <span class="token punctuation">(</span>caseKey<span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">case</span> <span class="token string">"Critical"</span><span class="token punctuation">:</span>
-                Logger<span class="token punctuation">.</span><span class="token function">LogCritical</span><span class="token punctuation">(</span><span class="token string">" [x] &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Logger<span class="token punctuation">.</span><span class="token function">LogCritical</span><span class="token punctuation">(</span><span class="token string">" [x] &#123;message&#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
 
             <span class="token keyword">case</span> <span class="token string">"info"</span><span class="token punctuation">:</span>
-                Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">" [x] &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Logger<span class="token punctuation">.</span><span class="token function">LogInformation</span><span class="token punctuation">(</span><span class="token string">" [x] &#123;message&#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
 
             <span class="token keyword">case</span> <span class="token string">"warning"</span><span class="token punctuation">:</span>
-                Logger<span class="token punctuation">.</span><span class="token function">LogWarning</span><span class="token punctuation">(</span><span class="token string">" [x] &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Logger<span class="token punctuation">.</span><span class="token function">LogWarning</span><span class="token punctuation">(</span><span class="token string">" [x] &#123;message&#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
 
             <span class="token keyword">default</span><span class="token punctuation">:</span>
-                Logger<span class="token punctuation">.</span><span class="token function">LogDebug</span><span class="token punctuation">(</span><span class="token string">" [x] &amp;#123;message&amp;#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Logger<span class="token punctuation">.</span><span class="token function">LogDebug</span><span class="token punctuation">(</span><span class="token string">" [x] &#123;message&#125;"</span><span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-    MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> routingKey <span class="token operator">+</span> <span class="token string">"_queue"</span><span class="token punctuation">,</span> autoAck<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span> consumer<span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    MQChannel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> routingKey <span class="token operator">+</span> <span class="token string">"_queue"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">autoAck</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">consumer</span><span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span> consumer<span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="主题模式（topic）"><a href="#主题模式（topic）" class="headerlink" title="主题模式（topic）"></a>主题模式（topic）</h3><p>一个生产者，一个 topic 类型的交换机，多个队列，交换机与队列之间通过 routing-key 进行关联绑定，多个消费者。生产者发送消息到交换机并且要指定 routing-key，然后消息根据这交换机与队列之间的 routing-key 绑定规则进行路由被指定消费者消费。与路由模式不同是 routing-key 有指定的队则，可以更加的通用，满足更过的场景。routing-key 的规则如下：</p>
 <ul>
 <li><code>#</code>：匹配一个或者多个词，例如 lazy.# 可以匹配 lazy.xxx 或者 lazy.xxx.xxx</li>
@@ -869,63 +885,65 @@ MQChannel<span class="token punctuation">.</span><span class="token function">Qu
 <li>绑定两个队列, key 分别是<code>com.#</code>,<code>*com.*</code></li>
 <li>发送消息设置 key 为<code>com.abc.123</code></li>
 </ol>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events<span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>Text</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConnectionFactory</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ConnectionFactory</span> <span class="token punctuation">&#123;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-<span class="token keyword">using</span> <span class="token keyword">var</span> connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">using</span> <span class="token keyword">var</span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token string">"topic_logs"</span><span class="token punctuation">,</span> type<span class="token punctuation">:</span> ExchangeType<span class="token punctuation">.</span>Topic<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">// declare a server-named queue</span>
-<span class="token keyword">var</span> queueName <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>QueueName<span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"topic_logs"</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">type</span><span class="token punctuation">:</span> ExchangeType<span class="token punctuation">.</span>Topic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// declare a server-named queue</span>
+<span class="token class-name"><span class="token keyword">var</span></span> queueName <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>QueueName<span class="token punctuation">;</span>
 
 <span class="token keyword">if</span> <span class="token punctuation">(</span>args<span class="token punctuation">.</span>Length <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    Console<span class="token punctuation">.</span>Error<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Usage: &amp;#123;0&amp;#125; [binding_key...]"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+    Console<span class="token punctuation">.</span>Error<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Usage: &#123;0&#125; [binding_key...]"</span><span class="token punctuation">,</span>
                             Environment<span class="token punctuation">.</span><span class="token function">GetCommandLineArgs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" Press [enter] to exit."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     Environment<span class="token punctuation">.</span>ExitCode <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token keyword">var</span> bindingKey <span class="token keyword">in</span> args<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
-                      exchange<span class="token punctuation">:</span> <span class="token string">"topic_logs"</span><span class="token punctuation">,</span>
-                      routingKey<span class="token punctuation">:</span> bindingKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> bindingKey <span class="token keyword">in</span> args<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
+                      <span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"topic_logs"</span><span class="token punctuation">,</span>
+                      <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> bindingKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
 Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [*] Waiting for messages. To exit press CTRL+C"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> routingKey <span class="token operator">=</span> ea<span class="token punctuation">.</span>RoutingKey<span class="token punctuation">;</span>
-    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">" [x] Received '&amp;#123;routingKey&amp;#125;':'&amp;#123;message&amp;#125;'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
-                     autoAck<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span>
-                     consumer<span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> routingKey <span class="token operator">=</span> ea<span class="token punctuation">.</span>RoutingKey<span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$" [x] Received '</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">routingKey</span><span class="token punctuation">&#125;</span></span><span class="token string">':'</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">message</span><span class="token punctuation">&#125;</span></span><span class="token string">'"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> queueName<span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">autoAck</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">consumer</span><span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" Press [enter] to exit."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <h3 id="RPC-模式"><a href="#RPC-模式" class="headerlink" title="RPC 模式"></a>RPC 模式</h3><p>一般来说，在 RabbitMQ 上做 RPC 很容易。客户端发送请求 消息，服务器回复响应消息。为了 收到我们需要发送“回调”队列地址的响应，其中包含 请求：</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">var</span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token class-name"><span class="token keyword">var</span></span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 props<span class="token punctuation">.</span>ReplyTo <span class="token operator">=</span> replyQueueName<span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> messageBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
-                     routingKey<span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
-                     basicProperties<span class="token punctuation">:</span> props<span class="token punctuation">,</span>
-                     body<span class="token punctuation">:</span> messageBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> messageBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> props<span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> messageBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// ... then code to read a response message from the callback_queue ...</span></code></pre>
+<span class="token comment">// ... then code to read a response message from the callback_queue ...</span></code></pre>
+
 <blockquote>
 <p>消息属性<br>AMQP 0-9-1 协议预定义了一组 14 个属性，这些属性与 一条消息。大多数属性很少使用，除了 以下内容：</p>
 <p>持久：将邮件标记为持久（值为 true） 或瞬态（任何其他值）。请看第二个教程。<br>交付模式：熟悉协议的人可以选择使用这个 属性而不是持久。他们控制着同样的事情。<br>内容类型：用于描述编码的 MIME 类型。 例如，对于常用的 JSON 编码，这是一种很好的做法 将此属性设置为：应用程序/JSON。<br>回复：通常用于命名回调队列。<br>关联 ID：用于将 RPC 响应与请求相关联。</p>
@@ -944,72 +962,73 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
 <li>客户端等待回调队列中的数据。当消息 出现时，它将检查相关 ID 属性。如果匹配 请求中的值，它将响应返回到 应用。</li>
 </ul>
 <p>服务端,接受请求,计算水仙数</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events<span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>Text</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConnectionFactory</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-<span class="token keyword">using</span> <span class="token keyword">var</span> connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">using</span> <span class="token keyword">var</span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ConnectionFactory</span> <span class="token punctuation">&#123;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
-                     durable<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                     exclusive<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                     autoDelete<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                     arguments<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-channel<span class="token punctuation">.</span><span class="token function">BasicQos</span><span class="token punctuation">(</span>prefetchSize<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> prefetchCount<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">global</span><span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
-                     autoAck<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                     consumer<span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">durable</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">exclusive</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">autoDelete</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">arguments</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">BasicQos</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">prefetchSize</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">prefetchCount</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">global</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">autoAck</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                     <span class="token named-parameter punctuation">consumer</span><span class="token punctuation">:</span> consumer<span class="token punctuation">)</span><span class="token punctuation">;</span>
 Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [x] Awaiting RPC requests"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">string</span> response <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">string</span></span> response <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> props <span class="token operator">=</span> ea<span class="token punctuation">.</span>BasicProperties<span class="token punctuation">;</span>
-    <span class="token keyword">var</span> replyProps <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> props <span class="token operator">=</span> ea<span class="token punctuation">.</span>BasicProperties<span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> replyProps <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     replyProps<span class="token punctuation">.</span>CorrelationId <span class="token operator">=</span> props<span class="token punctuation">.</span>CorrelationId<span class="token punctuation">;</span>
 
     <span class="token keyword">try</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> n <span class="token operator">=</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">" [.] Fib(&amp;#123;message&amp;#125;)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> message <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">int</span></span> n <span class="token operator">=</span> <span class="token keyword">int</span><span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$" [.] Fib(</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">message</span><span class="token punctuation">&#125;</span></span><span class="token string">)"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         response <span class="token operator">=</span> <span class="token function">Fib</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">" [.] &amp;#123;e.Message&amp;#125;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$" [.] </span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">e<span class="token punctuation">.</span>Message</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         response <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     <span class="token keyword">finally</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> responseBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
-                             routingKey<span class="token punctuation">:</span> props<span class="token punctuation">.</span>ReplyTo<span class="token punctuation">,</span>
-                             basicProperties<span class="token punctuation">:</span> replyProps<span class="token punctuation">,</span>
-                             body<span class="token punctuation">:</span> responseBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        channel<span class="token punctuation">.</span><span class="token function">BasicAck</span><span class="token punctuation">(</span>deliveryTag<span class="token punctuation">:</span> ea<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">,</span> multiple<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> responseBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> props<span class="token punctuation">.</span>ReplyTo<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> replyProps<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> responseBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        channel<span class="token punctuation">.</span><span class="token function">BasicAck</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">deliveryTag</span><span class="token punctuation">:</span> ea<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">,</span> <span class="token named-parameter punctuation">multiple</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" Press [enter] to exit."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// Assumes only valid positive integer input.</span>
-<span class="token comment" spellcheck="true">// Don't expect this one to work for big numbers, and it's probably the slowest recursive implementation possible.</span>
-<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">Fib</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token keyword">is</span> <span class="token number">0</span> or <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token comment">// Assumes only valid positive integer input.</span>
+<span class="token comment">// Don't expect this one to work for big numbers, and it's probably the slowest recursive implementation possible.</span>
+<span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> <span class="token function">Fib</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> n<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token keyword">is</span> <span class="token number">0</span> <span class="token keyword">or</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">return</span> n<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     <span class="token keyword">return</span> <span class="token function">Fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">Fib</span><span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>服务器代码相当简单：</p>
 <ul>
 <li>像往常一样，我们首先建立连接、通道并声明 队列。</li>
@@ -1017,90 +1036,91 @@ Console<span class="token punctuation">.</span><span class="token function">Read
 <li>我们使用 BasicConsumption 来访问队列。然后我们注册一个传递处理程序，其中 我们完成工作并将响应发回。</li>
 </ul>
 <p>客户端,发出请求,获取水仙数</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">using</span> System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Concurrent<span class="token punctuation">;</span>
-<span class="token keyword">using</span> System<span class="token punctuation">.</span>Text<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">;</span>
-<span class="token keyword">using</span> RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events<span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>Collections<span class="token punctuation">.</span>Concurrent</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">System<span class="token punctuation">.</span>Text</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">RabbitMQ<span class="token punctuation">.</span>Client<span class="token punctuation">.</span>Events</span><span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RpcClient</span> <span class="token punctuation">:</span> IDisposable
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">string</span> QUEUE_NAME <span class="token operator">=</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RpcClient</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">IDisposable</span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token class-name"><span class="token keyword">string</span></span> QUEUE_NAME <span class="token operator">=</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> IConnection connection<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> IModel channel<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token keyword">string</span> replyQueueName<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> ConcurrentDictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> TaskCompletionSource<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token operator">></span> callbackMapper <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">IConnection</span> connection<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">IModel</span> channel<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name"><span class="token keyword">string</span></span> replyQueueName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">ConcurrentDictionary<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> TaskCompletionSource<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span><span class="token punctuation">></span></span> callbackMapper <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token function">RpcClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConnectionFactory</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ConnectionFactory</span> <span class="token punctuation">&#123;</span> HostName <span class="token operator">=</span> <span class="token string">"localhost"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
         connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">// declare a server-named queue</span>
+        <span class="token comment">// declare a server-named queue</span>
         replyQueueName <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>QueueName<span class="token punctuation">;</span>
-        <span class="token keyword">var</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        consumer<span class="token punctuation">.</span>Received <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>callbackMapper<span class="token punctuation">.</span><span class="token function">TryRemove</span><span class="token punctuation">(</span>ea<span class="token punctuation">.</span>BasicProperties<span class="token punctuation">.</span>CorrelationId<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">var</span> tcs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EventingBasicConsumer</span><span class="token punctuation">(</span>channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        consumer<span class="token punctuation">.</span>Received <span class="token operator">+=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>callbackMapper<span class="token punctuation">.</span><span class="token function">TryRemove</span><span class="token punctuation">(</span>ea<span class="token punctuation">.</span>BasicProperties<span class="token punctuation">.</span>CorrelationId<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">var</span></span> tcs<span class="token punctuation">)</span><span class="token punctuation">)</span>
                 <span class="token keyword">return</span><span class="token punctuation">;</span>
-            <span class="token keyword">var</span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">var</span> response <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> ea<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name"><span class="token keyword">var</span></span> response <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
             tcs<span class="token punctuation">.</span><span class="token function">TrySetResult</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-        channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span>consumer<span class="token punctuation">:</span> consumer<span class="token punctuation">,</span>
-                             queue<span class="token punctuation">:</span> replyQueueName<span class="token punctuation">,</span>
-                             autoAck<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        channel<span class="token punctuation">.</span><span class="token function">BasicConsume</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">consumer</span><span class="token punctuation">:</span> consumer<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> replyQueueName<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">autoAck</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">public</span> Task<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> <span class="token function">CallAsync</span><span class="token punctuation">(</span><span class="token keyword">string</span> message<span class="token punctuation">,</span> CancellationToken cancellationToken <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        IBasicProperties props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> correlationId <span class="token operator">=</span> Guid<span class="token punctuation">.</span><span class="token function">NewGuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span> <span class="token function">CallAsync</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> message<span class="token punctuation">,</span> <span class="token class-name">CancellationToken</span> cancellationToken <span class="token operator">=</span> <span class="token keyword">default</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name">IBasicProperties</span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> correlationId <span class="token operator">=</span> Guid<span class="token punctuation">.</span><span class="token function">NewGuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         props<span class="token punctuation">.</span>CorrelationId <span class="token operator">=</span> correlationId<span class="token punctuation">;</span>
         props<span class="token punctuation">.</span>ReplyTo <span class="token operator">=</span> replyQueueName<span class="token punctuation">;</span>
-        <span class="token keyword">var</span> messageBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> tcs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TaskCompletionSource</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> messageBytes <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> tcs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">TaskCompletionSource<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         callbackMapper<span class="token punctuation">.</span><span class="token function">TryAdd</span><span class="token punctuation">(</span>correlationId<span class="token punctuation">,</span> tcs<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
-                             routingKey<span class="token punctuation">:</span> QUEUE_NAME<span class="token punctuation">,</span>
-                             basicProperties<span class="token punctuation">:</span> props<span class="token punctuation">,</span>
-                             body<span class="token punctuation">:</span> messageBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> QUEUE_NAME<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> props<span class="token punctuation">,</span>
+                             <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> messageBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        cancellationToken<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> callbackMapper<span class="token punctuation">.</span><span class="token function">TryRemove</span><span class="token punctuation">(</span>correlationId<span class="token punctuation">,</span> <span class="token keyword">out</span> _<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cancellationToken<span class="token punctuation">.</span><span class="token function">Register</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> callbackMapper<span class="token punctuation">.</span><span class="token function">TryRemove</span><span class="token punctuation">(</span>correlationId<span class="token punctuation">,</span> <span class="token keyword">out</span> _<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> tcs<span class="token punctuation">.</span>Task<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         connection<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Rpc</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">Main</span><span class="token punctuation">(</span><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"RPC Client"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">string</span> n <span class="token operator">=</span> args<span class="token punctuation">.</span>Length <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">?</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token string">"30"</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">string</span></span> n <span class="token operator">=</span> args<span class="token punctuation">.</span>Length <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">?</span> args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token string">"30"</span><span class="token punctuation">;</span>
         <span class="token keyword">await</span> <span class="token function">InvokeAsync</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" Press [enter] to exit."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         Console<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> Task <span class="token function">InvokeAsync</span><span class="token punctuation">(</span><span class="token keyword">string</span> n<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">using</span> <span class="token keyword">var</span> rpcClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RpcClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">InvokeAsync</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> n<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> rpcClient <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RpcClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [x] Requesting fib(&amp;#123;0&amp;#125;)"</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> response <span class="token operator">=</span> <span class="token keyword">await</span> rpcClient<span class="token punctuation">.</span><span class="token function">CallAsync</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [.] Got '&amp;#123;0&amp;#125;'"</span><span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [x] Requesting fib(&#123;0&#125;)"</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> response <span class="token operator">=</span> <span class="token keyword">await</span> rpcClient<span class="token punctuation">.</span><span class="token function">CallAsync</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">" [.] Got '&#123;0&#125;'"</span><span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 </code></pre>
+
 <p>客户端代码稍微复杂一些：</p>
 <ul>
 <li>我们建立连接和渠道，并声明 用于回复的独占“回调”队列。</li>
@@ -1160,25 +1180,26 @@ Console<span class="token punctuation">.</span><span class="token function">Read
 <h4 id="异步确认发布"><a href="#异步确认发布" class="headerlink" title="异步确认发布"></a>异步确认发布</h4><p>异步确认虽然编程逻辑比上两个要复杂，但是性价比最高，无论是可靠性还是效率都没得说，他是利用回调函数来达到消息可靠性传递的，这个中间件也是通过函数回调来保证是否投递成功，下面就让我们来详细讲解异步确认是怎么实现的。</p>
 <p><img src="https://img-blog.csdnimg.cn/img_convert/ebdb4fed8bea0cddb8e7b2f3b555ddf6.png" alt="异步确认发布"></p>
 <h4 id="TX-机制发布确认"><a href="#TX-机制发布确认" class="headerlink" title="TX 机制发布确认"></a>TX 机制发布确认</h4><p>tx机制可以叫做事务机制，RabbitMQ中有三个与tx机制的方法：txSelect(), txCommit()和txRollback()。 channel.txSelect() 用于将当前channel设置成transaction模式， channel.txCommit() 提交事务， channel.txRollback() 回滚事务。使用tx机制，我们首先要通过txSelect方法开启事务，然后发布消息给broker服务器了，如果txCommit提交成功了，则说明消息成功被broker接收了;如果在txCommit执行之前broker异常崩溃或者由于其他原因抛出异常，这个时候我们可以捕获异常，通过txRollback回滚事务。看一个tx机制的简单实现：</p>
-<pre class=" language-csharp"><code class="language-csharp"> <span class="token keyword">var</span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"> <span class="token class-name"><span class="token keyword">var</span></span> body <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">try</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//开启事务机制</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token comment">//开启事务机制</span>
     channel<span class="token punctuation">.</span><span class="token function">TxSelect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//发送消息</span>
-    channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token string">"myexchange"</span><span class="token punctuation">,</span>
-                            routingKey<span class="token punctuation">:</span> <span class="token string">"mykey"</span><span class="token punctuation">,</span>
-                            basicProperties<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
-                            body<span class="token punctuation">:</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//事务提交</span>
+    <span class="token comment">//发送消息</span>
+    channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"myexchange"</span><span class="token punctuation">,</span>
+                            <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> <span class="token string">"mykey"</span><span class="token punctuation">,</span>
+                            <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//事务提交</span>
     channel<span class="token punctuation">.</span><span class="token function">TxCommit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"【&amp;#123;message&amp;#125;】发送到Broke成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"【</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">message</span><span class="token punctuation">&#125;</span></span><span class="token string">】发送到Broke成功！"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>$<span class="token string">"【&amp;#123;message&amp;#125;】发送到Broker失败！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#123;</span>
+    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"【</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">message</span><span class="token punctuation">&#125;</span></span><span class="token string">】发送到Broker失败！"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     channel<span class="token punctuation">.</span><span class="token function">TxRollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="RabbitMQ的消费模式"><a href="#RabbitMQ的消费模式" class="headerlink" title="RabbitMQ的消费模式"></a>RabbitMQ的消费模式</h3><h4 id="EventingBasicConsumer"><a href="#EventingBasicConsumer" class="headerlink" title="EventingBasicConsumer"></a>EventingBasicConsumer</h4><p>EventingBasicConsumer是发布/订阅模式的消费者，即只要订阅的queue中有了新消息，Broker就会立即把消息推送给消费者，这种模式可以保证消息及时地被消费者接收到。EventingBasicConsumer是长连接的：只需要创建一个Connection,然后在Connection的基础上创建通道channel，消息的发送都是通过channel来执行的，这样可以减少Connection的创建，比较节省资源。</p>
 <h4 id="BasicGet"><a href="#BasicGet" class="headerlink" title="BasicGet"></a>BasicGet</h4><p>那么能不能让消费者作为主动的一方，消费者什么时候想要消息了，就自己发送一个请求去找Broker要？答案使用Get方式。Get方式是短连接的，消费者每次想要消息的时候，首先建立一个Connection，发送一次请求，Broker接收到请求后，响应一条消息给消费者，然后断开连接。RabbitMQ中Get方式和HTTP的请求响应流程基本一样，Get方式的实时性比较差，也比较耗费资源。</p>
 <h3 id="RabbitMQ-死信队列"><a href="#RabbitMQ-死信队列" class="headerlink" title="RabbitMQ 死信队列"></a>RabbitMQ 死信队列</h3><p>“死信”是 RabbitMQ 中的一种消息机制，当你在消费消息时，如果队列里的消息出现以下情况：</p>
@@ -1233,21 +1254,22 @@ Console<span class="token punctuation">.</span><span class="token function">Read
 <p>为什么不用定时任务</p>
 <p>如果数据量比较少，确实可以这样做，但对于数据量比较大，并且时效性较强的场景，如：“订单十分钟内未支付则关闭“，短期内未支付的订单数据可能会有很多，活动期间甚至会达到百万甚至千万级别，对这么庞大的数据量仍旧使用轮询的方式显然是不可取的，很可能在一秒内无法完成所有订单的检查，同时会给数据库带来很大压力，无法满足业务要求而且性能低下。</p>
 <h3 id="RabbitMQ-优先队列"><a href="#RabbitMQ-优先队列" class="headerlink" title="RabbitMQ 优先队列"></a>RabbitMQ 优先队列</h3><p>我们知道queue是先进先出的，即先发送的消息，先被消费。但是在具体业务中可能会遇到要提前处理某些消息的需求，如一个常见的需求：普通客户的消息按先进先出的顺序处理，Vip客户的消息要提前处理。消息实现优先级控制的实现方式是：首先在声明queue是设置队列的x-max-priority属性，然后在publish消息时，设置消息的优先级等级即可。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">//声明队列queue</span>
-channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> <span class="token string">"myqueue"</span><span class="token punctuation">,</span>
-                    durable<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span>
-                    exclusive<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                    autoDelete<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-                    arguments<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                        <span class="token comment" spellcheck="true">//队列优先级最高为10，不加x-max-priority的话，计算发布时设置了消息的优先级也不会生效</span>
-                            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span><span class="token string">"x-max-priority"</span><span class="token punctuation">,</span><span class="token number">10</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-                    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-props<span class="token punctuation">.</span>Priority <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//设置优先级为多少</span>
-channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>exchange<span class="token punctuation">:</span> <span class="token string">"myexchange"</span><span class="token punctuation">,</span>
-                    routingKey<span class="token punctuation">:</span> <span class="token string">"mykey"</span><span class="token punctuation">,</span>
-                    basicProperties<span class="token punctuation">:</span> props<span class="token punctuation">,</span>
-                    body<span class="token punctuation">:</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">//声明队列queue</span>
+channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">queue</span><span class="token punctuation">:</span> <span class="token string">"myqueue"</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">durable</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">exclusive</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">autoDelete</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">arguments</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Dictionary<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                        <span class="token comment">//队列优先级最高为10，不加x-max-priority的话，计算发布时设置了消息的优先级也不会生效</span>
+                            <span class="token punctuation">&#123;</span><span class="token string">"x-max-priority"</span><span class="token punctuation">,</span><span class="token number">10</span> <span class="token punctuation">&#125;</span>
+                    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+props<span class="token punctuation">.</span>Priority <span class="token operator">=</span> <span class="token number">9</span><span class="token punctuation">;</span><span class="token comment">//设置优先级为多少</span>
+channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">exchange</span><span class="token punctuation">:</span> <span class="token string">"myexchange"</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">routingKey</span><span class="token punctuation">:</span> <span class="token string">"mykey"</span><span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">basicProperties</span><span class="token punctuation">:</span> props<span class="token punctuation">,</span>
+                    <span class="token named-parameter punctuation">body</span><span class="token punctuation">:</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <h3 id="RabbitMQ-惰性队列"><a href="#RabbitMQ-惰性队列" class="headerlink" title="RabbitMQ 惰性队列"></a>RabbitMQ 惰性队列</h3><h3 id="RabbitMQ-集群"><a href="#RabbitMQ-集群" class="headerlink" title="RabbitMQ 集群"></a>RabbitMQ 集群</h3><p>RabbitMQ 要求集群中至少有一个磁盘节点，其他节点可以是内存节点，当节点加入或离开集群时，必须要将该变更通知到至少一个磁盘节点。如果只有一个磁盘节点，刚好又是该节点崩溃了，那么集群可以继续路由消息，但不能创建队列、创建交换器、创建绑定、添加用户、更改权限、添加或删除集群节点。也就是说集群中的唯一磁盘节点崩溃的话，集群仍然可以运行，但直到该节点恢复前，无法更改任何东西。</p>
 <h2 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h2><p>todo</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
@@ -1259,6 +1281,7 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wyy1234/p/10868416.html#top">快速掌握RabbitMQ(三)——消息确认、持久化、优先级的C#实现</a></li>
 </ul>
 
+                
             </div>
             <hr/>
 
@@ -1491,6 +1514,8 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1510,9 +1535,7 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是WPF?WPF，全称 Windows Presentation Foundation，中文叫 Windows 呈现基础
-
-欢迎使用 Windows Presentation Foundation (WPF) 桌面指南，这是一个与分辨率
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1561,8 +1584,7 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Redis事务的概念Redis 事务的本质是一组命令的集合。事务支持一次执行多个命令，一个事务中所有命令都会被序列化。在事务执行过程，会按照顺序串行化执行队列中的命令，其他客户端提交的命令请求不会插入到事务执行命令序列中。
-总结说：redi
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1618,16 +1640,9 @@ channel<span class="token punctuation">.</span><span class="token function">Basi
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1785,6 +1800,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1862,10 +1880,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1913,6 +2016,7 @@ $(function () {
 
     
 
+	
     
 
     

@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,6 +470,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="mongodb-是什么-可以做什么"><a href="#mongodb-是什么-可以做什么" class="headerlink" title="mongodb 是什么,可以做什么"></a>mongodb 是什么,可以做什么</h2><blockquote>
@@ -542,76 +551,80 @@
 <p>所有存储在集合中的数据都是 <code>BSON</code> 格式。</p>
 <p><code>BSON</code> 是一种类似 <code>JSON</code> 的二进制形式的存储格式，是 <code>Binary JSON</code> 的简称。</p>
 </blockquote>
-<h3 id="create"><a href="#create" class="headerlink" title="create"></a>create</h3><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 这样就直接创建了一个集合, 并添加了一个文档到集合中</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 'Aurora', gender: 'f', weight: 450&amp;#125;)</span>
+<h3 id="create"><a href="#create" class="headerlink" title="create"></a>create</h3><pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 这样就直接创建了一个集合, 并添加了一个文档到集合中</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">insert</span><span class="token punctuation">(</span>&#123;name: <span class="token string">'Aurora'</span><span class="token punctuation">,</span> gender: <span class="token string">'f'</span><span class="token punctuation">,</span> weight: <span class="token number">450</span>&#125;<span class="token punctuation">)</span>
 
-<span class="token comment" spellcheck="true">-- 要插入单个文档，请使用</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>insertOne<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+<span class="token comment">-- 要插入单个文档，请使用</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>insertOne<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
 
-<span class="token comment" spellcheck="true">-- 要插入多个文档，请使用</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>insertMany<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+<span class="token comment">-- 要插入多个文档，请使用</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>insertMany<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
 </code></pre>
-<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- $lt、$lte、$gt、$gte以及$ne分别表示小于、小于或等于、大于、大于或等于以及不等于</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;gender: 'm', weight: &amp;#123;$gt: 700&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 或者 (效果并不完全一样，仅用来为了演示不同的方法)</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;gender: &amp;#123;$ne: 'f'&amp;#125;, weight: &amp;#123;$gte: 701&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- $exists操作符用于匹配一个域是否存在，比如下面的命令：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;vampires: &amp;#123;$exists: false&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 会返回单个文档（译者：只有这个文档没有vampires域）。如果需要或而不是与，可以用$or操作符并作用于需要进行或操作的数组：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;gender: 'f', $or: [&amp;#123;loves: 'apple'&amp;#125;, &amp;#123;loves: 'orange'&amp;#125;, &amp;#123;weight: &amp;#123;$lt: 500&amp;#125;&amp;#125;]&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- $in</span>
-<span class="token number">db</span><span class="token punctuation">.</span>movies<span class="token punctuation">.</span>find<span class="token punctuation">(</span> <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123; rated: &amp;#123; $in: [ "PG", "PG-13" ] &amp;#125; &amp;#125; )</span>
-<span class="token comment" spellcheck="true"># 查询 title 包含"教"字的文档：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;title:/教/&amp;#125;)</span>
 
-<span class="token comment" spellcheck="true"># 查询 title 字段以"教"字开头的文档：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;title:/^教/&amp;#125;)</span>
+<h3 id="read"><a href="#read" class="headerlink" title="read"></a>read</h3><pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- $lt、$lte、$gt、$gte以及$ne分别表示小于、小于或等于、大于、大于或等于以及不等于</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;gender: <span class="token string">'m'</span><span class="token punctuation">,</span> weight: &#123;$gt: <span class="token number">700</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 或者 (效果并不完全一样，仅用来为了演示不同的方法)</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;gender: &#123;$ne: <span class="token string">'f'</span>&#125;<span class="token punctuation">,</span> weight: &#123;$gte: <span class="token number">701</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- $exists操作符用于匹配一个域是否存在，比如下面的命令：</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;vampires: &#123;$<span class="token keyword">exists</span>: <span class="token boolean">false</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 会返回单个文档（译者：只有这个文档没有vampires域）。如果需要或而不是与，可以用$or操作符并作用于需要进行或操作的数组：</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;gender: <span class="token string">'f'</span><span class="token punctuation">,</span> $<span class="token operator">or</span>: <span class="token punctuation">[</span>&#123;loves: <span class="token string">'apple'</span>&#125;<span class="token punctuation">,</span> &#123;loves: <span class="token string">'orange'</span>&#125;<span class="token punctuation">,</span> &#123;weight: &#123;$lt: <span class="token number">500</span>&#125;&#125;<span class="token punctuation">]</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- $in</span>
+db<span class="token punctuation">.</span>movies<span class="token punctuation">.</span>find<span class="token punctuation">(</span> &#123; rated: &#123; $<span class="token operator">in</span>: <span class="token punctuation">[</span> <span class="token string">"PG"</span><span class="token punctuation">,</span> <span class="token string">"PG-13"</span> <span class="token punctuation">]</span> &#125; &#125; <span class="token punctuation">)</span>
+<span class="token comment"># 查询 title 包含"教"字的文档：</span>
+db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;title:<span class="token operator">/</span>教<span class="token operator">/</span>&#125;<span class="token punctuation">)</span>
 
-<span class="token comment" spellcheck="true"># 查询 titl e字段以"教"字结尾的文档：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;title:/教$/&amp;#125;)</span>
+<span class="token comment"># 查询 title 字段以"教"字开头的文档：</span>
+db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;title:<span class="token operator">/</span><span class="token operator">^</span>教<span class="token operator">/</span>&#125;<span class="token punctuation">)</span>
+
+<span class="token comment"># 查询 titl e字段以"教"字结尾的文档：</span>
+db<span class="token punctuation">.</span>col<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;title:<span class="token operator">/</span>教$<span class="token operator">/</span>&#125;<span class="token punctuation">)</span>
 </code></pre>
-<h3 id="update"><a href="#update" class="headerlink" title="update"></a>update</h3><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- update最简单的执行方式有两个参数：一个是选择器(选择更新的范围)，一个是需要更新的域。如果Roooooodles长胖了，我们就需要：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 'Roooooodles'&amp;#125;, &amp;#123;weight: 590&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 注意, 这个命令的第二个参数是会把整个文档更新, 而不是只更新那一个域, 单独更改一个域需要使用$set</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;weight: 590&amp;#125;, &amp;#123;$set: &amp;#123;name: 'Roooooodles', dob: new Date(1979, 7, 18, 18, 44), loves: ['apple'], gender: 'm', vampires: 99&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 所以这样去更新</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 'Roooooodles'&amp;#125;, &amp;#123;$set: &amp;#123;weight: 590&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- $inc 可以用来将一个域的值增加一个正的或负的数值</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 'Pilot'&amp;#125;, &amp;#123;$inc: &amp;#123;vampires: -2&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- $push 可以给数组增加</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 'Aurora'&amp;#125;, &amp;#123;$push: &amp;#123;loves: 'sugar'&amp;#125;&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- update 方法还支持 如果对象文档存在, 就更新该文档, 否就是插入该文档</span>
-<span class="token number">db</span><span class="token punctuation">.</span>hits<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;page: 'unicorns'&amp;#125;, &amp;#123;$inc: &amp;#123;hits: 1&amp;#125;&amp;#125;, true);</span>
-<span class="token comment" spellcheck="true">-- update最后的一个惊喜是，它会默认地只更新一个文档</span>
-<span class="token comment" spellcheck="true">-- 您想要做的应该是找出所有已经注射过疫苗（vaccinated）的独角兽，但为了达到这样的目的，需要把第四个参数设为true：</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;, &amp;#123;$set: &amp;#123;vaccinated: true &amp;#125;&amp;#125;, false, true);</span>
-<span class="token comment" spellcheck="true">-- 投影 在find的第二个参数就可以选择要投影的域</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;&amp;#125;,&amp;#123;name:1,loves:1&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 排序 标明哪些域需要排序，用1表示升序，用-1表示降序</span>
-<span class="token comment" spellcheck="true">-- 最重的独角兽排在第一</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;weight: -1&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 优先按名字排序再按吸血技能排序</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;name: 1, vampires: -1&amp;#125;)</span>
-<span class="token comment" spellcheck="true">-- 分页</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;weight: -1&amp;#125;).limit(2).skip(1)</span>
-<span class="token comment" spellcheck="true">-- 计数</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;vampires: &amp;#123;$gt: 50&amp;#125;&amp;#125;)</span>
-<span class="token number">db</span><span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;vampires: &amp;#123;$gt: 50&amp;#125;&amp;#125;).count()</span>
-<span class="token comment" spellcheck="true">-- query ：可选，使用查询操作符指定查询条件</span>
-<span class="token comment" spellcheck="true">-- projection ：可选，使用投影操作符指定返回的键。若不指定 projection，则默认返回所有键（默认省略）。</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>find<span class="token punctuation">(</span>query<span class="token punctuation">,</span> projection<span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">-- 向指定集合更新单个文档</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>updateOne<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">-- 向指定集合更新多个文档</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>updateMany<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<h3 id="update"><a href="#update" class="headerlink" title="update"></a>update</h3><pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- update最简单的执行方式有两个参数：一个是选择器(选择更新的范围)，一个是需要更新的域。如果Roooooodles长胖了，我们就需要：</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;name: <span class="token string">'Roooooodles'</span>&#125;<span class="token punctuation">,</span> &#123;weight: <span class="token number">590</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 注意, 这个命令的第二个参数是会把整个文档更新, 而不是只更新那一个域, 单独更改一个域需要使用$set</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;weight: <span class="token number">590</span>&#125;<span class="token punctuation">,</span> &#123;$<span class="token keyword">set</span>: &#123;name: <span class="token string">'Roooooodles'</span><span class="token punctuation">,</span> dob: new <span class="token keyword">Date</span><span class="token punctuation">(</span><span class="token number">1979</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">)</span><span class="token punctuation">,</span> loves: <span class="token punctuation">[</span><span class="token string">'apple'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> gender: <span class="token string">'m'</span><span class="token punctuation">,</span> vampires: <span class="token number">99</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 所以这样去更新</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;name: <span class="token string">'Roooooodles'</span>&#125;<span class="token punctuation">,</span> &#123;$<span class="token keyword">set</span>: &#123;weight: <span class="token number">590</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- $inc 可以用来将一个域的值增加一个正的或负的数值</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;name: <span class="token string">'Pilot'</span>&#125;<span class="token punctuation">,</span> &#123;$inc: &#123;vampires: <span class="token operator">-</span><span class="token number">2</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- $push 可以给数组增加</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;name: <span class="token string">'Aurora'</span>&#125;<span class="token punctuation">,</span> &#123;$push: &#123;loves: <span class="token string">'sugar'</span>&#125;&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- update 方法还支持 如果对象文档存在, 就更新该文档, 否就是插入该文档</span>
+db<span class="token punctuation">.</span>hits<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;page: <span class="token string">'unicorns'</span>&#125;<span class="token punctuation">,</span> &#123;$inc: &#123;hits: <span class="token number">1</span>&#125;&#125;<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- update最后的一个惊喜是，它会默认地只更新一个文档</span>
+<span class="token comment">-- 您想要做的应该是找出所有已经注射过疫苗（vaccinated）的独角兽，但为了达到这样的目的，需要把第四个参数设为true：</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token keyword">update</span><span class="token punctuation">(</span>&#123;&#125;<span class="token punctuation">,</span> &#123;$<span class="token keyword">set</span>: &#123;vaccinated: <span class="token boolean">true</span> &#125;&#125;<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- 投影 在find的第二个参数就可以选择要投影的域</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;&#125;<span class="token punctuation">,</span>&#123;name:<span class="token number">1</span><span class="token punctuation">,</span>loves:<span class="token number">1</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 排序 标明哪些域需要排序，用1表示升序，用-1表示降序</span>
+<span class="token comment">-- 最重的独角兽排在第一</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span>&#123;weight: <span class="token operator">-</span><span class="token number">1</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 优先按名字排序再按吸血技能排序</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span>&#123;name: <span class="token number">1</span><span class="token punctuation">,</span> vampires: <span class="token operator">-</span><span class="token number">1</span>&#125;<span class="token punctuation">)</span>
+<span class="token comment">-- 分页</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>sort<span class="token punctuation">(</span>&#123;weight: <span class="token operator">-</span><span class="token number">1</span>&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">limit</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>skip<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment">-- 计数</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span>&#123;vampires: &#123;$gt: <span class="token number">50</span>&#125;&#125;<span class="token punctuation">)</span>
+db<span class="token punctuation">.</span>unicorns<span class="token punctuation">.</span>find<span class="token punctuation">(</span>&#123;vampires: &#123;$gt: <span class="token number">50</span>&#125;&#125;<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">-- query ：可选，使用查询操作符指定查询条件</span>
+<span class="token comment">-- projection ：可选，使用投影操作符指定返回的键。若不指定 projection，则默认返回所有键（默认省略）。</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>find<span class="token punctuation">(</span>query<span class="token punctuation">,</span> projection<span class="token punctuation">)</span>
+<span class="token comment">-- 向指定集合更新单个文档</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>updateOne<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">-- 向指定集合更新多个文档</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>updateMany<span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
-<h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 即使多个文档可能与指定过滤器匹配，也最多删除一个与指定过滤器匹配的文档。 3.2版中的新功能</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>deleteOne<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">-- 删除所有与指定过滤器匹配的文档。 3.2版中的新功能</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>deleteMany<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">-- 删除单个文档或与指定过滤器匹配的所有文档。</span>
-<span class="token number">db</span><span class="token punctuation">.</span>collection<span class="token punctuation">.</span>remove<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 即使多个文档可能与指定过滤器匹配，也最多删除一个与指定过滤器匹配的文档。 3.2版中的新功能</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>deleteOne<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">-- 删除所有与指定过滤器匹配的文档。 3.2版中的新功能</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>deleteMany<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">-- 删除单个文档或与指定过滤器匹配的所有文档。</span>
+db<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>remove<span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
+
 <h3 id="ObjectId"><a href="#ObjectId" class="headerlink" title="ObjectId"></a>ObjectId</h3><ul>
 <li>前 4 个字节表示时间戳</li>
 <li>接下来的 3 个字节是机器标识码</li>
@@ -619,347 +632,352 @@
 <li>最后三个字节是随机数。</li>
 </ul>
 <h3 id="一些初始化数据"><a href="#一些初始化数据" class="headerlink" title="一些初始化数据"></a>一些初始化数据</h3><p><img src="https://img2018.cnblogs.com/blog/1007918/201906/1007918-20190613220902900-1323060044.png" alt="查询"></p>
-<pre class=" language-js"><code class="language-js">db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">insertMany</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    _id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
-    level<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
-    ename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> firstname<span class="token punctuation">:</span> <span class="token string">"san"</span><span class="token punctuation">,</span> lastname<span class="token punctuation">:</span> <span class="token string">"zhang"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    roles<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">,</span> <span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    _id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token string">"李四"</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
-    level<span class="token punctuation">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
-    ename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> firstname<span class="token punctuation">:</span> <span class="token string">"si"</span><span class="token punctuation">,</span> lastname<span class="token punctuation">:</span> <span class="token string">"li"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    roles<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    _id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token string">"王五"</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
-    level<span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
-    ename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> firstname<span class="token punctuation">:</span> <span class="token string">"wu"</span><span class="token punctuation">,</span> lastname<span class="token punctuation">:</span> <span class="token string">"wang"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    roles<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">,</span> <span class="token string">"vip"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    _id<span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token string">"赵六"</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">26</span><span class="token punctuation">,</span>
-    level<span class="token punctuation">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
-    ename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> firstname<span class="token punctuation">:</span> <span class="token string">"liu"</span><span class="token punctuation">,</span> lastname<span class="token punctuation">:</span> <span class="token string">"zhao"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    roles<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    _id<span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token string">"田七"</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">27</span><span class="token punctuation">,</span>
-    ename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> firstname<span class="token punctuation">:</span> <span class="token string">"qi"</span><span class="token punctuation">,</span> lastname<span class="token punctuation">:</span> <span class="token string">"tian"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    address<span class="token punctuation">:</span> <span class="token string">"北京"</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">"周八"</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">28</span><span class="token punctuation">,</span> roles<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> address<span class="token punctuation">:</span> <span class="token string">"上海"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript">db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">insertMany</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">ename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">firstname</span><span class="token operator">:</span> <span class="token string">"san"</span><span class="token punctuation">,</span> <span class="token literal-property property">lastname</span><span class="token operator">:</span> <span class="token string">"zhang"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">,</span> <span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"李四"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">ename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">firstname</span><span class="token operator">:</span> <span class="token string">"si"</span><span class="token punctuation">,</span> <span class="token literal-property property">lastname</span><span class="token operator">:</span> <span class="token string">"li"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"王五"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">ename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">firstname</span><span class="token operator">:</span> <span class="token string">"wu"</span><span class="token punctuation">,</span> <span class="token literal-property property">lastname</span><span class="token operator">:</span> <span class="token string">"wang"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">,</span> <span class="token string">"vip"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"赵六"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">26</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">ename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">firstname</span><span class="token operator">:</span> <span class="token string">"liu"</span><span class="token punctuation">,</span> <span class="token literal-property property">lastname</span><span class="token operator">:</span> <span class="token string">"zhao"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"田七"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">27</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">ename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">firstname</span><span class="token operator">:</span> <span class="token string">"qi"</span><span class="token punctuation">,</span> <span class="token literal-property property">lastname</span><span class="token operator">:</span> <span class="token string">"tian"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">address</span><span class="token operator">:</span> <span class="token string">"北京"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"周八"</span><span class="token punctuation">,</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token literal-property property">address</span><span class="token operator">:</span> <span class="token string">"上海"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-<h3 id="增删改查演示"><a href="#增删改查演示" class="headerlink" title="增删改查演示"></a>增删改查演示</h3><pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//查找age>25的文档的name</span>
+
+<h3 id="增删改查演示"><a href="#增删改查演示" class="headerlink" title="增删改查演示"></a>增删改查演示</h3><pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//查找age>25的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $gt<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$gt</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查找age&lt;25的文档的name</span>
+<span class="token comment">//查找age&lt;25的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $lt<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$lt</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age=25的文档的name</span>
+<span class="token comment">//查询age=25的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $eq<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age!=25的文档的name</span>
+<span class="token comment">//查询age!=25的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $ne<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$ne</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age在[24,25]中的文档的name</span>
+<span class="token comment">//查询age在[24,25]中的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $<span class="token keyword">in</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      $<span class="token keyword">in</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age不在[24,25]中的文档的name</span>
+<span class="token comment">//查询age不在[24,25]中的文档的name</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $nin<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$nin</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name='张三'且age=23的文档</span>
+<span class="token comment">//查询name='张三'且age=23的文档</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $eq<span class="token punctuation">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $eq<span class="token punctuation">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age不在[23,24,25]中的文档</span>
+<span class="token comment">//查询age不在[23,24,25]中的文档</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $not<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        $<span class="token keyword">in</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$not</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        $<span class="token keyword">in</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      $nin<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">$nin</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name='张三'或者age=24的文档</span>
+<span class="token comment">//查询name='张三'或者age=24的文档</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $or<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          $eq<span class="token punctuation">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          $eq<span class="token punctuation">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$or</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
     <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-    age<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//取反($nor)name='张三'或者age=24的文档</span>
+<span class="token comment">//取反($nor)name='张三'或者age=24的文档</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $nor<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          $eq<span class="token punctuation">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-          $eq<span class="token punctuation">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-      <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$nor</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token number">24</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
     <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    name<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name%10=3的文档</span>
+<span class="token comment">//查询name%10=3的文档</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $mod<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$mod</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name以张开头的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $regex<span class="token punctuation">:</span> <span class="token operator">/</span><span class="token operator">^</span>张<span class="token operator">/</span>i <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token operator">/</span><span class="token operator">^</span>张<span class="token operator">/</span>i <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name以张开头或者以四结尾的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">in</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token regex">/^张/</span><span class="token punctuation">,</span> <span class="token operator">/</span>四$<span class="token operator">/</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询名字为张三的记录</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询age&lt;level的记录</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $expr<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $lt<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"$age"</span><span class="token punctuation">,</span> <span class="token string">"$level"</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询存在address字段的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  address<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $exists<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询name为string的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  name<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $type<span class="token punctuation">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  level<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $type<span class="token punctuation">:</span> <span class="token string">"number"</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询roles中包含vip和gen的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  roles<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $all<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">,</span> <span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询roles中有元素等于vip，或有元素不等于gen的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> roles<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $elemMatch<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $eq<span class="token punctuation">:</span> <span class="token string">"vip"</span><span class="token punctuation">,</span> $ne<span class="token punctuation">:</span> <span class="token string">"gen"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//查询roles中有两个元素的文档</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> roles<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $size<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token comment">//查询name以张开头的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$regex</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^张</span><span class="token regex-delimiter">/</span><span class="token regex-flags">i</span></span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^张</span><span class="token regex-delimiter">/</span><span class="token regex-flags">i</span></span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询name以张开头或者以四结尾的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> $<span class="token keyword">in</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^张</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">四$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询名字为张三的记录</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询age&lt;level的记录</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">$expr</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$lt</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"$age"</span><span class="token punctuation">,</span> <span class="token string">"$level"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询存在address字段的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">address</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$exists</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询name为string的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$type</span><span class="token operator">:</span> <span class="token string">"string"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$type</span><span class="token operator">:</span> <span class="token string">"number"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询roles中包含vip和gen的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$all</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"vip"</span><span class="token punctuation">,</span> <span class="token string">"gen"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询roles中有元素等于vip，或有元素不等于gen的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$elemMatch</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$eq</span><span class="token operator">:</span> <span class="token string">"vip"</span><span class="token punctuation">,</span> <span class="token literal-property property">$ne</span><span class="token operator">:</span> <span class="token string">"gen"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//查询roles中有两个元素的文档</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">roles</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$size</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>修改</p>
 <p><img src="https://img2018.cnblogs.com/blog/1007918/201906/1007918-20190616114751086-971432921.png" alt="修改"></p>
 <p>mongoDB 的 update 默认只修改一条 document，如果想修改所有符合条件的 documet 的话，可以设置 multi:true。upsert 表示当没有符合过滤条件的文档时，就添加一条文档，并将修改的内容作为新增 document 的值。mongoDB 的 update 功能比较丰富，如可以修改 field 的名字，删除 field，以及对数组进行增删改。从 3.2 版本开始，mongoDB 添加了 updateOne()和 updateMany()方法，用于修改单条或者多条数据，推荐使用新的方法，语法如下：</p>
-<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//将age&lt;25的记录的level修改为50，只修改一条。updateOne相当于update设置multi:false</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $lt<span class="token punctuation">:</span> <span class="token number">25</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> level<span class="token punctuation">:</span> <span class="token number">50</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//将age&lt;25的记录的level修改为50，所有符合条件的记录都修改。updateMany相当于update设置multi:true</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">updateMany</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $lt<span class="token punctuation">:</span> <span class="token number">25</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> level<span class="token punctuation">:</span> <span class="token number">50</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">/*
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//将age&lt;25的记录的level修改为50，只修改一条。updateOne相当于update设置multi:false</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$lt</span><span class="token operator">:</span> <span class="token number">25</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//将age&lt;25的记录的level修改为50，所有符合条件的记录都修改。updateMany相当于update设置multi:true</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">updateMany</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$lt</span><span class="token operator">:</span> <span class="token number">25</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*
 将张三的createtime字段值修改为当前时间
 格式为时间戳("createtime" : Timestamp(1560663270, 1))
 补充:如果不设置$type，默认的格式为date
 格式为date("createtime" : ISODate("2019-06-16T05:38:21.119Z"))
 */</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    $currentDate<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      createtime<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $type<span class="token punctuation">:</span> <span class="token string">"timestamp"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">$currentDate</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">createtime</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$type</span><span class="token operator">:</span> <span class="token string">"timestamp"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//将张三的level修改为20。如果要修改的field不存在，不会添加新的field。</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> level<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//添加一个name=吴九的document，并设置level为30</span>
+<span class="token comment">//将张三的level修改为20。如果要修改的field不存在，不会添加新的field。</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">20</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//添加一个name=吴九的document，并设置level为30</span>
 db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"吴九"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $setOnInsert<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> level<span class="token punctuation">:</span> <span class="token number">30</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> upsert<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"吴九"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">$setOnInsert</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">level</span><span class="token operator">:</span> <span class="token number">30</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">upsert</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//张三的age自增10，age修改为23+10=33</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $inc<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token number">10</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//张三的age自乘2，age修改为23*2=46</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $mul<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//张三的age取小值，因为23>13,所以修改age为13。如果修改的值比23大，那么不做操作。</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $min<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token number">13</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//张三的age取大值，因为23&lt;33,所以修改age为33。如果修改的值比23小，那么不做操作。</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $max<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token number">33</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//将张三的age字段名改成年龄，值不变，年龄=23</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $rename<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token string">"年龄"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//将张三的年龄字段删除</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> name<span class="token punctuation">:</span> <span class="token string">"张三"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $unset<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> 年龄<span class="token punctuation">:</span> <span class="token string">""</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//张三的age自增10，age修改为23+10=33</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$inc</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">10</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//张三的age自乘2，age修改为23*2=46</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$mul</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//张三的age取小值，因为23>13,所以修改age为13。如果修改的值比23大，那么不做操作。</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$min</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">13</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//张三的age取大值，因为23&lt;33,所以修改age为33。如果修改的值比23小，那么不做操作。</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$max</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">33</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//将张三的age字段名改成年龄，值不变，年龄=23</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$rename</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token string">"年龄"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//将张三的年龄字段删除</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"张三"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$unset</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">年龄</span><span class="token operator">:</span> <span class="token string">""</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//数组相关</span>
-<span class="token comment" spellcheck="true">//初始化数据</span>
+<span class="token comment">//数组相关</span>
+<span class="token comment">//初始化数据</span>
 db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">insertMany</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> grades<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">85</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> grades<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">,</span> <span class="token number">92</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">85</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">,</span> <span class="token number">92</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//修改_id=1的文档graders中第一个值为80的元素，值改成82</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> grades<span class="token punctuation">:</span> <span class="token number">80</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"grades.$"</span><span class="token punctuation">:</span> <span class="token number">82</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//修改_id=1的文档graders中所有元素，值改成100</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"grades.$[]"</span><span class="token punctuation">:</span> <span class="token number">100</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//修改_id=2的文档graders中大于等于90的元素，值改成100</span>
+<span class="token comment">//修改_id=1的文档graders中第一个值为80的元素，值改成82</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token number">80</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token string-property property">"grades.$"</span><span class="token operator">:</span> <span class="token number">82</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//修改_id=1的文档graders中所有元素，值改成100</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token string-property property">"grades.$[]"</span><span class="token operator">:</span> <span class="token number">100</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//修改_id=2的文档graders中大于等于90的元素，值改成100</span>
 db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> grades<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $elemMatch<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $gte<span class="token punctuation">:</span> <span class="token number">90</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $<span class="token keyword">set</span><span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"grades.$"</span><span class="token punctuation">:</span> <span class="token number">100</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$elemMatch</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$gte</span><span class="token operator">:</span> <span class="token number">90</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">$set</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token string-property property">"grades.$"</span><span class="token operator">:</span> <span class="token number">100</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//在_id=1的文档graders中添加元素</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $push<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token number">98</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//在_id=1的文档graders中添加元素 如果添加的元素是85，因为85已经存在，所以不执行操作</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $addToSet<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//移除最后一个元素 如果&amp;#123; $pop: &amp;#123; "grades" : -1 &amp;#125; &amp;#125;表示从前边弹出，移除第一个元素</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $pop<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//移除_id=2的文档的graders中值为88,90的所有元素</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $pullAll<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//移除_id=2的文档的graders中大于90的所有元素</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $pull<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $gt<span class="token punctuation">:</span> <span class="token number">90</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//在_id=1的文档graders中添加元素[99,100] 实测不行</span>
-db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $push<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $each<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">99</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">// $slice 和$push,$each配合使用，用于限制元素个数 实测不行</span>
+<span class="token comment">//在_id=1的文档graders中添加元素</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$push</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token number">98</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//在_id=1的文档graders中添加元素 如果添加的元素是85，因为85已经存在，所以不执行操作</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$addToSet</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token number">100</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//移除最后一个元素 如果&#123; $pop: &#123; "grades" : -1 &#125; &#125;表示从前边弹出，移除第一个元素</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">updateOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$pop</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//移除_id=2的文档的graders中值为88,90的所有元素</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$pullAll</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">88</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//移除_id=2的文档的graders中大于90的所有元素</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$pull</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$gt</span><span class="token operator">:</span> <span class="token number">90</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//在_id=1的文档graders中添加元素[99,100] 实测不行</span>
+db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$push</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$each</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">99</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// $slice 和$push,$each配合使用，用于限制元素个数 实测不行</span>
 db<span class="token punctuation">.</span>students<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $push<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> grades<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $each<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">99</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span> $slice<span class="token punctuation">:</span> <span class="token number">4</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">$push</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">grades</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$each</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">99</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token literal-property property">$slice</span><span class="token operator">:</span> <span class="token number">4</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <ul>
 <li>删除</li>
 </ul>
 <p><img src="https://img2018.cnblogs.com/blog/1007918/201906/1007918-20190616143017259-1159581044.png" alt="删除"></p>
-<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//删除单条document，功能类似于remove设置justOne:true</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">deleteOne</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $gt<span class="token punctuation">:</span> <span class="token number">25</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//删除所有符合条件的document，功能类似于remove设置justOne:false</span>
-db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">deleteMany</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> age<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $gt<span class="token punctuation">:</span> <span class="token number">25</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//删除单条document，功能类似于remove设置justOne:true</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">deleteOne</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$gt</span><span class="token operator">:</span> <span class="token number">25</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//删除所有符合条件的document，功能类似于remove设置justOne:false</span>
+db<span class="token punctuation">.</span>userinfos<span class="token punctuation">.</span><span class="token function">deleteMany</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$gt</span><span class="token operator">:</span> <span class="token number">25</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <ul>
 <li><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">聚集操作</a></li>
 </ul>
-<pre class=" language-js"><code class="language-js"><span class="token comment" spellcheck="true">//准备测试数据</span>
+<pre class="language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//准备测试数据</span>
 db<span class="token punctuation">.</span>orders<span class="token punctuation">.</span><span class="token function">insertMany</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> cust_id<span class="token punctuation">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> amount<span class="token punctuation">:</span> <span class="token number">500</span><span class="token punctuation">,</span> status<span class="token punctuation">:</span> <span class="token string">"A"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> cust_id<span class="token punctuation">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> amount<span class="token punctuation">:</span> <span class="token number">250</span><span class="token punctuation">,</span> status<span class="token punctuation">:</span> <span class="token string">"A"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> cust_id<span class="token punctuation">:</span> <span class="token string">"B212"</span><span class="token punctuation">,</span> amount<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> status<span class="token punctuation">:</span> <span class="token string">"A"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> cust_id<span class="token punctuation">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> amount<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> status<span class="token punctuation">:</span> <span class="token string">"D"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">cust_id</span><span class="token operator">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> <span class="token literal-property property">amount</span><span class="token operator">:</span> <span class="token number">500</span><span class="token punctuation">,</span> <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token string">"A"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">cust_id</span><span class="token operator">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> <span class="token literal-property property">amount</span><span class="token operator">:</span> <span class="token number">250</span><span class="token punctuation">,</span> <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token string">"A"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">cust_id</span><span class="token operator">:</span> <span class="token string">"B212"</span><span class="token punctuation">,</span> <span class="token literal-property property">amount</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span> <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token string">"A"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">cust_id</span><span class="token operator">:</span> <span class="token string">"A123"</span><span class="token punctuation">,</span> <span class="token literal-property property">amount</span><span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span> <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token string">"D"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//聚合操作</span>
+<span class="token comment">//聚合操作</span>
 db<span class="token punctuation">.</span>orders<span class="token punctuation">.</span><span class="token function">aggregate</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $match<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> status<span class="token punctuation">:</span> <span class="token string">"A"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-  <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $group<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> _id<span class="token punctuation">:</span> <span class="token string">"$cust_id"</span><span class="token punctuation">,</span> total<span class="token punctuation">:</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> $sum<span class="token punctuation">:</span> <span class="token string">"$amount"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">$match</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">status</span><span class="token operator">:</span> <span class="token string">"A"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span> <span class="token literal-property property">$group</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">_id</span><span class="token operator">:</span> <span class="token string">"$cust_id"</span><span class="token punctuation">,</span> <span class="token literal-property property">total</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">$sum</span><span class="token operator">:</span> <span class="token string">"$amount"</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">/**
+<span class="token comment">/**
  * 　
  * 第一阶段：$match会筛选出status="A"的documents，并把筛选出的document传给下一个阶段；
  * 第二阶段：$group将上一阶段传过来的documents通过cust_id进行分组，并合计各组的amount。
  * 常用聚合运算符
  * $lookup,$match,$project,$group,$sort,$skip,$limit,$out
  */</span></code></pre>
+
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/efew212efe/article/details/124524863">MongoDB 超详细教程（保姆级）</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/justinyhuang/the-little-mongodb-book-cn/blob/master/mongodb.md">the-little-mongodb-book</a></li>
@@ -968,6 +986,7 @@ db<span class="token punctuation">.</span>orders<span class="token punctuation">
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wyy1234/p/10919567.html">快速掌握 mongoDB(一)——mongoDB 安装部署和常用 shell 命令</a></li>
 </ul>
 
+                
             </div>
             <hr/>
 
@@ -1196,6 +1215,8 @@ db<span class="token punctuation">.</span>orders<span class="token punctuation">
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1215,8 +1236,7 @@ db<span class="token punctuation">.</span>orders<span class="token punctuation">
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            csharpdotnetaspnetcoreefcoredb 数据库design_pattern 设计模式Scene design 场景设计, 遇到这种场景,如何设计程序ddd 领域驱动设计other 其他
-面向对象的三大特性说说看什么是多
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1265,10 +1285,7 @@ db<span class="token punctuation">.</span>orders<span class="token punctuation">
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            redis 是什么,可以做什么Redis是现在最受欢迎的NoSQL数据库之一，Redis是一个使用ANSI C编写的开源、包含多种数据结构、支持网络、基于内存、可选持久性的键值对存储数据库，其具备如下特性：
-
-基于内存运行，性能高效
-支持分
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1324,16 +1341,9 @@ db<span class="token punctuation">.</span>orders<span class="token punctuation">
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1491,6 +1501,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1568,10 +1581,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1619,6 +1717,7 @@ $(function () {
 
     
 
+	
     
 
     

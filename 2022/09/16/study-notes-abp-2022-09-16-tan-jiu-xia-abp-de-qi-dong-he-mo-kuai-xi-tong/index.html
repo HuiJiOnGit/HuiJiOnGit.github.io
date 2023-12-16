@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,41 +470,51 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="探究下abp的启动和模块系统"><a href="#探究下abp的启动和模块系统" class="headerlink" title="探究下abp的启动和模块系统"></a>探究下abp的启动和模块系统</h2><p>当你创建一个新的abp应用,你会发现,它的<code>Startup</code>文件特别简洁,如下所示:</p>
-<pre class=" language-c#"><code class="language-c#">public void ConfigureServices(IServiceCollection services)
+<pre class="language-c#" data-language="c#"><code class="language-c#">public void ConfigureServices(IServiceCollection services)
 &#123;
-    services.AddApplication<BookStoreWebModule>();
+    services.AddApplication&lt;BookStoreWebModule&gt;();
 &#125;
 
 public void Configure(IApplicationBuilder app)
 &#123;
     app.InitializeApplication();
 &#125;</code></pre>
+
 <p>这是怎么做到的? 现在让我一探究竟</p>
 <blockquote>
 <p>它分两步做，相互独立的，它抽象相应的接口，<br>1、将模块的列表遍历注册服务到容器，分三个阶段PreConfigureServices（预注册）、ConfigureServices（注册）、PostConfigureServices（注册后）。<br>2，应用的初始化，即将设置服务提供方ServiceProvider,并执行四个生命周期函数，OnPreApplicationInitialization，OnApplicationInitialization、OnPostApplicationInitialization、OnApplicationShutdown</p>
 </blockquote>
 <h3 id="ConfigureServices的AddApplication"><a href="#ConfigureServices的AddApplication" class="headerlink" title="ConfigureServices的AddApplication"></a><code>ConfigureServices</code>的<code>AddApplication</code></h3><p>首先看看<code>AddApplication&lt;BookStoreWebModule&gt;()</code>这个方法,通过对源码的查找, 这实际是一个扩展方法</p>
-<pre class=" language-c#"><code class="language-c#">public static IAbpApplicationWithExternalServiceProvider AddApplication<TStartupModule>(
+<pre class="language-c#" data-language="c#"><code class="language-c#">public static IAbpApplicationWithExternalServiceProvider AddApplication&lt;TStartupModule&gt;(
     [NotNull] this IServiceCollection services,
-    [CanBeNull] Action<AbpApplicationCreationOptions> optionsAction = null)
+    [CanBeNull] Action&lt;AbpApplicationCreationOptions&gt; optionsAction &#x3D; null)
     where TStartupModule : IAbpModule
 &#123;
-    return AbpApplicationFactory.Create<TStartupModule>(services, optionsAction);
+    return AbpApplicationFactory.Create&lt;TStartupModule&gt;(services, optionsAction);
 &#125;</code></pre>
+
 <p>这里实际是通过<code>AbpApplicationFactory</code>工厂创建了一个<code>IAbpApplicationWithExternalServiceProvider</code>实例</p>
 <p>这个实例名字非常长,最重要的看后面那段<code>External ServiceProvider</code>,翻译过老就是外部应用提供的意思, 什么叫外部应用提供? 就是abp把应用这样区分,是abp内部启动依赖的应用服务就是内部应用, 而用户自己创建的服务就是外部应用了(这是我的理解)</p>
 <p>再来看<code>IAbpApplicationWithExternalServiceProvider</code>的实现类是<code>AbpApplicationWithExternalServiceProvider</code> , 它继承了<code>AbpApplicationBase</code>, <code>IAbpApplicationWithExternalServiceProvider</code>,<br>abp启动的秘密都写在了这个base类中, 看看这里的构造函数</p>
-<pre class=" language-c#"><code class="language-c#">[NotNull]
+<pre class="language-c#" data-language="c#"><code class="language-c#">[NotNull]
 public Type StartupModuleType &#123; get; &#125;
 
 public IServiceProvider ServiceProvider &#123; get; private set; &#125;
 
 public IServiceCollection Services &#123; get; &#125;
 
-public IReadOnlyList<IAbpModuleDescriptor> Modules &#123; get; &#125;
+public IReadOnlyList&lt;IAbpModuleDescriptor&gt; Modules &#123; get; &#125;
 
 public string ApplicationName &#123; get; &#125;
 
@@ -512,48 +523,49 @@ private bool _configuredServices;
 internal AbpApplicationBase(
     [NotNull] Type startupModuleType,
     [NotNull] IServiceCollection services,
-    [CanBeNull] Action<AbpApplicationCreationOptions> optionsAction)
+    [CanBeNull] Action&lt;AbpApplicationCreationOptions&gt; optionsAction)
 &#123;
-    // 1. 检查非空
+    &#x2F;&#x2F; 1. 检查非空
     Check.NotNull(startupModuleType, nameof(startupModuleType));
     Check.NotNull(services, nameof(services));
-    // 2. 把开始的module类型赋值
-    StartupModuleType = startupModuleType;
-    Services = services;
+    &#x2F;&#x2F; 2. 把开始的module类型赋值
+    StartupModuleType &#x3D; startupModuleType;
+    Services &#x3D; services;
 
-    services.TryAddObjectAccessor<IServiceProvider>();
+    services.TryAddObjectAccessor&lt;IServiceProvider&gt;();
 
-    var options = new AbpApplicationCreationOptions(services);
+    var options &#x3D; new AbpApplicationCreationOptions(services);
     optionsAction?.Invoke(options);
-
-    ApplicationName = options.ApplicationName;
-    // 这里把自己注册为这几种类型了
-    services.AddSingleton<IAbpApplication>(this);
-    services.AddSingleton<IApplicationNameAccessor>(this);
-    services.AddSingleton<IModuleContainer>(this);
-    // 这个是添加了AddOptions AddLogging AddLocalization
+    
+    ApplicationName &#x3D; options.ApplicationName;
+    &#x2F;&#x2F; 这里把自己注册为这几种类型了
+    services.AddSingleton&lt;IAbpApplication&gt;(this);
+    services.AddSingleton&lt;IApplicationNameAccessor&gt;(this);
+    services.AddSingleton&lt;IModuleContainer&gt;(this);
+    &#x2F;&#x2F; 这个是添加了AddOptions AddLogging AddLocalization
     services.AddCoreServices();
-    // 这个方法干了很多事情, 下面详细看看
+    &#x2F;&#x2F; 这个方法干了很多事情, 下面详细看看
     services.AddCoreAbpServices(this, options);
-    // 这里就是把个个继承了AbpModule的class都加载好了,并且是经过拓扑排序的
-    Modules = LoadModules(services, options);
-    // 这里就是执行AbpModule的ConfigureServices方法的地方了,这个判断是为了避免重复执行的
+    &#x2F;&#x2F; 这里就是把个个继承了AbpModule的class都加载好了,并且是经过拓扑排序的
+    Modules &#x3D; LoadModules(services, options);
+    &#x2F;&#x2F; 这里就是执行AbpModule的ConfigureServices方法的地方了,这个判断是为了避免重复执行的
     if (!options.SkipConfigureServices)
     &#123;
         ConfigureServices();
     &#125;
 &#125;</code></pre>
+
 <p>下面来看看<code>AddCoreAbpServices</code>方法</p>
-<pre class=" language-c#"><code class="language-c#">internal static void AddCoreAbpServices(this IServiceCollection services,
+<pre class="language-c#" data-language="c#"><code class="language-c#">internal static void AddCoreAbpServices(this IServiceCollection services,
     IAbpApplication abpApplication,
     AbpApplicationCreationOptions applicationCreationOptions)
 &#123;
-    // 这几个都是用来加载AbpModule用的
-    var moduleLoader = new ModuleLoader();
-    var assemblyFinder = new AssemblyFinder(abpApplication);
-    var typeFinder = new TypeFinder(assemblyFinder);
+    &#x2F;&#x2F; 这几个都是用来加载AbpModule用的
+    var moduleLoader &#x3D; new ModuleLoader();
+    var assemblyFinder &#x3D; new AssemblyFinder(abpApplication);
+    var typeFinder &#x3D; new TypeFinder(assemblyFinder);
 
-    if (!services.IsAdded<IConfiguration>())
+    if (!services.IsAdded&lt;IConfiguration&gt;())
     &#123;
         services.ReplaceConfiguration(
             ConfigurationHelper.BuildConfiguration(
@@ -562,25 +574,26 @@ internal AbpApplicationBase(
         );
     &#125;
 
-    services.TryAddSingleton<IModuleLoader>(moduleLoader);
-    services.TryAddSingleton<IAssemblyFinder>(assemblyFinder);
-    services.TryAddSingleton<ITypeFinder>(typeFinder);
-    services.TryAddSingleton<IInitLoggerFactory>(new DefaultInitLoggerFactory());
+    services.TryAddSingleton&lt;IModuleLoader&gt;(moduleLoader);
+    services.TryAddSingleton&lt;IAssemblyFinder&gt;(assemblyFinder);
+    services.TryAddSingleton&lt;ITypeFinder&gt;(typeFinder);
+    services.TryAddSingleton&lt;IInitLoggerFactory&gt;(new DefaultInitLoggerFactory());
 
-    services.AddAssemblyOf<IAbpApplication>();
+    services.AddAssemblyOf&lt;IAbpApplication&gt;();
 
-    services.AddTransient(typeof(ISimpleStateCheckerManager<>), typeof(SimpleStateCheckerManager<>));
-    //这里实际是把继承了OnPreApplicationInitialization,OnApplicationInitialization,OnPostApplicationInitialization,OnApplicationShutdown 的几个实现类型加入到AbpModuleLifecycleOptions中的集合中了,后面会用到
-    services.Configure<AbpModuleLifecycleOptions>(options =>
+    services.AddTransient(typeof(ISimpleStateCheckerManager&lt;&gt;), typeof(SimpleStateCheckerManager&lt;&gt;));
+    &#x2F;&#x2F;这里实际是把继承了OnPreApplicationInitialization,OnApplicationInitialization,OnPostApplicationInitialization,OnApplicationShutdown 的几个实现类型加入到AbpModuleLifecycleOptions中的集合中了,后面会用到
+    services.Configure&lt;AbpModuleLifecycleOptions&gt;(options &#x3D;&gt;
     &#123;
-        options.Contributors.Add<OnPreApplicationInitializationModuleLifecycleContributor>();
-        options.Contributors.Add<OnApplicationInitializationModuleLifecycleContributor>();
-        options.Contributors.Add<OnPostApplicationInitializationModuleLifecycleContributor>();
-        options.Contributors.Add<OnApplicationShutdownModuleLifecycleContributor>();
+        options.Contributors.Add&lt;OnPreApplicationInitializationModuleLifecycleContributor&gt;();
+        options.Contributors.Add&lt;OnApplicationInitializationModuleLifecycleContributor&gt;();
+        options.Contributors.Add&lt;OnPostApplicationInitializationModuleLifecycleContributor&gt;();
+        options.Contributors.Add&lt;OnApplicationShutdownModuleLifecycleContributor&gt;();
     &#125;);
 &#125;</code></pre>
+
 <p>然后讲下<code>LoadModules</code>这里干了啥,这里调用了<code>IModuleLoader</code>这个服务的<code>LoadModules</code>方法,可以看到,上面已经注册了<code>ModuleLoader</code>这个实现类,这里的代码有点多,但其实干的事情就是把继承了AbpModule的class实例化,然后设置每个Module的依赖, 在每个模块中我们都是使用了那个<code>DependsOn</code>特性来加载需要用到的类型,这其中涉及到了类的依赖,这里就是依次把类型加载,详细看注释</p>
-<pre class=" language-c#"><code class="language-c#">public class ModuleLoader : IModuleLoader
+<pre class="language-c#" data-language="c#"><code class="language-c#">public class ModuleLoader : IModuleLoader
 &#123;
     public IAbpModuleDescriptor[] LoadModules(
         IServiceCollection services,
@@ -590,48 +603,48 @@ internal AbpApplicationBase(
         Check.NotNull(services, nameof(services));
         Check.NotNull(startupModuleType, nameof(startupModuleType));
         Check.NotNull(plugInSources, nameof(plugInSources));
-        // 获取类型描述
-        var modules = GetDescriptors(services, startupModuleType, plugInSources);
-        // 然后给每个Module设置它的依赖, 例如说a依赖b,c,那么这里就是把b,c添加到a的Descriptor的Dependency集合中
-        modules = SortByDependency(modules, startupModuleType);
+        &#x2F;&#x2F; 获取类型描述
+        var modules &#x3D; GetDescriptors(services, startupModuleType, plugInSources);
+        &#x2F;&#x2F; 然后给每个Module设置它的依赖, 例如说a依赖b,c,那么这里就是把b,c添加到a的Descriptor的Dependency集合中
+        modules &#x3D; SortByDependency(modules, startupModuleType);
 
         return modules.ToArray();
     &#125;
 
-    private List<IAbpModuleDescriptor> GetDescriptors(
+    private List&lt;IAbpModuleDescriptor&gt; GetDescriptors(
         IServiceCollection services,
         Type startupModuleType,
         PlugInSourceList plugInSources)
     &#123;
-        var modules = new List<AbpModuleDescriptor>();
+        var modules &#x3D; new List&lt;AbpModuleDescriptor&gt;();
 
         FillModules(modules, services, startupModuleType, plugInSources);
         SetDependencies(modules);
 
-        return modules.Cast<IAbpModuleDescriptor>().ToList();
+        return modules.Cast&lt;IAbpModuleDescriptor&gt;().ToList();
     &#125;
 
     protected virtual void FillModules(
-        List<AbpModuleDescriptor> modules,
+        List&lt;AbpModuleDescriptor&gt; modules,
         IServiceCollection services,
         Type startupModuleType,
         PlugInSourceList plugInSources)
     &#123;
-        var logger = services.GetInitLogger<AbpApplicationBase>();
+        var logger &#x3D; services.GetInitLogger&lt;AbpApplicationBase&gt;();
 
-        /*
+        &#x2F;*
             AbpModuleHelper.FindAllModuleTypes这里是使用了拓扑排序,从开始类型开始,一路查找其依赖,递归获取依赖的依赖,可以说就是把所有的AbpModule都获取到了
-        */
-        //All modules starting from the startup module
+        *&#x2F;
+        &#x2F;&#x2F;All modules starting from the startup module
         foreach (var moduleType in AbpModuleHelper.FindAllModuleTypes(startupModuleType, logger))
         &#123;
             modules.Add(CreateModuleDescriptor(services, moduleType));
         &#125;
 
-        //Plugin modules
+        &#x2F;&#x2F;Plugin modules
         foreach (var moduleType in plugInSources.GetAllModules(logger))
         &#123;
-            if (modules.Any(m => m.Type == moduleType))
+            if (modules.Any(m &#x3D;&gt; m.Type &#x3D;&#x3D; moduleType))
             &#123;
                 continue;
             &#125;
@@ -640,7 +653,7 @@ internal AbpApplicationBase(
         &#125;
     &#125;
 
-    protected virtual void SetDependencies(List<AbpModuleDescriptor> modules)
+    protected virtual void SetDependencies(List&lt;AbpModuleDescriptor&gt; modules)
     &#123;
         foreach (var module in modules)
         &#123;
@@ -648,58 +661,59 @@ internal AbpApplicationBase(
         &#125;
     &#125;
 
-    protected virtual List<IAbpModuleDescriptor> SortByDependency(List<IAbpModuleDescriptor> modules, Type startupModuleType)
+    protected virtual List&lt;IAbpModuleDescriptor&gt; SortByDependency(List&lt;IAbpModuleDescriptor&gt; modules, Type startupModuleType)
     &#123;
-        var sortedModules = modules.SortByDependencies(m => m.Dependencies);
-        sortedModules.MoveItem(m => m.Type == startupModuleType, modules.Count - 1);
+        var sortedModules &#x3D; modules.SortByDependencies(m &#x3D;&gt; m.Dependencies);
+        sortedModules.MoveItem(m &#x3D;&gt; m.Type &#x3D;&#x3D; startupModuleType, modules.Count - 1);
         return sortedModules;
     &#125;
 
-    protected virtual AbpModuleDescriptor CreateModuleDescriptor(IServiceCollection services, Type moduleType, bool isLoadedAsPlugIn = false)
+    protected virtual AbpModuleDescriptor CreateModuleDescriptor(IServiceCollection services, Type moduleType, bool isLoadedAsPlugIn &#x3D; false)
     &#123;
         return new AbpModuleDescriptor(moduleType, CreateAndRegisterModule(services, moduleType), isLoadedAsPlugIn);
     &#125;
 
     protected virtual IAbpModule CreateAndRegisterModule(IServiceCollection services, Type moduleType)
     &#123;
-        // 这里new了,使用了Activator.CreateInstance来创建的
-        var module = (IAbpModule)Activator.CreateInstance(moduleType);
+        &#x2F;&#x2F; 这里new了,使用了Activator.CreateInstance来创建的
+        var module &#x3D; (IAbpModule)Activator.CreateInstance(moduleType);
         services.AddSingleton(moduleType, module);
         return module;
     &#125;
 
-    protected virtual void SetDependencies(List<AbpModuleDescriptor> modules, AbpModuleDescriptor module)
+    protected virtual void SetDependencies(List&lt;AbpModuleDescriptor&gt; modules, AbpModuleDescriptor module)
     &#123;
         foreach (var dependedModuleType in AbpModuleHelper.FindDependedModuleTypes(module.Type))
         &#123;
-            var dependedModule = modules.FirstOrDefault(m => m.Type == dependedModuleType);
-            if (dependedModule == null)
+            var dependedModule &#x3D; modules.FirstOrDefault(m &#x3D;&gt; m.Type &#x3D;&#x3D; dependedModuleType);
+            if (dependedModule &#x3D;&#x3D; null)
             &#123;
-                throw new AbpException("Could not find a depended module " + dependedModuleType.AssemblyQualifiedName + " for " + module.Type.AssemblyQualifiedName);
+                throw new AbpException(&quot;Could not find a depended module &quot; + dependedModuleType.AssemblyQualifiedName + &quot; for &quot; + module.Type.AssemblyQualifiedName);
             &#125;
 
             module.AddDependency(dependedModule);
         &#125;
     &#125;
 &#125;</code></pre>
+
 <p>之后<code>Module</code>都加载好了,就回到了<code>AbpApplicationBase</code>的构造函数,继续调用<code>ConfigureServices</code>方法了, 这里很好理解,就是按顺序执行<code>PreConfigureServices</code>,<code>ConfigureServices</code>,<code>PostConfigureServices</code>3个方法</p>
-<pre class=" language-c#"><code class="language-c#">public virtual void ConfigureServices()
+<pre class="language-c#" data-language="c#"><code class="language-c#">public virtual void ConfigureServices()
 &#123;
     CheckMultipleConfigureServices();
 
-    var context = new ServiceConfigurationContext(Services);
+    var context &#x3D; new ServiceConfigurationContext(Services);
     Services.AddSingleton(context);
 
     foreach (var module in Modules)
     &#123;
         if (module.Instance is AbpModule abpModule)
         &#123;
-            abpModule.ServiceConfigurationContext = context;
+            abpModule.ServiceConfigurationContext &#x3D; context;
         &#125;
     &#125;
 
-    //PreConfigureServices
-    foreach (var module in Modules.Where(m => m.Instance is IPreConfigureServices))
+    &#x2F;&#x2F;PreConfigureServices
+    foreach (var module in Modules.Where(m &#x3D;&gt; m.Instance is IPreConfigureServices))
     &#123;
         try
         &#123;
@@ -707,20 +721,20 @@ internal AbpApplicationBase(
         &#125;
         catch (Exception ex)
         &#123;
-            throw new AbpInitializationException($"An error occurred during &#123;nameof(IPreConfigureServices.PreConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.", ex);
+            throw new AbpInitializationException($&quot;An error occurred during &#123;nameof(IPreConfigureServices.PreConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.&quot;, ex);
         &#125;
     &#125;
 
-    var assemblies = new HashSet<Assembly>();
+    var assemblies &#x3D; new HashSet&lt;Assembly&gt;();
 
-    //ConfigureServices
+    &#x2F;&#x2F;ConfigureServices
     foreach (var module in Modules)
     &#123;
         if (module.Instance is AbpModule abpModule)
         &#123;
             if (!abpModule.SkipAutoServiceRegistration)
             &#123;
-                var assembly = module.Type.Assembly;
+                var assembly &#x3D; module.Type.Assembly;
                 if (!assemblies.Contains(assembly))
                 &#123;
                     Services.AddAssembly(assembly);
@@ -735,12 +749,12 @@ internal AbpApplicationBase(
         &#125;
         catch (Exception ex)
         &#123;
-            throw new AbpInitializationException($"An error occurred during &#123;nameof(IAbpModule.ConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.", ex);
+            throw new AbpInitializationException($&quot;An error occurred during &#123;nameof(IAbpModule.ConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.&quot;, ex);
         &#125;
     &#125;
 
-    //PostConfigureServices
-    foreach (var module in Modules.Where(m => m.Instance is IPostConfigureServices))
+    &#x2F;&#x2F;PostConfigureServices
+    foreach (var module in Modules.Where(m &#x3D;&gt; m.Instance is IPostConfigureServices))
     &#123;
         try
         &#123;
@@ -748,7 +762,7 @@ internal AbpApplicationBase(
         &#125;
         catch (Exception ex)
         &#123;
-            throw new AbpInitializationException($"An error occurred during &#123;nameof(IPostConfigureServices.PostConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.", ex);
+            throw new AbpInitializationException($&quot;An error occurred during &#123;nameof(IPostConfigureServices.PostConfigureServices)&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;. See the inner exception for details.&quot;, ex);
         &#125;
     &#125;
 
@@ -756,67 +770,68 @@ internal AbpApplicationBase(
     &#123;
         if (module.Instance is AbpModule abpModule)
         &#123;
-            abpModule.ServiceConfigurationContext = null;
+            abpModule.ServiceConfigurationContext &#x3D; null;
         &#125;
     &#125;
 
-    _configuredServices = true;
+    _configuredServices &#x3D; true;
 &#125;</code></pre>
+
 <p>其中执行<code>ConfigureServices</code>的时候我特别提一下,abp是如何知道,你这个服务的暴露类型的呢?<br>可以看到,注入使用了这个方法<code>Services.AddAssembly</code>,一路f12,发现最后实际执行在<code>DefaultConventionalRegistrar</code>这个类中的<code>AddType</code>方法</p>
-<pre class=" language-c#"><code class="language-c#">public override void AddType(IServiceCollection services, Type type)
+<pre class="language-c#" data-language="c#"><code class="language-c#">public override void AddType(IServiceCollection services, Type type)
 &#123;
     if (IsConventionalRegistrationDisabled(type))
     &#123;
         return;
     &#125;
 
-    var dependencyAttribute = GetDependencyAttributeOrNull(type);
-    // 获取生命周期 ITransientDependency ISingletonDependency IScopedDependency
-    var lifeTime = GetLifeTimeOrNull(type, dependencyAttribute);
+    var dependencyAttribute &#x3D; GetDependencyAttributeOrNull(type);
+    &#x2F;&#x2F; 获取生命周期 ITransientDependency ISingletonDependency IScopedDependency
+    var lifeTime &#x3D; GetLifeTimeOrNull(type, dependencyAttribute);
 
-    if (lifeTime == null)
+    if (lifeTime &#x3D;&#x3D; null)
     &#123;
         return;
     &#125;
-    /*
+    &#x2F;*
         这个方法特地提一下,是获取暴露特性的
-private static readonly ExposeServicesAttribute DefaultExposeServicesAttribute =
+private static readonly ExposeServicesAttribute DefaultExposeServicesAttribute &#x3D;
 new ExposeServicesAttribute
 &#123;
-    IncludeDefaults = true,
-    IncludeSelf = true
+    IncludeDefaults &#x3D; true,
+    IncludeSelf &#x3D; true
 &#125;;
 
-public static List<Type> GetExposedServices(Type type)
+public static List&lt;Type&gt; GetExposedServices(Type type)
 &#123;
     return type
         .GetCustomAttributes(true)
-        .OfType<IExposedServiceTypesProvider>()
+        .OfType&lt;IExposedServiceTypesProvider&gt;()
         .DefaultIfEmpty(DefaultExposeServicesAttribute)
-        .SelectMany(p => p.GetExposedServiceTypes(type))
+        .SelectMany(p &#x3D;&gt; p.GetExposedServiceTypes(type))
         .Distinct()
         .ToList();
 &#125;
 这里充分地使用了linq,可能看有点懵,它的意思是,获取类型中IExposedServiceTypesProvider特性,DefaultIfEmpty是如果没找到这个给特性,那就用这个默认的特性DefaultExposeServicesAttribute,GetExposedServiceTypes是获取这个类型上的接口,IncludeSelf的话,也会把自己获取到,假如 接口b继承接口a, class c 继承了 接口b,那么这里会获取到 [a,b,c]这么一个集合
-    */
-    var exposedServiceTypes = GetExposedServiceTypes(type);
-    // 这里我也不太理解
+    *&#x2F;
+    var exposedServiceTypes &#x3D; GetExposedServiceTypes(type);
+    &#x2F;&#x2F; 这里我也不太理解
     TriggerServiceExposing(services, type, exposedServiceTypes);
-    //从这里可以看到,abp是把对应的暴露类型全都一口气注入了,可能有些类型不是你想暴露的,最好还是使用ExposeServicesAttribute标记要暴露的类型
+    &#x2F;&#x2F;从这里可以看到,abp是把对应的暴露类型全都一口气注入了,可能有些类型不是你想暴露的,最好还是使用ExposeServicesAttribute标记要暴露的类型
     foreach (var exposedServiceType in exposedServiceTypes)
     &#123;
-        var serviceDescriptor = CreateServiceDescriptor(
+        var serviceDescriptor &#x3D; CreateServiceDescriptor(
             type,
             exposedServiceType,
             exposedServiceTypes,
             lifeTime.Value
         );
 
-        if (dependencyAttribute?.ReplaceServices == true)
+        if (dependencyAttribute?.ReplaceServices &#x3D;&#x3D; true)
         &#123;
             services.Replace(serviceDescriptor);
         &#125;
-        else if (dependencyAttribute?.TryRegister == true)
+        else if (dependencyAttribute?.TryRegister &#x3D;&#x3D; true)
         &#123;
             services.TryAdd(serviceDescriptor);
         &#125;
@@ -826,66 +841,68 @@ public static List<Type> GetExposedServices(Type type)
         &#125;
     &#125;
 &#125;</code></pre>
+
 <h3 id="Configure中的InitializeApplication"><a href="#Configure中的InitializeApplication" class="headerlink" title="Configure中的InitializeApplication"></a><code>Configure</code>中的<code>InitializeApplication</code></h3><p>好,<code>AddApplication</code>方法的调用我们就差不多了,接下来看看<code>app.InitializeApplication</code>方法</p>
-<pre class=" language-c#"><code class="language-c#">public static void InitializeApplication([NotNull] this IApplicationBuilder app)
+<pre class="language-c#" data-language="c#"><code class="language-c#">public static void InitializeApplication([NotNull] this IApplicationBuilder app)
 &#123;
     Check.NotNull(app, nameof(app));
 
-    // 还记得base的构造函数注册了个空的,现在就赋值了
-    app.ApplicationServices.GetRequiredService<ObjectAccessor<IApplicationBuilder>>().Value = app;
-    // 这个就是一开始提到的
-    var application = app.ApplicationServices.GetRequiredService<IAbpApplicationWithExternalServiceProvider>();
-    // asp.net core 自带的生命周期
-    var applicationLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-    //注册Shutdown事情
-    applicationLifetime.ApplicationStopping.Register(() =>
+    &#x2F;&#x2F; 还记得base的构造函数注册了个空的,现在就赋值了
+    app.ApplicationServices.GetRequiredService&lt;ObjectAccessor&lt;IApplicationBuilder&gt;&gt;().Value &#x3D; app;
+    &#x2F;&#x2F; 这个就是一开始提到的
+    var application &#x3D; app.ApplicationServices.GetRequiredService&lt;IAbpApplicationWithExternalServiceProvider&gt;();
+    &#x2F;&#x2F; asp.net core 自带的生命周期
+    var applicationLifetime &#x3D; app.ApplicationServices.GetRequiredService&lt;IHostApplicationLifetime&gt;();
+    &#x2F;&#x2F;注册Shutdown事情
+    applicationLifetime.ApplicationStopping.Register(() &#x3D;&gt;
     &#123;
         application.Shutdown();
     &#125;);
-    //注册Dispose事情
-    applicationLifetime.ApplicationStopped.Register(() =>
+    &#x2F;&#x2F;注册Dispose事情
+    applicationLifetime.ApplicationStopped.Register(() &#x3D;&gt;
     &#123;
         application.Dispose();
     &#125;);
-    // 初始化就在这里了,这个也是在base类中的
+    &#x2F;&#x2F; 初始化就在这里了,这个也是在base类中的
     application.Initialize(app.ApplicationServices);
-    /*
+    &#x2F;*
         最后会调用base中的
         protected virtual void InitializeModules()
         &#123;
-            using (var scope = ServiceProvider.CreateScope())
+            using (var scope &#x3D; ServiceProvider.CreateScope())
             &#123;
                 WriteInitLogs(scope.ServiceProvider);
                 scope.ServiceProvider
-                    .GetRequiredService<IModuleManager>()
+                    .GetRequiredService&lt;IModuleManager&gt;()
                     .InitializeModules(new ApplicationInitializationContext(scope.ServiceProvider));
             &#125;
         &#125;
-    */
+    *&#x2F;
 &#125;</code></pre>
+
 <p>再看看<code>ModuleManager</code>中的<code>InitializeModules</code></p>
-<pre class=" language-c#"><code class="language-c#">public ModuleManager(
+<pre class="language-c#" data-language="c#"><code class="language-c#">public ModuleManager(
         IModuleContainer moduleContainer,
-        ILogger<ModuleManager> logger,
-        IOptions<AbpModuleLifecycleOptions> options,
+        ILogger&lt;ModuleManager&gt; logger,
+        IOptions&lt;AbpModuleLifecycleOptions&gt; options,
         IServiceProvider serviceProvider)
 &#123;
-    _moduleContainer = moduleContainer;
-    _logger = logger;
+    _moduleContainer &#x3D; moduleContainer;
+    _logger &#x3D; logger;
 
-    _lifecycleContributors = options.Value
+    _lifecycleContributors &#x3D; options.Value
         .Contributors
         .Select(serviceProvider.GetRequiredService)
-        .Cast<IModuleLifecycleContributor>()
+        .Cast&lt;IModuleLifecycleContributor&gt;()
         .ToArray();
 &#125;
 
 public void InitializeModules(ApplicationInitializationContext context)
 &#123;
-    //AddCoreAbpServices方法中添加了继承了几个接口的类,就在这里用上了
+    &#x2F;&#x2F;AddCoreAbpServices方法中添加了继承了几个接口的类,就在这里用上了
     foreach (var contributor in _lifecycleContributors)
     &#123;
-        //_moduleContainer就是base类
+        &#x2F;&#x2F;_moduleContainer就是base类
         foreach (var module in _moduleContainer.Modules)
         &#123;
             try
@@ -894,14 +911,14 @@ public void InitializeModules(ApplicationInitializationContext context)
             &#125;
             catch (Exception ex)
             &#123;
-                throw new AbpInitializationException($"An error occurred during the initialize &#123;contributor.GetType().FullName&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;: &#123;ex.Message&#125;. See the inner exception for details.", ex);
+                throw new AbpInitializationException($&quot;An error occurred during the initialize &#123;contributor.GetType().FullName&#125; phase of the module &#123;module.Type.AssemblyQualifiedName&#125;: &#123;ex.Message&#125;. See the inner exception for details.&quot;, ex);
             &#125;
         &#125;
     &#125;
 
-    _logger.LogInformation("Initialized all ABP modules.");
+    _logger.LogInformation(&quot;Initialized all ABP modules.&quot;);
 &#125;
-// 这里在看一个OnApplicationInitialization的实现类OnApplicationInitializationModuleLifecycleContributor
+&#x2F;&#x2F; 这里在看一个OnApplicationInitialization的实现类OnApplicationInitializationModuleLifecycleContributor
 public class OnApplicationInitializationModuleLifecycleContributor : ModuleLifecycleContributorBase
 &#123;
     public async override Task InitializeAsync(ApplicationInitializationContext context, IAbpModule module)
@@ -917,11 +934,13 @@ public class OnApplicationInitializationModuleLifecycleContributor : ModuleLifec
         (module as IOnApplicationInitialization)?.OnApplicationInitialization(context);
     &#125;
 &#125;</code></pre>
+
 <p>也就是说, <code>OnPreApplicationInitialization</code>，<code>OnApplicationInitialization</code>、<code>OnPostApplicationInitialization</code>、<code>OnApplicationShutdown</code> 这几个接口的方法就在此时调用</p>
 <p>传统的<code>Configure</code>中的其实就鞋在了<code>OnApplicationInitialization</code>中了, 而且应该只写在startmodule中</p>
 <p>至此,整体的启动流程大致分析完了</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>所有的Modlue都是在<code>ConfigureServices</code>中注入,执行<code>PreConfigureServices</code>,<code>ConfigureServices</code>,<code>PostConfigureServices</code>这几个方法的<br>然后在<code>Configure</code>中执行剩下的几个方法,大体就是这样</p>
 
+                
             </div>
             <hr/>
 
@@ -1150,6 +1169,8 @@ public class OnApplicationInitializationModuleLifecycleContributor : ModuleLifec
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1169,10 +1190,7 @@ public class OnApplicationInitializationModuleLifecycleContributor : ModuleLifec
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在ef core中使用自定义函数
-在有些时候,我们因各种原因不得不使用数据库函数的时候, 真希望ef直接全部都支持, 但实际这是太过理想了, 但是ef本身也留下了自定义函数的路子, 下面我来记录下我的尝试过程
-
-1. 首先肯定是搜索啊于是乎
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1221,11 +1239,7 @@ public class OnApplicationInitializationModuleLifecycleContributor : ModuleLifec
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            起因由于没有测试用的域名, 一个项目部署到了已有域名的子目录下, 用的Nginx反向代理, 访问链接是这样
-
-http://test.com/app
-
-然后导致的问题就是页面能访问到了,但是像 js 和 css 的引入全部都 404 了,因
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1285,16 +1299,9 @@ http://test.com/app
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1452,6 +1459,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1529,10 +1539,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1580,6 +1675,7 @@ $(function () {
 
     
 
+	
     
 
     

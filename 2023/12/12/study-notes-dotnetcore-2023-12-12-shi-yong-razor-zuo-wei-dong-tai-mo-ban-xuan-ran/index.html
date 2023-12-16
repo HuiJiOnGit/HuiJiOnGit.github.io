@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -456,6 +457,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在日常的开发过程中, 动态模板是经常需要使用到的东西,比如</p>
@@ -473,41 +482,41 @@
 <p>这些框架都很好,我之前就是使用<code>RazorLight</code>的,但是一直有个问题只在发布之后出现.</p>
 <p>由于我这里 dotnet 版本太低,无法升级到最新,作者给出来的一些解决方式,比如不编译视图,不能接受,所有还是另寻出路,决定不依赖第三方的框架来实现编译视图</p>
 <h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><p>其实你可以查看控制器中的<code>ActionResult</code>类型,里面有个子类,也是我们常见的<code>return View</code>,这里其实就可以作为我们找到如何翻译视图的起点</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> ViewResult <span class="token function">View</span><span class="token punctuation">(</span><span class="token keyword">string</span> viewName<span class="token punctuation">,</span><span class="token keyword">object</span> model<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token return-type class-name">ViewResult</span> <span class="token function">View</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> viewName<span class="token punctuation">,</span><span class="token class-name"><span class="token keyword">object</span></span> model<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
     ViewData<span class="token punctuation">.</span>Model <span class="token operator">=</span> model<span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ViewResult</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ViewResult</span>
+    <span class="token punctuation">&#123;</span>
         ViewName <span class="token operator">=</span> viewName<span class="token punctuation">,</span>
         ViewData <span class="token operator">=</span> ViewData<span class="token punctuation">,</span>
         TempData <span class="token operator">=</span> TempData
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//ViewResult定义,mvc的自定义ActionResult也是这个流程,继承ActionResult和实现IActionResultExecutor&lt;YourCustomActionResult>来</span>
-<span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">async</span> Task <span class="token function">ExecuteResultAsync</span><span class="token punctuation">(</span>ActionContext context<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//ViewResult定义,mvc的自定义ActionResult也是这个流程,继承ActionResult和实现IActionResultExecutor&lt;YourCustomActionResult>来</span>
+<span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">ExecuteResultAsync</span><span class="token punctuation">(</span><span class="token class-name">ActionContext</span> context<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>context <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"context"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ArgumentNullException</span><span class="token punctuation">(</span><span class="token string">"context"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">await</span> context<span class="token punctuation">.</span>HttpContext<span class="token punctuation">.</span>RequestServices<span class="token punctuation">.</span>GetRequiredService<span class="token operator">&lt;</span>IActionResultExecutor<span class="token operator">&lt;</span>ViewResult<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ExecuteAsync</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//再找到IActionResultExecutor&lt;ViewResult>实现类</span>
-<span class="token comment" spellcheck="true">//https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/ViewResultExecutor.cs,824f356e787f07c5</span>
-<span class="token keyword">public</span> <span class="token keyword">async</span> Task <span class="token function">ExecuteAsync</span><span class="token punctuation">(</span>ActionContext context<span class="token punctuation">,</span> ViewResult result<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> context<span class="token punctuation">.</span>HttpContext<span class="token punctuation">.</span>RequestServices<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetRequiredService</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>IActionResultExecutor<span class="token punctuation">&lt;</span>ViewResult<span class="token punctuation">></span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ExecuteAsync</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//再找到IActionResultExecutor&lt;ViewResult>实现类</span>
+<span class="token comment">//https://source.dot.net/#Microsoft.AspNetCore.Mvc.ViewFeatures/ViewResultExecutor.cs,824f356e787f07c5</span>
+<span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">ExecuteAsync</span><span class="token punctuation">(</span><span class="token class-name">ActionContext</span> context<span class="token punctuation">,</span> <span class="token class-name">ViewResult</span> result<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
     ArgumentNullException<span class="token punctuation">.</span><span class="token function">ThrowIfNull</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
     ArgumentNullException<span class="token punctuation">.</span><span class="token function">ThrowIfNull</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> stopwatch <span class="token operator">=</span> ValueStopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> stopwatch <span class="token operator">=</span> ValueStopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> viewEngineResult <span class="token operator">=</span> <span class="token function">FindView</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    viewEngineResult<span class="token punctuation">.</span><span class="token function">EnsureSuccessful</span><span class="token punctuation">(</span>originalLocations<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> viewEngineResult <span class="token operator">=</span> <span class="token function">FindView</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    viewEngineResult<span class="token punctuation">.</span><span class="token function">EnsureSuccessful</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">originalLocations</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> view <span class="token operator">=</span> viewEngineResult<span class="token punctuation">.</span>View<span class="token punctuation">;</span>
-    <span class="token keyword">using</span> <span class="token punctuation">(</span>view <span class="token keyword">as</span> IDisposable<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> view <span class="token operator">=</span> viewEngineResult<span class="token punctuation">.</span>View<span class="token punctuation">;</span>
+    <span class="token keyword">using</span> <span class="token punctuation">(</span>view <span class="token keyword">as</span> <span class="token class-name">IDisposable</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">await</span> <span class="token function">ExecuteAsync</span><span class="token punctuation">(</span>
             context<span class="token punctuation">,</span>
             view<span class="token punctuation">,</span>
@@ -515,214 +524,220 @@
             result<span class="token punctuation">.</span>TempData<span class="token punctuation">,</span>
             result<span class="token punctuation">.</span>ContentType<span class="token punctuation">,</span>
             result<span class="token punctuation">.</span>StatusCode<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     Log<span class="token punctuation">.</span><span class="token function">ViewResultExecuted</span><span class="token punctuation">(</span>Logger<span class="token punctuation">,</span> viewEngineResult<span class="token punctuation">.</span>ViewName<span class="token punctuation">,</span> stopwatch<span class="token punctuation">.</span><span class="token function">GetElapsedTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token keyword">public</span> <span class="token keyword">virtual</span> ViewEngineResult <span class="token function">FindView</span><span class="token punctuation">(</span>ActionContext actionContext<span class="token punctuation">,</span> ViewResult viewResult<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">public</span> <span class="token keyword">virtual</span> <span class="token return-type class-name">ViewEngineResult</span> <span class="token function">FindView</span><span class="token punctuation">(</span><span class="token class-name">ActionContext</span> actionContext<span class="token punctuation">,</span> <span class="token class-name">ViewResult</span> viewResult<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
     ArgumentNullException<span class="token punctuation">.</span><span class="token function">ThrowIfNull</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
     ArgumentNullException<span class="token punctuation">.</span><span class="token function">ThrowIfNull</span><span class="token punctuation">(</span>viewResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> viewEngine <span class="token operator">=</span> viewResult<span class="token punctuation">.</span>ViewEngine <span class="token operator">?</span><span class="token operator">?</span> ViewEngine<span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> viewEngine <span class="token operator">=</span> viewResult<span class="token punctuation">.</span>ViewEngine <span class="token operator">??</span> ViewEngine<span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> viewName <span class="token operator">=</span> viewResult<span class="token punctuation">.</span>ViewName <span class="token operator">?</span><span class="token operator">?</span> <span class="token function">GetActionName</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">)</span> <span class="token operator">?</span><span class="token operator">?</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> viewName <span class="token operator">=</span> viewResult<span class="token punctuation">.</span>ViewName <span class="token operator">??</span> <span class="token function">GetActionName</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token keyword">string</span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> stopwatch <span class="token operator">=</span> ValueStopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> stopwatch <span class="token operator">=</span> ValueStopwatch<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span>executingFilePath<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> viewPath<span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> originalResult <span class="token operator">=</span> result<span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">executingFilePath</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">viewPath</span><span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> originalResult <span class="token operator">=</span> result<span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>result<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
+        result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     Log<span class="token punctuation">.</span><span class="token function">ViewResultExecuting</span><span class="token punctuation">(</span>Logger<span class="token punctuation">,</span> result<span class="token punctuation">.</span>ViewName<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>result<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>originalResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">.</span><span class="token function">Any</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">.</span><span class="token function">Any</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">// Return a new ViewEngineResult listing all searched locations.</span>
-                <span class="token keyword">var</span> locations <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span><span class="token punctuation">(</span>originalResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token comment">// Return a new ViewEngineResult listing all searched locations.</span>
+                <span class="token class-name"><span class="token keyword">var</span></span> locations <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">List<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>originalResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 locations<span class="token punctuation">.</span><span class="token function">AddRange</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 result <span class="token operator">=</span> ViewEngineResult<span class="token punctuation">.</span><span class="token function">NotFound</span><span class="token punctuation">(</span>viewName<span class="token punctuation">,</span> locations<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
             <span class="token keyword">else</span>
-            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                <span class="token comment" spellcheck="true">// GetView() searched locations but FindView() did not. Use first ViewEngineResult.</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token comment">// GetView() searched locations but FindView() did not. Use first ViewEngineResult.</span>
                 result <span class="token operator">=</span> originalResult<span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     <span class="token keyword">if</span> <span class="token punctuation">(</span>DiagnosticListener<span class="token punctuation">.</span><span class="token function">IsEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token function">OutputDiagnostics</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewResult<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     <span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
         Log<span class="token punctuation">.</span><span class="token function">ViewFound</span><span class="token punctuation">(</span>Logger<span class="token punctuation">,</span> result<span class="token punctuation">.</span>View<span class="token punctuation">,</span> stopwatch<span class="token punctuation">.</span><span class="token function">GetElapsedTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
     <span class="token keyword">else</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
         Log<span class="token punctuation">.</span><span class="token function">ViewNotFound</span><span class="token punctuation">(</span>Logger<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> result<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
     <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>主要逻辑可以看这段</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">var</span> result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span>executingFilePath<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> viewPath<span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> originalResult <span class="token operator">=</span> result<span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token class-name"><span class="token keyword">var</span></span> result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">executingFilePath</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">viewPath</span><span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> originalResult <span class="token operator">=</span> result<span class="token punctuation">;</span>
 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>result<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#123;</span>
+    result <span class="token operator">=</span> viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>通过注入<code>viewEngine</code>去根据方法名找到对应的视图, 像<code>return view</code>有无参的,有参的,区别就在这里,无参数的就是根据默认的方法名去默认的位置(<code>Views</code>)去找视图</p>
 <p>有参数会解析你这个视图的位置, 去找到视图的位置,这个的方式就可以不写到<code>Views</code>文件夹里面</p>
 <p>大体逻辑可以在<a target="_blank" rel="noopener" href="https://source.dot.net/#Microsoft.AspNetCore.Mvc.Razor/RazorViewEngine.cs,181"><code>Microsoft.AspNetCore.Mvc.Razor/RazorViewEngine.cs</code></a>查看</p>
 <p>回到开头的问题,如何通过原生的<code>Razor</code>提供动态模板,答案就是<code>IRazorViewEngine</code>,这个在框架中已经注入了,我们可以直接拿来主义</p>
 <p>下面直接给出代码</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspNetCoreRazorTemplateRender</span> <span class="token punctuation">:</span> ITemplateRenderer
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> IRazorViewEngine _viewEngine<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> ITempDataProvider _tempDataProvider<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">readonly</span> IServiceProvider _serviceProvider<span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AspNetCoreRazorTemplateRender</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">ITemplateRenderer</span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">IRazorViewEngine</span> _viewEngine<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">ITempDataProvider</span> _tempDataProvider<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">IServiceProvider</span> _serviceProvider<span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token function">AspNetCoreRazorTemplateRender</span><span class="token punctuation">(</span>
-        IRazorViewEngine viewEngine<span class="token punctuation">,</span>
-        ITempDataProvider tempDataProvider<span class="token punctuation">,</span>
-        IServiceProvider serviceProvider
+        <span class="token class-name">IRazorViewEngine</span> viewEngine<span class="token punctuation">,</span>
+        <span class="token class-name">ITempDataProvider</span> tempDataProvider<span class="token punctuation">,</span>
+        <span class="token class-name">IServiceProvider</span> serviceProvider
         <span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#123;</span>
         _viewEngine <span class="token operator">=</span> viewEngine<span class="token punctuation">;</span>
         _tempDataProvider <span class="token operator">=</span> tempDataProvider<span class="token punctuation">;</span>
         _serviceProvider <span class="token operator">=</span> serviceProvider<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token comment" spellcheck="true">///支持泛型参数</span>
-    <span class="token keyword">public</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> <span class="token generic-method function">RenderAsync<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> templateKey<span class="token punctuation">,</span> T context<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">class</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token comment">///支持泛型参数</span>
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">RenderAsync</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> templateKey<span class="token punctuation">,</span> <span class="token class-name">T</span> context<span class="token punctuation">)</span> <span class="token keyword">where</span> <span class="token class-name">T</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token keyword">class</span></span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">return</span> <span class="token keyword">await</span> <span class="token function">RenderTemplateToStringAsync</span><span class="token punctuation">(</span><span class="token function">NormalizeViewName</span><span class="token punctuation">(</span>templateKey<span class="token punctuation">)</span><span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">///支持字典参数</span>
-    <span class="token keyword">public</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> <span class="token function">RenderAsync</span><span class="token punctuation">(</span><span class="token keyword">string</span> templateKey<span class="token punctuation">,</span> Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token operator">></span> context<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">///支持字典参数</span>
+    <span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span> <span class="token function">RenderAsync</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> templateKey<span class="token punctuation">,</span> <span class="token class-name">Dictionary<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">string</span><span class="token punctuation">></span></span> context<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
         <span class="token keyword">return</span> <span class="token keyword">await</span> <span class="token function">RenderTemplateToStringAsync</span><span class="token punctuation">(</span><span class="token function">NormalizeViewName</span><span class="token punctuation">(</span>templateKey<span class="token punctuation">)</span><span class="token punctuation">,</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token operator">></span> <span class="token generic-method function">RenderTemplateToStringAsync<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token keyword">string</span> viewName<span class="token punctuation">,</span> T context<span class="token punctuation">)</span> <span class="token keyword">where</span> T <span class="token punctuation">:</span> <span class="token keyword">class</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//创建一个默认的httpcontext</span>
-        <span class="token keyword">var</span> actionContext <span class="token operator">=</span> <span class="token function">CreateDefaultHttpContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//找视图,</span>
-        <span class="token keyword">var</span> view <span class="token operator">=</span> <span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">RenderTemplateToStringAsync</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> viewName<span class="token punctuation">,</span> <span class="token class-name">T</span> context<span class="token punctuation">)</span> <span class="token keyword">where</span> <span class="token class-name">T</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token keyword">class</span></span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token comment">//创建一个默认的httpcontext</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> actionContext <span class="token operator">=</span> <span class="token function">CreateDefaultHttpContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//找视图,</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> view <span class="token operator">=</span> <span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        <span class="token keyword">using</span> <span class="token keyword">var</span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> viewContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ViewContext</span><span class="token punctuation">(</span>
+        <span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> viewContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ViewContext</span><span class="token punctuation">(</span>
             actionContext<span class="token punctuation">,</span>
             view<span class="token punctuation">,</span>
-            <span class="token keyword">new</span> <span class="token class-name">ViewDataDictionary</span><span class="token operator">&lt;</span>T<span class="token operator">></span><span class="token punctuation">(</span>metadataProvider<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">EmptyModelMetadataProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> modelState<span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token class-name">ModelStateDictionary</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ViewDataDictionary<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token named-parameter punctuation">metadataProvider</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">EmptyModelMetadataProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">modelState</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ModelStateDictionary</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
                 Model <span class="token operator">=</span> context
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-            <span class="token keyword">new</span> <span class="token class-name">TempDataDictionary</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">.</span>HttpContext<span class="token punctuation">,</span> _tempDataProvider<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token keyword">new</span> <span class="token constructor-invocation class-name">TempDataDictionary</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">.</span>HttpContext<span class="token punctuation">,</span> _tempDataProvider<span class="token punctuation">)</span><span class="token punctuation">,</span>
             output<span class="token punctuation">,</span>
-            <span class="token keyword">new</span> <span class="token class-name">HtmlHelperOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">new</span> <span class="token constructor-invocation class-name">HtmlHelperOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token keyword">await</span> view<span class="token punctuation">.</span><span class="token function">RenderAsync</span><span class="token punctuation">(</span>viewContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token keyword">return</span> output<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">private</span> IView <span class="token function">FindView</span><span class="token punctuation">(</span>ActionContext actionContext<span class="token punctuation">,</span> <span class="token keyword">string</span> viewName<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//这里的逻辑就和View那边差不多</span>
-        <span class="token keyword">var</span> getViewResult <span class="token operator">=</span> _viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span>executingFilePath<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> viewPath<span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token return-type class-name">IView</span> <span class="token function">FindView</span><span class="token punctuation">(</span><span class="token class-name">ActionContext</span> actionContext<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">string</span></span> viewName<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token comment">//这里的逻辑就和View那边差不多</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> getViewResult <span class="token operator">=</span> _viewEngine<span class="token punctuation">.</span><span class="token function">GetView</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">executingFilePath</span><span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">viewPath</span><span class="token punctuation">:</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>getViewResult<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">return</span> getViewResult<span class="token punctuation">.</span>View<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
-        <span class="token keyword">var</span> findViewResult <span class="token operator">=</span> _viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> isMainPage<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> findViewResult <span class="token operator">=</span> _viewEngine<span class="token punctuation">.</span><span class="token function">FindView</span><span class="token punctuation">(</span>actionContext<span class="token punctuation">,</span> viewName<span class="token punctuation">,</span> <span class="token named-parameter punctuation">isMainPage</span><span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>findViewResult<span class="token punctuation">.</span>Success<span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#123;</span>
             <span class="token keyword">return</span> findViewResult<span class="token punctuation">.</span>View<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//这里会显示框架的搜索路径</span>
-        <span class="token keyword">var</span> searchedLocations <span class="token operator">=</span> getViewResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span>findViewResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> errorMessage <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">//这里会显示框架的搜索路径</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> searchedLocations <span class="token operator">=</span> getViewResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span>findViewResult<span class="token punctuation">.</span>SearchedLocations<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> errorMessage <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>
             Environment<span class="token punctuation">.</span>NewLine<span class="token punctuation">,</span>
-            <span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                $<span class="token string">"Unable to find view '&amp;#123;viewName&amp;#125;'. The following locations were searched:"</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span>searchedLocations<span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+            <span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> <span class="token punctuation">&#123;</span>
+                <span class="token interpolation-string"><span class="token string">$"Unable to find view '</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">viewName</span><span class="token punctuation">&#125;</span></span><span class="token string">'. The following locations were searched:"</span></span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span>searchedLocations<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">Concat</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token constructor-invocation class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span><span class="token punctuation">&#123;</span>
             <span class="token string">"Hint:"</span><span class="token punctuation">,</span>
             <span class="token string">"- Check whether you have added reference to the Razor Class Library that contains the view files."</span><span class="token punctuation">,</span>
             <span class="token string">"- Check whether the view file name is correct or exists at the given path."</span><span class="token punctuation">,</span>
-            <span class="token string">"- Refer documentation or file issue here: https://github.com/soundaranbu/RazorTemplating"</span><span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidOperationException</span><span class="token punctuation">(</span>errorMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+            <span class="token string">"- Refer documentation or file issue here: https://github.com/soundaranbu/RazorTemplating"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">InvalidOperationException</span><span class="token punctuation">(</span>errorMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">private</span> ActionContext <span class="token function">CreateDefaultHttpContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">var</span> httpContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultHttpContext</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token return-type class-name">ActionContext</span> <span class="token function">CreateDefaultHttpContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> httpContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">DefaultHttpContext</span>
+        <span class="token punctuation">&#123;</span>
             RequestServices <span class="token operator">=</span> _serviceProvider
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ActionContext</span><span class="token punctuation">(</span>httpContext<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">RouteData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Mvc<span class="token punctuation">.</span>Abstractions<span class="token punctuation">.</span>ActionDescriptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ActionContext</span><span class="token punctuation">(</span>httpContext<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RouteData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Mvc<span class="token punctuation">.</span>Abstractions<span class="token punctuation">.</span>ActionDescriptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    <span class="token keyword">private</span> <span class="token keyword">string</span> <span class="token function">NormalizeViewName</span><span class="token punctuation">(</span><span class="token keyword">string</span> viewName<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//这里我把模板的cshtml放到了App_Data文件夹下,和平时的视图分开,因此需要输入完整的地址才能找到这个视图</span>
-        <span class="token keyword">return</span> $<span class="token string">"~/App_Data/&amp;#123;viewName&amp;#125;.cshtml"</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> <span class="token function">NormalizeViewName</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> viewName<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token comment">//这里我把模板的cshtml放到了App_Data文件夹下,和平时的视图分开,因此需要输入完整的地址才能找到这个视图</span>
+        <span class="token keyword">return</span> <span class="token interpolation-string"><span class="token string">$"~/App_Data/</span><span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token expression language-csharp">viewName</span><span class="token punctuation">&#125;</span></span><span class="token string">.cshtml"</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 </code></pre>
+
 <h2 id="Asp-Net-Core-8新功能"><a href="#Asp-Net-Core-8新功能" class="headerlink" title="Asp.Net Core 8新功能"></a>Asp.Net Core 8新功能</h2><p>在<code>Asp.Net Core 8</code>版本添加了一个<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/aspnet/core/blazor/components/render-components-outside-of-aspnetcore?view=aspnetcore-8.0">在 ASP.NET Core 之外呈现 <code>Razor</code> 组件</a>的功能</p>
 <p>注意:此<code>Razor</code>非彼<code>Razor</code>,是<code>Blazor</code>中的<code>Razor</code>组件,和<code>mvc</code>的有区别</p>
-<pre class=" language-razor"><code class="language-razor"><h1>Render Message</h1>
+<pre class="language-cshtml" data-language="cshtml"><code class="language-cshtml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Render Message<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
 
-<p>@Message</p>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token value variable"><span class="token keyword">@</span><span class="token csharp language-csharp">Message</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
 
-@code &#123;
-    [Parameter]
-    public string Message &#123; get; set; &#125;
-&#125;
+<span class="token block"><span class="token keyword">@code</span> <span class="token csharp language-csharp"><span class="token punctuation">&#123;</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Parameter</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Message <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></span></span>
 </code></pre>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Components<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Components<span class="token punctuation">.</span>Web<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>DependencyInjection<span class="token punctuation">;</span>
-<span class="token keyword">using</span> Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Logging<span class="token punctuation">;</span>
-<span class="token keyword">using</span> ConsoleApp1<span class="token punctuation">;</span>
 
-IServiceCollection services <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServiceCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Components</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>AspNetCore<span class="token punctuation">.</span>Components<span class="token punctuation">.</span>Web</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>DependencyInjection</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">Microsoft<span class="token punctuation">.</span>Extensions<span class="token punctuation">.</span>Logging</span><span class="token punctuation">;</span>
+<span class="token keyword">using</span> <span class="token namespace">ConsoleApp1</span><span class="token punctuation">;</span>
+
+<span class="token class-name">IServiceCollection</span> services <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ServiceCollection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 services<span class="token punctuation">.</span><span class="token function">AddLogging</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-IServiceProvider serviceProvider <span class="token operator">=</span> services<span class="token punctuation">.</span><span class="token function">BuildServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-ILoggerFactory loggerFactory <span class="token operator">=</span> serviceProvider<span class="token punctuation">.</span><span class="token generic-method function">GetRequiredService<span class="token punctuation">&lt;</span>ILoggerFactory<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">IServiceProvider</span> serviceProvider <span class="token operator">=</span> services<span class="token punctuation">.</span><span class="token function">BuildServiceProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ILoggerFactory</span> loggerFactory <span class="token operator">=</span> serviceProvider<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetRequiredService</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>ILoggerFactory<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">await</span> <span class="token keyword">using</span> <span class="token keyword">var</span> htmlRenderer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HtmlRenderer</span><span class="token punctuation">(</span>serviceProvider<span class="token punctuation">,</span> loggerFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">await</span> <span class="token keyword">using</span> <span class="token class-name"><span class="token keyword">var</span></span> htmlRenderer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">HtmlRenderer</span><span class="token punctuation">(</span>serviceProvider<span class="token punctuation">,</span> loggerFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">var</span> html <span class="token operator">=</span> <span class="token keyword">await</span> htmlRenderer<span class="token punctuation">.</span>Dispatcher<span class="token punctuation">.</span><span class="token function">InvokeAsync</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> dictionary <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">?</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token string">"Message"</span><span class="token punctuation">,</span> <span class="token string">"Hello from the Render Message component!"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> html <span class="token operator">=</span> <span class="token keyword">await</span> htmlRenderer<span class="token punctuation">.</span>Dispatcher<span class="token punctuation">.</span><span class="token function">InvokeAsync</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> dictionary <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Dictionary<span class="token punctuation">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token punctuation">?</span><span class="token punctuation">></span></span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">&#123;</span> <span class="token string">"Message"</span><span class="token punctuation">,</span> <span class="token string">"Hello from the Render Message component!"</span> <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> parameters <span class="token operator">=</span> ParameterView<span class="token punctuation">.</span><span class="token function">FromDictionary</span><span class="token punctuation">(</span>dictionary<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> output <span class="token operator">=</span> <span class="token keyword">await</span> htmlRenderer<span class="token punctuation">.</span><span class="token generic-method function">RenderComponentAsync<span class="token punctuation">&lt;</span>RenderMessage<span class="token punctuation">></span></span><span class="token punctuation">(</span>parameters<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> parameters <span class="token operator">=</span> ParameterView<span class="token punctuation">.</span><span class="token function">FromDictionary</span><span class="token punctuation">(</span>dictionary<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token keyword">await</span> htmlRenderer<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">RenderComponentAsync</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>RenderMessage<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>parameters<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">return</span> output<span class="token punctuation">.</span><span class="token function">ToHtmlString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>html<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>使用这个,可以比我上面那个更加简单和方便,但是貌似还是不能将模板持久化, 如果需要持久化的方案,可以考虑开源的<code>RazorLight</code>或者学习他们如何支持从动态模板中渲染的,理论上,<code>FindView</code>和<code>GetView</code>也只是一个找到文件的过程,通过代替实现其中的接口,也就从DB中读取数据了</p>
 
+                
             </div>
             <hr/>
 
@@ -947,6 +962,8 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -966,8 +983,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            背景客户需求一个复杂内容的 Excel 的导出, 涉及到表头复杂, 多行多列, 存在多个行合并,列合并,导出图片等操作
-思路Epplus支持通过索引和 Excel 的位置也就是A1,B2这种方式来选择一个ExcelRange, 通过这种它提
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1020,9 +1036,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是整洁架构在干净的架构中，领域和应用程序层是设计的中心。这被称为系统的核心。
-域层包含企业逻辑和类型，应用程序层包含业务逻辑和类型。不同之处在于，企业逻辑可以在许多系统之间共享，而业务逻辑通常只在此系统内使用。
-核心不应依赖于数据访问和
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1066,16 +1080,9 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1233,6 +1240,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1310,10 +1320,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1361,6 +1456,7 @@ $(function () {
 
     
 
+	
     
 
     

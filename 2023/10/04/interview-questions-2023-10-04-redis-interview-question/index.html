@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,6 +470,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="Redis-为何这么快？"><a href="#Redis-为何这么快？" class="headerlink" title="Redis 为何这么快？"></a>Redis 为何这么快？</h2><ol>
@@ -575,15 +584,16 @@
 </li>
 </ol>
 <h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="string-的数据结构"><a href="#string-的数据结构" class="headerlink" title="string 的数据结构"></a>string 的数据结构</h3><p>Redis 中所有的 key 都是字符串，这些字符串是通过一个名为简单动态字符串（SDS.  的抽象数据类型实现的。</p>
-<pre class=" language-c"><code class="language-c"><span class="token keyword">struct</span> sdshdr <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//记录buf数组中已使用字节的数量</span>
-    <span class="token comment" spellcheck="true">//等于 SDS 保存字符串的长度</span>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">struct</span> <span class="token class-name">sdshdr</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//记录buf数组中已使用字节的数量</span>
+    <span class="token comment">//等于 SDS 保存字符串的长度</span>
     <span class="token keyword">int</span> len<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//记录 buf 数组中未使用字节的数量</span>
+    <span class="token comment">//记录 buf 数组中未使用字节的数量</span>
     <span class="token keyword">int</span> free<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">//字节数组，用于保存字符串</span>
+    <span class="token comment">//字节数组，用于保存字符串</span>
     <span class="token keyword">char</span> buf<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p><code>SDS</code>的好处</p>
 <ol>
 <li>常数复杂度获取字符串长度</li>
@@ -592,29 +602,30 @@
 <li>二进制安全</li>
 <li>兼容部分 C 字符串函数</li>
 </ol>
-<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><pre class=" language-c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> list<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//表头节点</span>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">list</span><span class="token punctuation">&#123;</span>
+     <span class="token comment">//表头节点</span>
      listNode <span class="token operator">*</span>head<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//表尾节点</span>
+     <span class="token comment">//表尾节点</span>
      listNode <span class="token operator">*</span>tail<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//链表所包含的节点数量</span>
+     <span class="token comment">//链表所包含的节点数量</span>
      <span class="token keyword">unsigned</span> <span class="token keyword">long</span> len<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//节点值复制函数</span>
+     <span class="token comment">//节点值复制函数</span>
      <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>free<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>ptr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//节点值释放函数</span>
+     <span class="token comment">//节点值释放函数</span>
      <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>free<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>ptr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//节点值对比函数</span>
+     <span class="token comment">//节点值对比函数</span>
      <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>match<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>ptr<span class="token punctuation">,</span><span class="token keyword">void</span> <span class="token operator">*</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>list<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>list<span class="token punctuation">;</span>
 
-<span class="token keyword">typedef</span>  <span class="token keyword">struct</span> listNode<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-       <span class="token comment" spellcheck="true">//前置节点</span>
-       <span class="token keyword">struct</span> listNode <span class="token operator">*</span>prev<span class="token punctuation">;</span>
-       <span class="token comment" spellcheck="true">//后置节点</span>
-       <span class="token keyword">struct</span> listNode <span class="token operator">*</span>next<span class="token punctuation">;</span>
-       <span class="token comment" spellcheck="true">//节点的值</span>
+<span class="token keyword">typedef</span>  <span class="token keyword">struct</span> <span class="token class-name">listNode</span><span class="token punctuation">&#123;</span>
+       <span class="token comment">//前置节点</span>
+       <span class="token keyword">struct</span> <span class="token class-name">listNode</span> <span class="token operator">*</span>prev<span class="token punctuation">;</span>
+       <span class="token comment">//后置节点</span>
+       <span class="token keyword">struct</span> <span class="token class-name">listNode</span> <span class="token operator">*</span>next<span class="token punctuation">;</span>
+       <span class="token comment">//节点的值</span>
        <span class="token keyword">void</span> <span class="token operator">*</span>value<span class="token punctuation">;</span>  
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>listNode</code></pre>
+<span class="token punctuation">&#125;</span>listNode</code></pre>
+
 <ol>
 <li><p>双端：链表具有前置节点和后置节点的引用，获取这两个节点时间复杂度都为 O(1)。</p>
 </li>
@@ -625,18 +636,19 @@
 <li><p>多态：链表节点使用指针来保存节点值，可以保存各种不同类型的值。</p>
 </li>
 </ol>
-<h3 id="Redis-是如何实现字典的？"><a href="#Redis-是如何实现字典的？" class="headerlink" title="Redis 是如何实现字典的？"></a>Redis 是如何实现字典的？</h3><pre class=" language-c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> dictht<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//哈希表数组</span>
+<h3 id="Redis-是如何实现字典的？"><a href="#Redis-是如何实现字典的？" class="headerlink" title="Redis 是如何实现字典的？"></a>Redis 是如何实现字典的？</h3><pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">dictht</span><span class="token punctuation">&#123;</span>
+     <span class="token comment">//哈希表数组</span>
      dictEntry <span class="token operator">*</span><span class="token operator">*</span>table<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//哈希表大小</span>
+     <span class="token comment">//哈希表大小</span>
      <span class="token keyword">unsigned</span> <span class="token keyword">long</span> size<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//哈希表大小掩码，用于计算索引值</span>
-     <span class="token comment" spellcheck="true">//总是等于 size-1</span>
+     <span class="token comment">//哈希表大小掩码，用于计算索引值</span>
+     <span class="token comment">//总是等于 size-1</span>
      <span class="token keyword">unsigned</span> <span class="token keyword">long</span> sizemask<span class="token punctuation">;</span>
-     <span class="token comment" spellcheck="true">//该哈希表已有节点的数量</span>
+     <span class="token comment">//该哈希表已有节点的数量</span>
      <span class="token keyword">unsigned</span> <span class="token keyword">long</span> used<span class="token punctuation">;</span>
+ 
+<span class="token punctuation">&#125;</span>dictht</code></pre>
 
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>dictht</code></pre>
 <p>当字典被用作数据库的底层实现，或者哈希键的底层实现时，Redis 使用 MurmurHash2 算法来计算键的哈希值。这种算法的优点在于，即使输入的键是有规律的，算法仍能给出一个很好的随机分布性，并且算法的计算速度也非常快。</p>
 <h3 id="有序集合-Zset-的底层实现？"><a href="#有序集合-Zset-的底层实现？" class="headerlink" title="有序集合 Zset 的底层实现？"></a>有序集合 Zset 的底层实现？</h3><p>zset 是 Redis 中一个非常重要的数据结构，其底层是基于跳表（skip list.  实现的。</p>
 <p>跳表是一种随机化的数据结构，基于并联的链表，实现简单，插入、删除、查找的复杂度均为 O(logN)。简单说来跳表也是链表的一种，只不过它在链表的基础上增加了跳跃功能，正是这个跳跃的功能，使得在查找元素时，跳表能够提供 O(logN) 的时间复杂度。</p>
@@ -939,6 +951,7 @@
 <p>对于一些热门key,需要做一些大key热key优化。读操作可以singleFilght合并请求，清理操作可以hscan转异步去搞。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/adminpd/article/details/122934938">Redis面试题</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tL411e78N/">视频统计在线人数</a></p>
 
+                
             </div>
             <hr/>
 
@@ -1167,6 +1180,8 @@
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1186,8 +1201,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            todo
-
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1236,8 +1250,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            知道什么是ddd吗?DDD（Domain-Driven Design，领域驱动设计）是一种软件开发方法论，强调将业务领域的专业知识融入到软件设计和开发中。DDD关注于解决复杂业务问题，并将业务逻辑和领域模型置于核心地位。
-有用过ddd吗?对
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1293,16 +1306,9 @@
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1460,6 +1466,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1537,10 +1546,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1588,6 +1682,7 @@ $(function () {
 
     
 
+	
     
 
     

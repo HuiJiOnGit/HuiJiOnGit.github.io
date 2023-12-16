@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,6 +470,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>有这么个需求,分别请求多个接口获取同一种信息,比如根据ip获取位置,现有多个接口都可以提供这种服务,需要都请求这些接口,但是这些接口希望是请求之后获取到结果了就不再请求其他接口,</p>
@@ -477,45 +486,46 @@
 <p>但是参考了<code>MediatR</code>的设计之后, 有所感想,可以参考这里的实现方式,去实现此要求,特此记录</p>
 <h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>有一个接口和一个委托的定义非常重要</p>
 <p>定义责任链接口,里面有一个处理,方法,</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token comment" spellcheck="true">/// &lt;summary></span>
-<span class="token comment" spellcheck="true">/// Represents an async continuation for the next task to execute in the pipeline</span>
-<span class="token comment" spellcheck="true">/// &lt;/summary></span>
-<span class="token comment" spellcheck="true">/// &lt;typeparam name="TResponse">Response type&lt;/typeparam></span>
-<span class="token comment" spellcheck="true">/// &lt;returns>Awaitable task returning a &lt;typeparamref name="TResponse"/>&lt;/returns></span>
-<span class="token keyword">public</span> <span class="token keyword">delegate</span> Task<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> <span class="token generic-method function">RequestHandlerDelegate<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token comment">/// &lt;summary></span>
+<span class="token comment">/// Represents an async continuation for the next task to execute in the pipeline</span>
+<span class="token comment">/// &lt;/summary></span>
+<span class="token comment">/// &lt;typeparam name="TResponse">Response type&lt;/typeparam></span>
+<span class="token comment">/// &lt;returns>Awaitable task returning a &lt;typeparamref name="TResponse"/>&lt;/returns></span>
+<span class="token keyword">public</span> <span class="token keyword">delegate</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">RequestHandlerDelegate</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IPipelineBehavior</span><span class="token operator">&lt;</span><span class="token keyword">in</span> TRequest<span class="token punctuation">,</span> TResponse<span class="token operator">></span> <span class="token keyword">where</span> TRequest <span class="token punctuation">:</span> notnull
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/// &lt;summary></span>
-    <span class="token comment" spellcheck="true">/// Pipeline handler. Perform any additional behavior and await the &lt;paramref name="next"/> delegate as necessary</span>
-    <span class="token comment" spellcheck="true">/// &lt;/summary></span>
-    <span class="token comment" spellcheck="true">/// &lt;param name="request">Incoming request&lt;/param></span>
-    <span class="token comment" spellcheck="true">/// &lt;param name="next">Awaitable delegate for the next action in the pipeline. Eventually this delegate represents the handler.&lt;/param></span>
-    <span class="token comment" spellcheck="true">/// &lt;param name="cancellationToken">Cancellation token&lt;/param></span>
-    <span class="token comment" spellcheck="true">/// &lt;returns>Awaitable task returning the &lt;typeparamref name="TResponse"/>&lt;/returns></span>
-    Task<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> <span class="token function">Handle</span><span class="token punctuation">(</span>TRequest request<span class="token punctuation">,</span> RequestHandlerDelegate<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> next<span class="token punctuation">,</span> CancellationToken cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">IPipelineBehavior<span class="token punctuation">&lt;</span><span class="token keyword">in</span> TRequest<span class="token punctuation">,</span> TResponse<span class="token punctuation">></span></span> <span class="token keyword">where</span> <span class="token class-name">TRequest</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token keyword">notnull</span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token comment">/// &lt;summary></span>
+    <span class="token comment">/// Pipeline handler. Perform any additional behavior and await the &lt;paramref name="next"/> delegate as necessary</span>
+    <span class="token comment">/// &lt;/summary></span>
+    <span class="token comment">/// &lt;param name="request">Incoming request&lt;/param></span>
+    <span class="token comment">/// &lt;param name="next">Awaitable delegate for the next action in the pipeline. Eventually this delegate represents the handler.&lt;/param></span>
+    <span class="token comment">/// &lt;param name="cancellationToken">Cancellation token&lt;/param></span>
+    <span class="token comment">/// &lt;returns>Awaitable task returning the &lt;typeparamref name="TResponse"/>&lt;/returns></span>
+    <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token class-name">TRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">RequestHandlerDelegate<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> next<span class="token punctuation">,</span> <span class="token class-name">CancellationToken</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RequestHandlerWrapperImpl</span><span class="token operator">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token operator">></span> <span class="token punctuation">:</span> RequestHandlerWrapper<span class="token operator">&lt;</span>TResponse<span class="token operator">></span>
-    <span class="token keyword">where</span> TRequest <span class="token punctuation">:</span> IRequest<span class="token operator">&lt;</span>TResponse<span class="token operator">></span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">async</span> Task<span class="token operator">&lt;</span><span class="token keyword">object</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token keyword">object</span> request<span class="token punctuation">,</span> IServiceProvider serviceProvider<span class="token punctuation">,</span>
-        CancellationToken cancellationToken<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-        <span class="token keyword">await</span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>IRequest<span class="token operator">&lt;</span>TResponse<span class="token operator">></span><span class="token punctuation">)</span> request<span class="token punctuation">,</span> serviceProvider<span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ConfigureAwait</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RequestHandlerWrapperImpl<span class="token punctuation">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token punctuation">></span></span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">RequestHandlerWrapper<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span></span>
+    <span class="token keyword">where</span> <span class="token class-name">TRequest</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">IRequest<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span></span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span><span class="token keyword">object</span><span class="token punctuation">?</span><span class="token punctuation">></span></span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> request<span class="token punctuation">,</span> <span class="token class-name">IServiceProvider</span> serviceProvider<span class="token punctuation">,</span>
+        <span class="token class-name">CancellationToken</span> cancellationToken<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">await</span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>IRequest<span class="token operator">&lt;</span>TResponse<span class="token operator">></span><span class="token punctuation">)</span> request<span class="token punctuation">,</span> serviceProvider<span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ConfigureAwait</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">public</span> <span class="token keyword">override</span> Task<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> <span class="token function">Handle</span><span class="token punctuation">(</span>IRequest<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> request<span class="token punctuation">,</span> IServiceProvider serviceProvider<span class="token punctuation">,</span>
-        CancellationToken cancellationToken<span class="token punctuation">)</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        Task<span class="token operator">&lt;</span>TResponse<span class="token operator">></span> <span class="token function">Handler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> serviceProvider<span class="token punctuation">.</span>GetRequiredService<span class="token operator">&lt;</span>IRequestHandler<span class="token operator">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> <span class="token function">Handle</span><span class="token punctuation">(</span><span class="token class-name">IRequest<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> request<span class="token punctuation">,</span> <span class="token class-name">IServiceProvider</span> serviceProvider<span class="token punctuation">,</span>
+        <span class="token class-name">CancellationToken</span> cancellationToken<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token return-type class-name">Task<span class="token punctuation">&lt;</span>TResponse<span class="token punctuation">></span></span> <span class="token function">Handler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> serviceProvider<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetRequiredService</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>IRequestHandler<span class="token punctuation">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token punctuation">></span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>TRequest<span class="token punctuation">)</span> request<span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
         <span class="token keyword">return</span> serviceProvider
-            <span class="token punctuation">.</span>GetServices<span class="token operator">&lt;</span>IPipelineBehavior<span class="token operator">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token operator">></span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">GetServices</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>IPipelineBehavior<span class="token punctuation">&lt;</span>TRequest<span class="token punctuation">,</span> TResponse<span class="token punctuation">></span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">Reverse</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
             <span class="token punctuation">.</span><span class="token function">Aggregate</span><span class="token punctuation">(</span><span class="token punctuation">(</span>RequestHandlerDelegate<span class="token operator">&lt;</span>TResponse<span class="token operator">></span><span class="token punctuation">)</span> Handler<span class="token punctuation">,</span>
-                <span class="token punctuation">(</span>next<span class="token punctuation">,</span> pipeline<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> pipeline<span class="token punctuation">.</span><span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>TRequest<span class="token punctuation">)</span> request<span class="token punctuation">,</span> next<span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+                <span class="token punctuation">(</span>next<span class="token punctuation">,</span> pipeline<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> pipeline<span class="token punctuation">.</span><span class="token function">Handle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>TRequest<span class="token punctuation">)</span> request<span class="token punctuation">,</span> next<span class="token punctuation">,</span> cancellationToken<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p><code>TRequest</code>是自定义的入参类型, <code>TResponse</code>是自定义的返回类型</p>
 <p><code>RequestHandlerDelegate&lt;TResponse&gt;</code>是一个委托, 返回了一个<code>TResponse</code>.</p>
 <p>接下来定义一个包装类, 这个包装类用来获取继承了<code>IPipelineBehavior</code>的接口的实现</p>
@@ -526,16 +536,17 @@
 <p>然后是<code>Reverse</code>, 这是干什么呢,这个方法用于反转数组, 假设我获取到1,2,3,4这样顺序的实现类,反转之后就变成了4,3,2,1, 用意就是为了构建一个委托链</p>
 <p>再到了<code>Aggregate</code>方法,这个就是用来累计用的,可以用来求和,第一个参数是seed,起始值,第二个参数是累计函数,第三个参数是结果函数,这里没有用上</p>
 <p>具体可以看圣杰举的例子</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">var</span> nums <span class="token operator">=</span> Enumerable<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//[2,3,4]</span>
-<span class="token comment" spellcheck="true">// 计算1到5的累加之和，再将结果乘以2</span>
-<span class="token keyword">var</span> sum <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">Aggregate</span><span class="token punctuation">(</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token class-name"><span class="token keyword">var</span></span> nums <span class="token operator">=</span> Enumerable<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//[2,3,4]</span>
+<span class="token comment">// 计算1到5的累加之和，再将结果乘以2</span>
+<span class="token class-name"><span class="token keyword">var</span></span> sum <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">Aggregate</span><span class="token punctuation">(</span>
 <span class="token number">1</span><span class="token punctuation">,</span> 
-<span class="token punctuation">(</span>total<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> total <span class="token operator">+</span> next<span class="token punctuation">,</span> result <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 相当于 (((1+2)+3)+4)*2=20</span>
-Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//20</span>
-<span class="token keyword">var</span> sum1 <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">Aggregate</span><span class="token punctuation">(</span>
+<span class="token punctuation">(</span>total<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token operator">=></span> total <span class="token operator">+</span> next<span class="token punctuation">,</span> result <span class="token operator">=></span> result <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 相当于 (((1+2)+3)+4)*2=20</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//20</span>
+<span class="token class-name"><span class="token keyword">var</span></span> sum1 <span class="token operator">=</span> nums<span class="token punctuation">.</span><span class="token function">Aggregate</span><span class="token punctuation">(</span>
 <span class="token number">1</span><span class="token punctuation">,</span> 
-<span class="token punctuation">(</span>total<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> total <span class="token operator">+</span> next<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 相当于 ((1+2)+3)+4=10</span>
-Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sum1<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//10</span></code></pre>
+<span class="token punctuation">(</span>total<span class="token punctuation">,</span> next<span class="token punctuation">)</span> <span class="token operator">=></span> total <span class="token operator">+</span> next<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">// 相当于 ((1+2)+3)+4=10</span>
+Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>sum1<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//10</span></code></pre>
+
 <p>想想看, 我们现在想实现这么个责任链, 顺序是先经过1,然后2,3,4, 执行顺序便是1,2,3,4,于是我在每个实现类中写了一个<code>Handle</code>,里面有个一参数<code>next</code>,指向了下一个实现类, 那么我需要构建这么一个东西</p>
 <table>
 <thead>
@@ -603,6 +614,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 <p>在这里,也可以对是否启用某个<code>pipeline</code>和设置<code>pipeline</code>的顺序了, 通过筛选和排序之后,再去反转和构建责任链,这样就达成了对应的责任链一环启用和筛选的功能</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sheng-jie/p/10280336.html#autoid-4-2-0">圣杰大佬的文章</a></p>
 
+                
             </div>
             <hr/>
 
@@ -831,6 +843,8 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -850,9 +864,7 @@ Console<span class="token punctuation">.</span><span class="token function">Writ
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在Docker中如何对容器进行监控和管理？请简述工具和方法在Docker中，可以使用以下工具和方法对容器进行监控和管理：
-
-Docker CLI：可以使用Docker CLI来查看所有正在运行的容器、停止或删除容器、以及查看容器日志等。例如
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -901,9 +913,7 @@ Docker CLI：可以使用Docker CLI来查看所有正在运行的容器、停止
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            雪花 Id 是什么snowflake 中文的意思是雪花，所以常被称为雪花算法
-它是 twitter 用 scala 语言编写的一个用于简单规则运算就能高效生成唯一 ID 的算法，下面是源码地址
-(https%253A%252F%252Fgi
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -959,16 +969,9 @@ Docker CLI：可以使用Docker CLI来查看所有正在运行的容器、停止
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1126,6 +1129,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1203,10 +1209,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1254,6 +1345,7 @@ $(function () {
 
     
 
+	
     
 
     

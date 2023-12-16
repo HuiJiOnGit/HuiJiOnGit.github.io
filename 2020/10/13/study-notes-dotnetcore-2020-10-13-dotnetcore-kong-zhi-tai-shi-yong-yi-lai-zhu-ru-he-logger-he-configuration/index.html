@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,36 +474,47 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="dotnet-core-3-1在控制台使用依赖注入，logger和configuration"><a href="#dotnet-core-3-1在控制台使用依赖注入，logger和configuration" class="headerlink" title="dotnet core 3.1在控制台使用依赖注入，logger和configuration"></a>dotnet core 3.1在控制台使用依赖注入，logger和configuration</h1><ol>
 <li><p>添加<code>IServiceCollection</code></p>
-<pre class=" language-c#"><code class="language-c#">//会用上的命名空间
+<pre class="language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;会用上的命名空间
 using Microsoft.Extensions.DependencyInjection;
-IServiceCollection services = new ServiceCollection();
-// 然后就可以像在asp.net core 里面的 注入了</code></pre>
+IServiceCollection services &#x3D; new ServiceCollection();
+&#x2F;&#x2F; 然后就可以像在asp.net core 里面的 注入了</code></pre>
+
+
 </li>
-</ol>
-<ol start="2">
 <li><p>创建<code>servicesProvider</code>实列</p>
-<pre class=" language-c#"><code class="language-c#">//创建服务
- var servicesProvider = services.BuildServiceProvider();</code></pre>
+<pre class="language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;创建服务
+ var servicesProvider &#x3D; services.BuildServiceProvider();</code></pre>
+
+
+</li>
+<li><p>在控制台中获取注入</p>
 </li>
 </ol>
-<ol start="3">
-<li>在控制台中获取注入</li>
-</ol>
-<pre class=" language-c#"><code class="language-c#">var airServices = servicesProvider.GetService<AirWalkServices>();</code></pre>
+<pre class="language-c#" data-language="c#"><code class="language-c#">var airServices &#x3D; servicesProvider.GetService&lt;AirWalkServices&gt;();</code></pre>
+
 <ol start="4">
 <li>在其他文件中注入和asp.net core同理，在构造函数中注入即可</li>
 <li>使用log</li>
 </ol>
-<pre class=" language-c#"><code class="language-c#">//启用日志,记得是在创建servicesProvider实列之前
-services.AddLogging(builder => builder.AddConsole());
-//使用logger
-var logger = servicesProvider.GetService<ILoggerFactory>().CreateLogger<Program>();
-logger.LogInformation("start app");
-//其他文件中使用直接注入即可</code></pre>
+<pre class="language-c#" data-language="c#"><code class="language-c#">&#x2F;&#x2F;启用日志,记得是在创建servicesProvider实列之前
+services.AddLogging(builder &#x3D;&gt; builder.AddConsole());
+&#x2F;&#x2F;使用logger
+var logger &#x3D; servicesProvider.GetService&lt;ILoggerFactory&gt;().CreateLogger&lt;Program&gt;();
+logger.LogInformation(&quot;start app&quot;);
+&#x2F;&#x2F;其他文件中使用直接注入即可</code></pre>
+
 <blockquote>
 <p>注意，这里的 <code>builder.AddConsole()</code>可能垃圾VS没有提示，需要安装这个包</p>
 <p><code>Microsoft.Extensions.Logging.Console</code></p>
@@ -517,35 +529,41 @@ logger.LogInformation("start app");
 <p>需要引用这个几个包，VS大概率又又又没提示</p>
 <blockquote>
 <pre><code>Microsoft.Extensions.Configuration.FileExtensions
-Microsoft.Extensions.Configuration.Json</code></pre>
+Microsoft.Extensions.Configuration.Json
+</code></pre>
 </blockquote>
-<pre class=" language-c#"><code class="language-c#">IConfiguration configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
+<pre class="language-c#" data-language="c#"><code class="language-c#">IConfiguration configuration &#x3D; new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(&quot;appsettings.json&quot;)
                     .Build();
  services.AddSingleton(configuration);
-//Directory.GetCurrentDirectory()这个方法根据微软文档的说法，如果是windows服务的程序，获取的是c盘system文件夹，暂时找不到链接了</code></pre>
+&#x2F;&#x2F;Directory.GetCurrentDirectory()这个方法根据微软文档的说法，如果是windows服务的程序，获取的是c盘system文件夹，暂时找不到链接了</code></pre>
+
 <p>使用同直接注入就行</p>
-<pre class=" language-c#"><code class="language-c#">private readonly IConfiguration _configuration;
+<pre class="language-c#" data-language="c#"><code class="language-c#">private readonly IConfiguration _configuration;
 public Class1(IConfiguration configuration)
 &#123;
-    _configuration = configuration;
+    _configuration &#x3D; configuration;
 &#125;</code></pre>
+
 <p>同理也可以使用其他的json文件</p>
-<pre class=" language-c#"><code class="language-c#">IConfiguration tempConfig = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("你的json文件")
+<pre class="language-c#" data-language="c#"><code class="language-c#">IConfiguration tempConfig &#x3D; new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(&quot;你的json文件&quot;)
                     .Build();
-//然后我把它注入到了这个TemplateDto类
-services.Configure<TemplateDto>(tempConfig);</code></pre>
+&#x2F;&#x2F;然后我把它注入到了这个TemplateDto类
+services.Configure&lt;TemplateDto&gt;(tempConfig);</code></pre>
+
 <p>调用</p>
-<pre class=" language-c#"><code class="language-c#">private readonly IOptions<TemplateDto> _options;
-public Class1(IOptions<TemplateDto> options)
+<pre class="language-c#" data-language="c#"><code class="language-c#">private readonly IOptions&lt;TemplateDto&gt; _options;
+public Class1(IOptions&lt;TemplateDto&gt; options)
 &#123;
-    _options = options;
+    _options &#x3D; options;
 &#125;</code></pre>
+
 <p>以上，完成</p>
 <h2 id="2023-12-7-update"><a href="#2023-12-7-update" class="headerlink" title="2023/12/7 update"></a>2023/12/7 update</h2><p>其实以上的这些操作很多冗余的,我们只需要引入<code>Microsoft.Extensions.Hosting</code>即可,这个包集成了依赖注入,读取json配置,日志,选项,大部分情况都够用了</p>
 <p>如果你想更复杂一点,可以使用abp cli提供的控制台模板,那个也使用了上面的包,但是引入了<code>abp</code>的模块化, 对于熟悉<code>abp</code>的人也很好用</p>
 
+                
             </div>
             <hr/>
 
@@ -778,6 +796,8 @@ public Class1(IOptions<TemplateDto> options)
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -797,7 +817,7 @@ public Class1(IOptions<TemplateDto> options)
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -834,14 +854,7 @@ public Class1(IOptions<TemplateDto> options)
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            c# 压缩文件成zip
-本篇资料引用  微软文档
-
-真的建议大家过看看微软的官方文档，啥都有
-
-
-c# 内置了几个处理压缩的类，详细见上面的链接，都是在system.IO.Compression这个命名空间下
-zipfile使用心得，都是从
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -897,16 +910,9 @@ zipfile使用心得，都是从
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1064,6 +1070,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1141,10 +1150,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1192,6 +1286,7 @@ $(function () {
 
     
 
+	
     
 
     

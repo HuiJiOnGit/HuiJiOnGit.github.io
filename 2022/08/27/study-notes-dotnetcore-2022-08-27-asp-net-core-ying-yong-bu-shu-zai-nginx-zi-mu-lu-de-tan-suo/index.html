@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,6 +474,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>由于没有测试用的域名, 一个项目部署到了已有域名的子目录下, 用的<code>Nginx</code>反向代理, 访问链接是这样</p>
@@ -495,69 +504,73 @@
 <p>高情商: 这是一个很直接了当的修改方案,大幅提高工作量</p>
 <p>低情商: Rubbish</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>先展示下最开始的<code>nginx</code>的配置</p>
-<pre class=" language-nginx"><code class="language-nginx"><span class="token keyword">server</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-  <span class="token keyword">listen</span> <span class="token number">53346</span><span class="token punctuation">;</span>
-  <span class="token keyword">server_name</span> localhost<span class="token punctuation">;</span>
-   <span class="token keyword">location</span> <span class="token operator">/</span>app<span class="token operator">/</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-    <span class="token keyword">proxy_pass</span>  <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>localhost<span class="token punctuation">:</span><span class="token number">5243</span><span class="token operator">/</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_http_version</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_set_header</span> Connection keep<span class="token operator">-</span>alive<span class="token punctuation">;</span>
-    <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span><span class="token punctuation">:</span><span class="token variable">$server_port</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_cache_bypass</span> <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
-    <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>Proto <span class="token variable">$scheme</span><span class="token punctuation">;</span>
-            <span class="token keyword">index</span>  <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span>
-        <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-            <span class="token keyword">root</span>   html<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span>
- <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span></code></pre>
+<pre class="language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">server</span></span><span class="token punctuation">&#123;</span>
+  <span class="token directive"><span class="token keyword">listen</span> <span class="token number">53346</span></span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">server_name</span> localhost</span><span class="token punctuation">;</span>
+   <span class="token directive"><span class="token keyword">location</span> /app/</span><span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">proxy_pass</span>  http://localhost:5243/</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_http_version</span> 1.1</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> Connection keep-alive</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span>:<span class="token variable">$server_port</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_cache_bypass</span> <span class="token variable">$http_upgrade</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Proto <span class="token variable">$scheme</span></span><span class="token punctuation">;</span>
+            <span class="token directive"><span class="token keyword">index</span>  index.html index.htm</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token directive"><span class="token keyword">location</span> = /50x.html</span> <span class="token punctuation">&#123;</span>
+            <span class="token directive"><span class="token keyword">root</span>   html</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">&#125;</span></code></pre>
+
 <h3 id="第一个问题"><a href="#第一个问题" class="headerlink" title="第一个问题"></a>第一个问题</h3><p>加上子目录之后的路径访问会 404, 为什么呢? 很简单,因为加上子目录之后, 路由对不上呢, 比如你要访问 <code>/Home/Index</code>,但是实际访问却是<code>/app/Home/Index</code>,这样改是找不到路由的</p>
 <blockquote>
 <p>搜索一下之后发现, <code>asp.net core</code> 中的<code>PathBase</code>就是设计出来应对这种情况的,就是告诉应用, 我这个请求前面是有一段不算在路由里面的, 你找路由要先排除这个.在中间件开始的地方加上</p>
 </blockquote>
-<pre class=" language-c#"><code class="language-c#">app.UsePathBase(new PathString("/app"));</code></pre>
-<h3 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h3><p>但是访问之后发现, 路由时找到了,但是 js 和 css 都是 404,看控制台发现,这里的请求并没有带上<code>/app</code>,而是直接访问了域名,所以还要调整下,在<code>nginx</code>那里要把<code>/app</code>路径传入进去</p>
-<pre class=" language-Nginx"><code class="language-Nginx">
-# proxy_pass  http://localhost:5243/;
+<pre class="language-c#" data-language="c#"><code class="language-c#">app.UsePathBase(new PathString(&quot;&#x2F;app&quot;));</code></pre>
 
-proxy_pass  http://localhost:5243/app/;
+<h3 id="第二个问题"><a href="#第二个问题" class="headerlink" title="第二个问题"></a>第二个问题</h3><p>但是访问之后发现, 路由时找到了,但是 js 和 css 都是 404,看控制台发现,这里的请求并没有带上<code>/app</code>,而是直接访问了域名,所以还要调整下,在<code>nginx</code>那里要把<code>/app</code>路径传入进去</p>
+<pre class="language-Nginx" data-language="Nginx"><code class="language-Nginx">
+# proxy_pass  http:&#x2F;&#x2F;localhost:5243&#x2F;;
+
+proxy_pass  http:&#x2F;&#x2F;localhost:5243&#x2F;app&#x2F;;
 </code></pre>
+
 <p>重启<code>nginx</code>之后,访问果然正确显示引用的 js 和 css 了,路径已经加上<code>/app</code>了</p>
 <p>最后贴下完整的配置</p>
-<h4 id="nginx-配置"><a href="#nginx-配置" class="headerlink" title="nginx 配置"></a>nginx 配置</h4><pre class=" language-nginx"><code class="language-nginx"> <span class="token keyword">server</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-  <span class="token keyword">listen</span> <span class="token number">53346</span><span class="token punctuation">;</span>
-  <span class="token keyword">server_name</span> localhost<span class="token punctuation">;</span>
-   <span class="token keyword">location</span> <span class="token operator">/</span>app<span class="token operator">/</span><span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-   <span class="token keyword">proxy_pass</span>  <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>localhost<span class="token punctuation">:</span><span class="token number">5243</span><span class="token operator">/</span>app<span class="token operator">/</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_http_version</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_set_header</span> Connection keep<span class="token operator">-</span>alive<span class="token punctuation">;</span>
-   <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span><span class="token punctuation">:</span><span class="token variable">$server_port</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_cache_bypass</span> <span class="token variable">$http_upgrade</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
-   <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>Proto <span class="token variable">$scheme</span><span class="token punctuation">;</span>
-            <span class="token keyword">index</span>  <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span>
-        <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#123;</span>
-            <span class="token keyword">root</span>   html<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span>
- <span class="token operator">&amp;</span><span class="token comment" spellcheck="true">#125;</span></code></pre>
-<h4 id="c-部分"><a href="#c-部分" class="headerlink" title="c# 部分"></a>c# 部分</h4><pre class=" language-c#"><code class="language-c#">var builder = WebApplication.CreateBuilder(args);
+<h4 id="nginx-配置"><a href="#nginx-配置" class="headerlink" title="nginx 配置"></a>nginx 配置</h4><pre class="language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">server</span></span><span class="token punctuation">&#123;</span>
+ <span class="token directive"><span class="token keyword">listen</span> <span class="token number">53346</span></span><span class="token punctuation">;</span>
+ <span class="token directive"><span class="token keyword">server_name</span> localhost</span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">location</span> /app/</span><span class="token punctuation">&#123;</span>
+  <span class="token directive"><span class="token keyword">proxy_pass</span>  http://localhost:5243/app/</span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_http_version</span> 1.1</span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_set_header</span> Upgrade <span class="token variable">$http_upgrade</span></span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_set_header</span> Connection keep-alive</span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span>:<span class="token variable">$server_port</span></span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_cache_bypass</span> <span class="token variable">$http_upgrade</span></span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+  <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-Proto <span class="token variable">$scheme</span></span><span class="token punctuation">;</span>
+           <span class="token directive"><span class="token keyword">index</span>  index.html index.htm</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+       <span class="token directive"><span class="token keyword">location</span> = /50x.html</span> <span class="token punctuation">&#123;</span>
+           <span class="token directive"><span class="token keyword">root</span>   html</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
-// Add services to the container.
+<h4 id="c-部分"><a href="#c-部分" class="headerlink" title="c# 部分"></a>c# 部分</h4><pre class="language-c#" data-language="c#"><code class="language-c#">var builder &#x3D; WebApplication.CreateBuilder(args);
+
+&#x2F;&#x2F; Add services to the container.
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
+var app &#x3D; builder.Build();
 
-// Configure the HTTP request pipeline.
+&#x2F;&#x2F; Configure the HTTP request pipeline.
 
-app.UsePathBase(new PathString("/app"));
+app.UsePathBase(new PathString(&quot;&#x2F;app&quot;));
 
 if (!app.Environment.IsDevelopment())
 &#123;
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler(&quot;&#x2F;Error&quot;);
 &#125;
 
 app.UseStaticFiles();
@@ -570,16 +583,18 @@ app.MapRazorPages();
 
 app.Run();
 </code></pre>
+
 <h2 id="要注意的点"><a href="#要注意的点" class="headerlink" title="要注意的点"></a>要注意的点</h2><ul>
 <li>链接</li>
 </ul>
 <p>如果你使用了 <code>asp-action</code> <code>asp-router</code> <code>asp-controller</code> 等<code>TagHelper</code>去生成链接的话, 那就会带上子目录的路径的, 如果你直接写一个 a 标签,那这个在代理之后生成的是不会有子目录,所以涉及这个最好使用<code>tagheler</code>来生成.</p>
-<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">asp-page</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/Privacy<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>使用TagHelper生成的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
-<span class="token comment" spellcheck="true">&lt;!--生成是这样的&lt;a href="/app/Privacy">使用TagHelper生成的&lt;/a>--></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/Private<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>手动写链接的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
-<span class="token comment" spellcheck="true">&lt;!--生成如下&lt;a href="/Private">手动写链接的&lt;/a>--></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>~/Private<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>手动写链接的,但是使用了~<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
-<span class="token comment" spellcheck="true">&lt;!--&lt;a href="/app/Private">手动写链接的,但是使用了~&lt;/a>--></span></code></pre>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">asp-page</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/Privacy<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>使用TagHelper生成的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!--生成是这样的&lt;a href="/app/Privacy">使用TagHelper生成的&lt;/a>--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/Private<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>手动写链接的<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!--生成如下&lt;a href="/Private">手动写链接的&lt;/a>--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>~/Private<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>手动写链接的,但是使用了~<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!--&lt;a href="/app/Private">手动写链接的,但是使用了~&lt;/a>--></span></code></pre>
+
 <p>建议使用 1,3,不要用 2</p>
 <ul>
 <li>请求</li>
@@ -590,52 +605,53 @@ app.Run();
 <li>其他资源(音频视频)</li>
 </ul>
 <p>这里有两种引入方式,会生成不一样的结果</p>
-<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/img/001.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">asp-append-version</span> <span class="token punctuation">/></span></span>
-<span class="token comment" spellcheck="true">&lt;!--&lt;img src="/img/001.jpg?v=LWv2Dubq1qrHEyLduWAtYgtEtCVlddyQv-omxaAMgiI">--></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>~/img/001.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">asp-append-version</span> <span class="token punctuation">/></span></span>
-<span class="token comment" spellcheck="true">&lt;!--&lt;img src="/app/img/001.jpg?v=LWv2Dubq1qrHEyLduWAtYgtEtCVlddyQv-omxaAMgiI">--></span></code></pre>
+<pre class="language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/img/001.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">asp-append-version</span> <span class="token punctuation">/></span></span>
+<span class="token comment">&lt;!--&lt;img src="/img/001.jpg?v=LWv2Dubq1qrHEyLduWAtYgtEtCVlddyQv-omxaAMgiI">--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>~/img/001.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">asp-append-version</span> <span class="token punctuation">/></span></span>
+<span class="token comment">&lt;!--&lt;img src="/app/img/001.jpg?v=LWv2Dubq1qrHEyLduWAtYgtEtCVlddyQv-omxaAMgiI">--></span></code></pre>
+
 <p>使用后者可以自动添加子目录,推荐使用后者</p>
 <p>另外探究下源码这里是怎么处理<code>PathBase</code>的,首先看看<code>taghelper</code>是怎么处理的,一路顺着源码走下去发现以下调用</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/dotnet/aspnetcore/blob/51ccce6d743dddf995b3661f07b0e1990b68dc7d/src/Mvc/Mvc.TagHelpers/src/AnchorTagHelper.cs"><code>AnchorTagHelper</code></a><br>这里无论使用使用路由,action,还是page都是使用了<code>UrlHelperFactory</code>类型的方法,接下看看这个</p>
-<pre class=" language-c#"><code class="language-c#">public override void Process(TagHelperContext context, TagHelperOutput output)
+<pre class="language-c#" data-language="c#"><code class="language-c#">public override void Process(TagHelperContext context, TagHelperOutput output)
 &#123;
-    // 省略了一部分验证
-    var routeLink = Route != null;
-    var actionLink = Controller != null || Action != null;
-    var pageLink = Page != null || PageHandler != null;
+    &#x2F;&#x2F; 省略了一部分验证
+    var routeLink &#x3D; Route !&#x3D; null;
+    var actionLink &#x3D; Controller !&#x3D; null || Action !&#x3D; null;
+    var pageLink &#x3D; Page !&#x3D; null || PageHandler !&#x3D; null;
 
-    if ((routeLink && actionLink) || (routeLink && pageLink) || (actionLink && pageLink))
+    if ((routeLink &amp;&amp; actionLink) || (routeLink &amp;&amp; pageLink) || (actionLink &amp;&amp; pageLink))
     &#123;
-        var message = string.Join(
+        var message &#x3D; string.Join(
             Environment.NewLine,
-            Resources.FormatCannotDetermineAttributeFor(Href, "<a>"),
+            Resources.FormatCannotDetermineAttributeFor(Href, &quot;&lt;a&gt;&quot;),
             RouteAttributeName,
-            ControllerAttributeName + ", " + ActionAttributeName,
-            PageAttributeName + ", " + PageHandlerAttributeName);
+            ControllerAttributeName + &quot;, &quot; + ActionAttributeName,
+            PageAttributeName + &quot;, &quot; + PageHandlerAttributeName);
 
         throw new InvalidOperationException(message);
     &#125;
 
-    RouteValueDictionary routeValues = null;
-    if (_routeValues != null && _routeValues.Count > 0)
+    RouteValueDictionary routeValues &#x3D; null;
+    if (_routeValues !&#x3D; null &amp;&amp; _routeValues.Count &gt; 0)
     &#123;
-        routeValues = new RouteValueDictionary(_routeValues);
+        routeValues &#x3D; new RouteValueDictionary(_routeValues);
     &#125;
 
-    if (Area != null)
+    if (Area !&#x3D; null)
     &#123;
-        // Unconditionally replace any value from asp-route-area.
-        if (routeValues == null)
+        &#x2F;&#x2F; Unconditionally replace any value from asp-route-area.
+        if (routeValues &#x3D;&#x3D; null)
         &#123;
-            routeValues = new RouteValueDictionary();
+            routeValues &#x3D; new RouteValueDictionary();
         &#125;
-        routeValues["area"] = Area;
+        routeValues[&quot;area&quot;] &#x3D; Area;
     &#125;
 
     TagBuilder tagBuilder;
     if (pageLink)
     &#123;
-        tagBuilder = Generator.GeneratePageLink(
+        tagBuilder &#x3D; Generator.GeneratePageLink(
             ViewContext,
             linkText: string.Empty,
             pageName: Page,
@@ -648,7 +664,7 @@ app.Run();
     &#125;
     else if (routeLink)
     &#123;
-        tagBuilder = Generator.GenerateRouteLink(
+        tagBuilder &#x3D; Generator.GenerateRouteLink(
             ViewContext,
             linkText: string.Empty,
             routeName: Route,
@@ -660,7 +676,7 @@ app.Run();
     &#125;
     else
     &#123;
-        tagBuilder = Generator.GenerateActionLink(
+        tagBuilder &#x3D; Generator.GenerateActionLink(
             ViewContext,
             linkText: string.Empty,
             actionName: Action,
@@ -674,47 +690,49 @@ app.Run();
 
     output.MergeAttributes(tagBuilder);
 &#125;</code></pre>
+
 <p><a target="_blank" rel="noopener" href="https://github.com/dotnet/aspnetcore/tree/2ae595a71b202f2f957f2909e0b6b99dd563c0db/src/Mvc/Mvc.Core/src/Routing/UrlHelperFactory.cs"><code>UrlHelperFactory</code></a><br>然后这里有个分支,有两个实现了<code>IUrlHelper</code>的类型,一个是<code>EndpointRoutingUrlHelper</code>,另外一个是<code>UrlHelper</code>,由于没有调试,只能两个都看看,</p>
-<pre class=" language-c#"><code class="language-c#">public IUrlHelper GetUrlHelper(ActionContext context)
+<pre class="language-c#" data-language="c#"><code class="language-c#">public IUrlHelper GetUrlHelper(ActionContext context)
 &#123;
-    // 省略了一部分验证
+    &#x2F;&#x2F; 省略了一部分验证
 
-    var endpoint = httpContext.GetEndpoint();
-    if (endpoint != null)
+    var endpoint &#x3D; httpContext.GetEndpoint();
+    if (endpoint !&#x3D; null)
     &#123;
-        var services = httpContext.RequestServices;
-        var linkGenerator = services.GetRequiredService<LinkGenerator>();
-        var logger = services.GetRequiredService<ILogger<EndpointRoutingUrlHelper>>();
+        var services &#x3D; httpContext.RequestServices;
+        var linkGenerator &#x3D; services.GetRequiredService&lt;LinkGenerator&gt;();
+        var logger &#x3D; services.GetRequiredService&lt;ILogger&lt;EndpointRoutingUrlHelper&gt;&gt;();
 
-        urlHelper = new EndpointRoutingUrlHelper(
+        urlHelper &#x3D; new EndpointRoutingUrlHelper(
             context,
             linkGenerator,
             logger);
     &#125;
     else
     &#123;
-        urlHelper = new UrlHelper(context);
+        urlHelper &#x3D; new UrlHelper(context);
     &#125;
 
-    httpContext.Items[typeof(IUrlHelper)] = urlHelper;
+    httpContext.Items[typeof(IUrlHelper)] &#x3D; urlHelper;
 
     return urlHelper;
 &#125;
 </code></pre>
+
 <p>最后看到其实两个<code>IUrlHelper</code>都是使用了<code>UrlHelperBase</code>父类中的<code>GenerateUrl</code>方法,然后这两个方法都会调用到<code>AppendPathAndFragment</code>这个方法,</p>
-<pre class=" language-c#"><code class="language-c#">internal static void AppendPathAndFragment(StringBuilder builder, PathString pathBase, string virtualPath, string? fragment)
+<pre class="language-c#" data-language="c#"><code class="language-c#">internal static void AppendPathAndFragment(StringBuilder builder, PathString pathBase, string virtualPath, string? fragment)
 &#123;
     if (!pathBase.HasValue)
     &#123;
-        if (virtualPath.Length == 0)
+        if (virtualPath.Length &#x3D;&#x3D; 0)
         &#123;
-            builder.Append('/');
+            builder.Append(&#39;&#x2F;&#39;);
         &#125;
         else
         &#123;
-            if (!virtualPath.StartsWith('/'))
+            if (!virtualPath.StartsWith(&#39;&#x2F;&#39;))
             &#123;
-                builder.Append('/');
+                builder.Append(&#39;&#x2F;&#39;);
             &#125;
 
             builder.Append(virtualPath);
@@ -722,7 +740,7 @@ app.Run();
     &#125;
     else
     &#123;
-        if (virtualPath.Length == 0)
+        if (virtualPath.Length &#x3D;&#x3D; 0)
         &#123;
             builder.Append(pathBase.Value);
         &#125;
@@ -730,14 +748,14 @@ app.Run();
         &#123;
             builder.Append(pathBase.Value);
 
-            if (pathBase.Value.EndsWith("/", StringComparison.Ordinal))
+            if (pathBase.Value.EndsWith(&quot;&#x2F;&quot;, StringComparison.Ordinal))
             &#123;
                 builder.Length--;
             &#125;
 
-            if (!virtualPath.StartsWith("/", StringComparison.Ordinal))
+            if (!virtualPath.StartsWith(&quot;&#x2F;&quot;, StringComparison.Ordinal))
             &#123;
-                builder.Append('/');
+                builder.Append(&#39;&#x2F;&#39;);
             &#125;
 
             builder.Append(virtualPath);
@@ -746,9 +764,10 @@ app.Run();
 
     if (!string.IsNullOrEmpty(fragment))
     &#123;
-        builder.Append('#').Append(fragment);
+        builder.Append(&#39;#&#39;).Append(fragment);
     &#125;
 &#125;</code></pre>
+
 <p>至此,<code>TagHelper</code>是怎么处理<code>PathBase</code>已完全解开秘密.</p>
 <p>还有个疑问,为什么用<code>~</code>这个符号开始的链接也能正确显示?</p>
 <p>大概猜测是在<code>UrlHelperBase</code>的<code>TryFastGenerateUrl</code>中,还不是很确定</p>
@@ -766,6 +785,7 @@ app.Run();
 </li>
 </ol>
 
+                
             </div>
             <hr/>
 
@@ -998,6 +1018,8 @@ app.Run();
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1017,9 +1039,7 @@ app.Run();
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            探究下abp的启动和模块系统当你创建一个新的abp应用,你会发现,它的Startup文件特别简洁,如下所示:
-public void ConfigureServices(IServiceCollection services)
-&#123;
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1068,10 +1088,7 @@ public void ConfigureServices(IServiceCollection services)
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            记录下学习这两个遍历的过程
-什么是广度优先遍历和深度优先遍历来源百度百科
-
-BFS，其英文全称是Breadth First Search。 BFS并不使用经验法则算法。从算法的观点，所有因为展开节点而得到的子节点都会被加进一个先进先出的队列
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1131,16 +1148,9 @@ BFS，其英文全称是Breadth First Search。 BFS并不使用经验法则算�
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1298,6 +1308,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1375,10 +1388,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1426,6 +1524,7 @@ $(function () {
 
     
 
+	
     
 
     

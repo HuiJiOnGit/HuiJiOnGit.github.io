@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -473,61 +474,71 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="记录下使用vuepress的过程"><a href="#记录下使用vuepress的过程" class="headerlink" title="记录下使用vuepress的过程"></a>记录下使用<code>vuepress</code>的过程</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>我是使用了<code>vuepress2</code>的<code>v2.0.0-beta.60</code>版本</p>
 <p>开头的内容跟着官方文档做就行</p>
 <p>下面只记录要点</p>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><code>config.ts</code></p>
-<pre class=" language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> defineUserConfig <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">"vuepress"</span><span class="token punctuation">;</span>
+<pre class="language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> defineUserConfig <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"vuepress"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> theme <span class="token keyword">from</span> <span class="token string">"./theme"</span><span class="token punctuation">;</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineUserConfig</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  lang<span class="token punctuation">:</span> <span class="token string">"zh-CN"</span><span class="token punctuation">,</span>
-  title<span class="token punctuation">:</span> <span class="token string">"项目文档"</span><span class="token punctuation">,</span>
-  description<span class="token punctuation">:</span> <span class="token string">"文档"</span><span class="token punctuation">,</span>
-  head<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"link"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> rel<span class="token punctuation">:</span> <span class="token string">"icon"</span><span class="token punctuation">,</span> href<span class="token punctuation">:</span> <span class="token string">"/favicon.ico"</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  theme<span class="token punctuation">:</span> theme<span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defineUserConfig</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  lang<span class="token operator">:</span> <span class="token string">"zh-CN"</span><span class="token punctuation">,</span>
+  title<span class="token operator">:</span> <span class="token string">"项目文档"</span><span class="token punctuation">,</span>
+  description<span class="token operator">:</span> <span class="token string">"文档"</span><span class="token punctuation">,</span>
+  head<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"link"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> rel<span class="token operator">:</span> <span class="token string">"icon"</span><span class="token punctuation">,</span> href<span class="token operator">:</span> <span class="token string">"/favicon.ico"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  theme<span class="token operator">:</span> theme<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
 <p>这里的<code>theme</code>是beta中的破坏性变更, 网上的如果不是这个就是旧攻略,可能无法起作用</p>
 <p><code>theme.ts</code></p>
-<pre class=" language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> defaultTheme <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">from</span> <span class="token string">"@vuepress/theme-default"</span><span class="token punctuation">;</span>
+<pre class="language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> defaultTheme <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@vuepress/theme-default"</span><span class="token punctuation">;</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defaultTheme</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-  logo<span class="token punctuation">:</span> <span class="token string">"/favicon.ico"</span><span class="token punctuation">,</span>
-  <span class="token comment" spellcheck="true">// 默认主题配置</span>
-  navbar<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      text<span class="token punctuation">:</span> <span class="token string">"首页"</span><span class="token punctuation">,</span>
-      link<span class="token punctuation">:</span> <span class="token string">"/"</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      text<span class="token punctuation">:</span> <span class="token string">"维护记录"</span><span class="token punctuation">,</span>
-      link<span class="token punctuation">:</span> <span class="token string">"/note/"</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      text<span class="token punctuation">:</span> <span class="token string">"需求"</span><span class="token punctuation">,</span>
-      link<span class="token punctuation">:</span> <span class="token string">"/demand/"</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-      text<span class="token punctuation">:</span> <span class="token string">"API"</span><span class="token punctuation">,</span>
-      link<span class="token punctuation">:</span> <span class="token string">"/api/"</span><span class="token punctuation">,</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">,</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token function">defaultTheme</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  logo<span class="token operator">:</span> <span class="token string">"/favicon.ico"</span><span class="token punctuation">,</span>
+  <span class="token comment">// 默认主题配置</span>
+  navbar<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+      text<span class="token operator">:</span> <span class="token string">"首页"</span><span class="token punctuation">,</span>
+      link<span class="token operator">:</span> <span class="token string">"/"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+      text<span class="token operator">:</span> <span class="token string">"维护记录"</span><span class="token punctuation">,</span>
+      link<span class="token operator">:</span> <span class="token string">"/note/"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+      text<span class="token operator">:</span> <span class="token string">"需求"</span><span class="token punctuation">,</span>
+      link<span class="token operator">:</span> <span class="token string">"/demand/"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+      text<span class="token operator">:</span> <span class="token string">"API"</span><span class="token punctuation">,</span>
+      link<span class="token operator">:</span> <span class="token string">"/api/"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  sidebar<span class="token punctuation">:</span> <span class="token string">"auto"</span><span class="token punctuation">,</span>
-  repo<span class="token punctuation">:</span> <span class="token string">"https://github.com/HuiJiOnGit"</span><span class="token punctuation">,</span>
-  editLink<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
-  lastUpdated<span class="token punctuation">:</span> <span class="token keyword">true</span><span class="token punctuation">,</span>
-  lastUpdatedText<span class="token punctuation">:</span> <span class="token string">"最后更新时间"</span><span class="token punctuation">,</span>
-  notFound<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"页面开小差了"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  backToHome<span class="token punctuation">:</span> <span class="token string">"返回顶部"</span><span class="token punctuation">,</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  sidebar<span class="token operator">:</span> <span class="token string">"auto"</span><span class="token punctuation">,</span>
+  repo<span class="token operator">:</span> <span class="token string">"https://github.com/HuiJiOnGit"</span><span class="token punctuation">,</span>
+  editLink<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  lastUpdated<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  lastUpdatedText<span class="token operator">:</span> <span class="token string">"最后更新时间"</span><span class="token punctuation">,</span>
+  notFound<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"页面开小差了"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  backToHome<span class="token operator">:</span> <span class="token string">"返回顶部"</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
+
 <p>主要的主题配置写在这里, 免得到时候<code>config.ts</code>太多内容</p>
 <p>贡献者和最后更新时间是要你提交了git记录之后才会出现的,否则是不会有这两个东西的</p>
 <p>最后是<code>home</code>页面的内容</p>
-<pre class=" language-md"><code class="language-md">---
-home: true
+<pre class="language-markdown" data-language="markdown"><code class="language-markdown"><span class="token front-matter-block"><span class="token punctuation">---</span>
+<span class="token front-matter yaml language-yaml">home: true
 heroImage: /home.png
 heroText: Geralt Zhang's Document
 actions:
@@ -547,22 +558,25 @@ features:
   details: 把各种善变的需求给记录下来
 - title: API文档
   details: 代码的注释放到这里
-footer: MIT Licensed | Copyright © 2022-present Passwordgloo
----</code></pre>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><pre class=" language-config"><code class="language-config"># vuepress 文档
+footer: MIT Licensed | Copyright © 2022-present Passwordgloo</span>
+<span class="token punctuation">---</span></span></code></pre>
+
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><pre class="language-config" data-language="config"><code class="language-config"># vuepress 文档
 server&#123;
     listen 8083;
     server_name docs.com localhost;
-    location / &#123;
-        root   D:/Docs/docs/.vuepress/dist/;
+    location &#x2F; &#123;
+        root   D:&#x2F;Docs&#x2F;docs&#x2F;.vuepress&#x2F;dist&#x2F;;
         index  index.html index.htm;
-        try_files $uri $uri/ /index.html; 
+        try_files $uri $uri&#x2F; &#x2F;index.html; 
     &#125;
 &#125;</code></pre>
+
 <p>这里的<code>root</code>使用绝对地址就行, 主要 <code>\</code> 要改为 <code>/</code>,不要有中文和空格</p>
 <hr>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>横向对比<code>hexo</code>的话,感觉都差不多,可能更多深度定制的话,<code>vuepress</code>可以使用<code>vue</code>的组件会更加灵活和自由</p>
 
+                
             </div>
             <hr/>
 
@@ -795,6 +809,8 @@ server&#123;
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -814,9 +830,7 @@ server&#123;
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在一个域名下部署多个子目录详细可以参考我这篇文章 Post not found: 2022-08-27-asp-net-core-应用部署在Nginx-子目录的探索 为什么链接总是不对
-跳转端口丢失主要还是要设置ng
-proxy_set_h
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -869,8 +883,7 @@ proxy_set_h
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在 vue2 中使用 render 函数和 Jsx前言
-最近产生了一个神奇的想法, 本来项目的内容都是基于配置是渲染不同的内容的, 怎么渲染是要手动写template的, 但是日积月累下来, 各种if和else的判断条件已经让代码非常难维护
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -934,16 +947,9 @@ proxy_set_h
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1101,6 +1107,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1178,10 +1187,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1229,6 +1323,7 @@ $(function () {
 
     
 
+	
     
 
     

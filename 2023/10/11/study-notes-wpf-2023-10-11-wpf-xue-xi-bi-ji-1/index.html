@@ -29,7 +29,9 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 5.2.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
 
 
 <body>
@@ -356,8 +358,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -369,7 +370,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -469,6 +470,14 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="什么是WPF"><a href="#什么是WPF" class="headerlink" title="什么是WPF?"></a>什么是<code>WPF</code>?</h2><p>WPF，全称 Windows Presentation Foundation，中文叫 Windows 呈现基础</p>
@@ -540,20 +549,21 @@
 <p>从此，DispatcherObject 在 WPF 的世界中，便登上了至高无上的宝座，成为了几乎所有类型的终极基类。</p>
 <p>而作为 DispatcherObject 类的成员 Dispatcher（调度员）又提供了哪些功能？</p>
 <p>简单点说，它便是后台线程和前台线程的桥梁，虽然所有的控件都必须在前台 UI 线程中创建，但是在开发过程中，难免需要在后台线程中去操作控件，于是 Dispatcher 调度员提供了 Invoke 和 BeginInvoke 两个方法，供我们可以安全的访问 UI 线程中的控件。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">MainWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token function">MainWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
     <span class="token function">InitializeComponent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    Task<span class="token punctuation">.</span>Factory<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-    <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+    Task<span class="token punctuation">.</span>Factory<span class="token punctuation">.</span><span class="token function">StartNew</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token punctuation">&#123;</span>
         Task<span class="token punctuation">.</span><span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        button<span class="token punctuation">.</span>Dispatcher<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+        button<span class="token punctuation">.</span>Dispatcher<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token punctuation">&#123;</span>
             button<span class="token punctuation">.</span>Content <span class="token operator">=</span> <span class="token string">"www.wpfsoft.com"</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span></code></pre>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
 <p>那么DispatcherObject 类的主要方针路线到底是什么呢？主要有两个职责：</p>
 <ul>
 <li><p>提供对对象所关联的当前 Dispatcher 的访问权限，意思是说谁继承了它，谁就拥有了Dispatcher。</p>
@@ -596,9 +606,10 @@
 <p>从空间上来说，冒泡事件和隧道事件是成对出现的。从时间来说，都是先触发隧道事件，然后是冒泡事件。从命名来说，隧道事件都是以Preview开头的事件。</p>
 <p>根据命名规则，我们可以大致猜测出一个结果，带Key的基本都是与键盘相关的事件（如按下键位、抬起键位），带Mouse的基本都是与鼠标相关的事件（如左键单击、双击），带Stylus的基本都是与触摸相关的事件，具体用到哪一类型的事件，再详细查阅一下相关说明文档即可。</p>
 <h3 id="依赖属性"><a href="#依赖属性" class="headerlink" title="依赖属性"></a>依赖属性</h3><p>UIElement基类还定义了大量的依赖属性。前面的章节中，在DependencyObject类中我们简单提到过依赖属性。在这里我们以UIElement基类的Visibility属性为例。</p>
-<pre class=" language-csharp"><code class="language-csharp"><span class="token keyword">public</span> Visibility Visibility <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+<pre class="language-csharp" data-language="csharp"><code class="language-csharp"><span class="token keyword">public</span> <span class="token return-type class-name">Visibility</span> Visibility <span class="token punctuation">&#123;</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">DependencyProperty</span> VisibilityProperty<span class="token punctuation">;</span></code></pre>
 
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> DependencyProperty VisibilityProperty<span class="token punctuation">;</span></code></pre>
 <p>上面有两个成员，Visibility是普通的属性成员，VisibilityProperty是WPF的依赖属性成员，以Property结尾的字样作为WPF的依赖属性命名规则。而这两个成员合起来，才能被称为一个完整的依赖属性。这个Visibility 属性表示设置或获取控件的可见性。当我们要设置控件的可见性时，只需要如下设置即可。</p>
 <p>Uid属性:获取或设置控件的唯一标识符，像人们的身份证一样。这个值默认是string.Empty。</p>
 <p>Visibility属性：获取或设置控件的可见性。默认是Visible。</p>
@@ -731,45 +742,47 @@
 <p>Control类虽然可以实例化，但是在界面上是不会有任何显示的。只有那些继承了Control的子类（控件）才会在界面上显示，而且所呈现的样子各不相同，为什么会是这样呢？</p>
 <p>因为Control类提供了一个控件模板（ControlTemplate），而几乎所有的子类都对这个ControlTemplate进行了各自的实现，所以在呈现子类时，我们才会看到Button拥有Button的样子，TextBox拥有TextBox的样子。</p>
 <p>可以这样定义template</p>
-<pre class=" language-xaml"><code class="language-xaml"><Window x:Class="HelloWorld.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HelloWorld"
-        mc:Ignorable="d"
-        Title="HelloWorld - www.wpfsoft.com" Height="350" Width="500">
-    <Control Margin="10">
-        <Control.Template>
-            <ControlTemplate TargetType="Control">
-                <Border Background="LightBlue">
-                    <TextBlock Text="WPF中文网" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-            </ControlTemplate>
-        </Control.Template>
-    </Control>
-</Window></code></pre>
+<pre class="language-xaml" data-language="xaml"><code class="language-xaml">&lt;Window x:Class&#x3D;&quot;HelloWorld.MainWindow&quot;
+        xmlns&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&#x2F;presentation&quot;
+        xmlns:x&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&quot;
+        xmlns:d&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;expression&#x2F;blend&#x2F;2008&quot;
+        xmlns:mc&#x3D;&quot;http:&#x2F;&#x2F;schemas.openxmlformats.org&#x2F;markup-compatibility&#x2F;2006&quot;
+        xmlns:local&#x3D;&quot;clr-namespace:HelloWorld&quot;
+        mc:Ignorable&#x3D;&quot;d&quot;
+        Title&#x3D;&quot;HelloWorld - www.wpfsoft.com&quot; Height&#x3D;&quot;350&quot; Width&#x3D;&quot;500&quot;&gt;
+    &lt;Control Margin&#x3D;&quot;10&quot;&gt;
+        &lt;Control.Template&gt;
+            &lt;ControlTemplate TargetType&#x3D;&quot;Control&quot;&gt;
+                &lt;Border Background&#x3D;&quot;LightBlue&quot;&gt;
+                    &lt;TextBlock Text&#x3D;&quot;WPF中文网&quot; FontSize&#x3D;&quot;20&quot; HorizontalAlignment&#x3D;&quot;Center&quot; VerticalAlignment&#x3D;&quot;Center&quot;&#x2F;&gt;
+                &lt;&#x2F;Border&gt;
+            &lt;&#x2F;ControlTemplate&gt;
+        &lt;&#x2F;Control.Template&gt;
+    &lt;&#x2F;Control&gt;
+&lt;&#x2F;Window&gt;</code></pre>
+
 <p>我们为Control的Template实例化了一个ControlTemplate对象，并在这个对象中增加了一个Border，在Border中又增加了一个TextBlock子元素，于是Control就有了这样一件新衣服。</p>
 <p>在这里，我们要明白一个要点是，Control类的Template属性是ControlTemplate类型的。所以上面的代码才必须这样写才可以。而ControlTemplate又是什么东东？为什么在xaml中实例化时，后面要跟一句TargetType=”Control”？</p>
 <h2 id="ContentControl类"><a href="#ContentControl类" class="headerlink" title="ContentControl类"></a><code>ContentControl</code>类</h2><p>它有一个Content属性，关键是这个属性的类型是object。也就是说，本质上，它可以接收任意引用类型的实例。</p>
 <p>但是，通常情况下，Content属性接收UI控件。因为，ContentControl控件最终会把Content属性里面的内容显示到界面上。</p>
-<pre class=" language-xaml"><code class="language-xaml"><Window x:Class="HelloWorld.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HelloWorld"
-        mc:Ignorable="d"
-        Title="HelloWorld - www.wpfsoft.com" Height="350" Width="500">
-    <ContentControl Foreground="Red" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <ContentControl.ContentTemplate>
-            <DataTemplate>
-                <TextBlock Text="&#123;Binding&#125;" Foreground="Green" FontSize="16"/>
-            </DataTemplate>
-        </ContentControl.ContentTemplate>
+<pre class="language-xaml" data-language="xaml"><code class="language-xaml">&lt;Window x:Class&#x3D;&quot;HelloWorld.MainWindow&quot;
+        xmlns&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&#x2F;presentation&quot;
+        xmlns:x&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&quot;
+        xmlns:d&#x3D;&quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;expression&#x2F;blend&#x2F;2008&quot;
+        xmlns:mc&#x3D;&quot;http:&#x2F;&#x2F;schemas.openxmlformats.org&#x2F;markup-compatibility&#x2F;2006&quot;
+        xmlns:local&#x3D;&quot;clr-namespace:HelloWorld&quot;
+        mc:Ignorable&#x3D;&quot;d&quot;
+        Title&#x3D;&quot;HelloWorld - www.wpfsoft.com&quot; Height&#x3D;&quot;350&quot; Width&#x3D;&quot;500&quot;&gt;
+    &lt;ContentControl Foreground&#x3D;&quot;Red&quot; FontSize&#x3D;&quot;36&quot; HorizontalAlignment&#x3D;&quot;Center&quot; VerticalAlignment&#x3D;&quot;Center&quot;&gt;
+        &lt;ContentControl.ContentTemplate&gt;
+            &lt;DataTemplate&gt;
+                &lt;TextBlock Text&#x3D;&quot;&#123;Binding&#125;&quot; Foreground&#x3D;&quot;Green&quot; FontSize&#x3D;&quot;16&quot;&#x2F;&gt;
+            &lt;&#x2F;DataTemplate&gt;
+        &lt;&#x2F;ContentControl.ContentTemplate&gt;
         WPF中文网
-    </ContentControl>
-</Window></code></pre>
+    &lt;&#x2F;ContentControl&gt;
+&lt;&#x2F;Window&gt;</code></pre>
+
 <p>ContentControl类的ContentTemplate属性是DataTemplate类型，所以我们在xaml中实例化了一个DataTemplate（数据模板）对象，并在其中增加了一个TextBlock控件，将TextBlock控件的Text属性写成了Binding形式，并设置了字体颜色和大小。</p>
 <p>最终呈现的效果上图所示，字体颜色为绿色，大小为16。虽然ContentControl也设置了字体颜色为红色，大小为36，但是已经失效了。好比ContentControl给Content提供了一件红色的外衣，但是，我们又特地提供了一件绿色的外衣，于是，ContentControl就被绿了。</p>
 <p>ContentControl控件能不能容纳多个子控件？</p>
@@ -781,6 +794,7 @@
 <p>这个Command命令是WPF命令系统里面的角色，也是WPF优于Winform的一个具体表现，Command命令也是MVVM模式中最重要的一环。我们会在后面专门探讨WPF的命令系统。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.wpfsoft.com/">WPF中文网-重庆教主的教程</a></p>
 
+                
             </div>
             <hr/>
 
@@ -1009,6 +1023,8 @@
 
     
 
+    
+
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
@@ -1028,10 +1044,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么是System.CommandLine这是.net 官方库, 提供命令行应用通常所需的功能，例如分析命令行输入和显示帮助文本。极大方便构造命令行应用
-对于应用开发人员，库：
-
-使你能够专注于编写应用代码，因为不需要编写代码来分析命令行输
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1076,8 +1089,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            MQ 的基础概念什么是 MQMQ(message queue)，从字面意思上看就个 FIFO 先入先出的队列，只不过队列中存放的内容是 message 而已，它是一种具有接收数据、存储数据、发送数据等功能的技术服务
-为啥要用 MQ常见的 M
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1137,16 +1149,9 @@
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1304,6 +1309,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 0px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
             <span id="year">2019</span>
             <a href="/about" target="_blank">HuiJi</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
@@ -1381,10 +1389,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1432,6 +1525,7 @@ $(function () {
 
     
 
+	
     
 
     
